@@ -4,9 +4,17 @@ A terminal-based study tool for the five Kubestronaut certification exams. Curre
 
 ## Quick Start
 
+Linux/Mac
+
 ```bash
 pip install rich
 python k8s_exam_prep.py
+```
+For Windows please use the run file, to set the encoding to utf-8
+
+```bash
+pip install rich
+run.bat
 ```
 
 ## What's Inside
