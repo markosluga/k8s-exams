@@ -5,6 +5,16 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [1.0.1] — 2026-05-07
+
+### Fixed
+- utf 8 econding issue on windows
+
+### Added
+- windows run.bat to declare utf8
+
+---
+
 ## [1.0.0] — 2026-04-30
 
 ### Added
