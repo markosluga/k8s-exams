@@ -1,0 +1,427 @@
+[
+  {
+    "id": "kcsa-lab-001",
+    "title": "RBAC: Least-Privilege Pod Reader",
+    "domain": "Kubernetes Security Fundamentals",
+    "difficulty": "beginner",
+    "estimated_minutes": 15,
+    "objective": "Create a namespace-scoped Role that only allows reading pods, bind it to a ServiceAccount, and verify the permissions are correctly scoped.",
+    "context": "A monitoring application needs to list and inspect pods in the 'monitoring' namespace but must NOT be able to create, delete, or access secrets. This is a core RBAC least-privilege scenario tested on KCSA.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl cluster-info (verify cluster is accessible)"
+    ],
+    "tasks": [
+      "Create a namespace called 'monitoring'",
+      "Create a ServiceAccount named 'pod-monitor' in the 'monitoring' namespace",
+      "Create a Role named 'pod-reader' in 'monitoring' that allows: get, list, watch on pods",
+      "Create a RoleBinding named 'pod-monitor-binding' that binds the 'pod-reader' Role to the 'pod-monitor' ServiceAccount",
+      "Verify the ServiceAccount CAN list pods but CANNOT list secrets or create pods"
+    ],
+    "hints": [
+      "Use 'kubectl create role pod-reader --verb=get,list,watch --resource=pods -n monitoring'",
+      "Use 'kubectl create rolebinding' or write YAML for more control",
+      "Test permissions with: kubectl auth can-i <verb> <resource> --as=system:serviceaccount:monitoring:pod-monitor -n monitoring"
+    ],
+    "solution": "kubectl create namespace monitoring\nkubectl create serviceaccount pod-monitor -n monitoring\nkubectl create role pod-reader --verb=get,list,watch --resource=pods -n monitoring\nkubectl create rolebinding pod-monitor-binding --role=pod-reader --serviceaccount=monitoring:pod-monitor -n monitoring",
+    "validation_commands": [
+      "kubectl auth can-i list pods --as=system:serviceaccount:monitoring:pod-monitor -n monitoring",
+      "kubectl auth can-i list secrets --as=system:serviceaccount:monitoring:pod-monitor -n monitoring",
+      "kubectl auth can-i create pods --as=system:serviceaccount:monitoring:pod-monitor -n monitoring",
+      "kubectl auth can-i list pods --as=system:serviceaccount:monitoring:pod-monitor -n default"
+    ],
+    "expected_outputs": ["yes", "no", "no", "no"],
+    "cleanup": "kubectl delete namespace monitoring",
+    "key_concepts": [
+      "Roles are namespace-scoped; ClusterRoles are cluster-scoped",
+      "RoleBinding binds within one namespace; ClusterRoleBinding binds cluster-wide",
+      "system:serviceaccount:<namespace>:<name> is the full identity format for service accounts",
+      "kubectl auth can-i is your best friend for verifying RBAC"
+    ]
+  },
+  {
+    "id": "kcsa-lab-002",
+    "title": "NetworkPolicy: Default Deny with Selective Allow",
+    "domain": "Kubernetes Security Fundamentals",
+    "difficulty": "intermediate",
+    "estimated_minutes": 25,
+    "objective": "Implement a default-deny NetworkPolicy and then selectively allow traffic between specific pods using label selectors.",
+    "context": "By default, all pods can communicate freely. A proper security posture starts with deny-all and explicitly opens only required paths. This is a critical KCSA concept — understanding that pods without any NetworkPolicy are non-isolated.",
+    "prerequisites": [
+      "minikube start --cni=calico  (CNI must support NetworkPolicy; use calico or cilium)",
+      "OR: minikube start --network-plugin=cni --cni=calico"
+    ],
+    "tasks": [
+      "Create a namespace 'netpol-demo'",
+      "Deploy a pod named 'frontend' with label 'app=frontend' using image nginx:alpine",
+      "Deploy a pod named 'backend' with label 'app=backend' using image nginx:alpine",
+      "Deploy a pod named 'database' with label 'app=database' using image nginx:alpine",
+      "Apply a default-deny-all ingress NetworkPolicy to the 'netpol-demo' namespace",
+      "Apply a NetworkPolicy that allows 'frontend' to reach 'backend' on port 80",
+      "Apply a NetworkPolicy that allows 'backend' to reach 'database' on port 80",
+      "Verify: frontend->backend allowed, frontend->database blocked, backend->database allowed"
+    ],
+    "hints": [
+      "Default deny policy uses empty podSelector: {} to select ALL pods and empty ingress: [] or no ingress spec",
+      "Use 'kubectl exec <pod> -- wget -qO- --timeout=2 <pod-ip>' to test connectivity",
+      "Get pod IPs with: kubectl get pods -n netpol-demo -o wide",
+      "NetworkPolicy podSelector matches pods in the SAME namespace by default"
+    ],
+    "solution": "# Default deny all ingress in namespace\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: default-deny-ingress\n  namespace: netpol-demo\nspec:\n  podSelector: {}\n  policyTypes:\n  - Ingress\n---\n# Allow frontend -> backend\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: allow-frontend-to-backend\n  namespace: netpol-demo\nspec:\n  podSelector:\n    matchLabels:\n      app: backend\n  policyTypes:\n  - Ingress\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          app: frontend\n    ports:\n    - port: 80",
+    "validation_commands": [
+      "kubectl get networkpolicy -n netpol-demo",
+      "kubectl exec -n netpol-demo frontend -- wget -qO- --timeout=2 http://<backend-ip>  # should succeed",
+      "kubectl exec -n netpol-demo frontend -- wget -qO- --timeout=2 http://<database-ip> # should timeout",
+      "kubectl exec -n netpol-demo backend  -- wget -qO- --timeout=2 http://<database-ip> # should succeed (if policy applied)"
+    ],
+    "expected_outputs": ["3 policies listed", "200 OK", "timeout/error", "200 OK"],
+    "cleanup": "kubectl delete namespace netpol-demo",
+    "key_concepts": [
+      "Pods are non-isolated by default — NetworkPolicy only restricts selected pods",
+      "Empty podSelector {} selects ALL pods in the namespace",
+      "NetworkPolicy is additive — multiple policies combine (union of allowed traffic)",
+      "Egress policies restrict outgoing traffic; Ingress policies restrict incoming traffic",
+      "CNI plugin must support NetworkPolicy (Calico, Cilium, Weave — NOT Flannel by default)"
+    ]
+  },
+  {
+    "id": "kcsa-lab-003",
+    "title": "Pod Security: Hardened SecurityContext",
+    "domain": "Kubernetes Security Fundamentals",
+    "difficulty": "intermediate",
+    "estimated_minutes": 20,
+    "objective": "Deploy a pod with a hardened securityContext that implements the 'restricted' Pod Security Standard requirements.",
+    "context": "The restricted PSS is the most secure profile. Understanding each field and WHY it matters is KCSA exam content. You will apply securityContext settings at both pod and container level.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl cluster-info"
+    ],
+    "tasks": [
+      "Create a namespace 'pss-demo' with the label to enforce the restricted Pod Security Standard",
+      "Try to deploy a simple nginx pod — observe that it gets rejected",
+      "Deploy a hardened pod that satisfies the restricted standard with: runAsNonRoot, runAsUser: 1000, readOnlyRootFilesystem, drop ALL capabilities, allowPrivilegeEscalation: false, seccompProfile: RuntimeDefault",
+      "Verify the pod is running and check the security context is applied",
+      "Exec into the pod and confirm you are running as user 1000, not root"
+    ],
+    "hints": [
+      "Label the namespace: kubectl label namespace pss-demo pod-security.kubernetes.io/enforce=restricted",
+      "nginx:alpine runs as root by default — use 'nginxinc/nginx-unprivileged' instead",
+      "readOnlyRootFilesystem requires you to mount tmpfs for any writable paths the app needs",
+      "The seccompProfile is set at the pod level: spec.securityContext.seccompProfile.type: RuntimeDefault"
+    ],
+    "solution": "# Label namespace\nkubectl create namespace pss-demo\nkubectl label namespace pss-demo pod-security.kubernetes.io/enforce=restricted\n\n# Hardened pod manifest\napiVersion: v1\nkind: Pod\nmetadata:\n  name: hardened-pod\n  namespace: pss-demo\nspec:\n  securityContext:\n    runAsNonRoot: true\n    runAsUser: 1000\n    seccompProfile:\n      type: RuntimeDefault\n  containers:\n  - name: app\n    image: nginxinc/nginx-unprivileged:alpine\n    securityContext:\n      allowPrivilegeEscalation: false\n      readOnlyRootFilesystem: true\n      capabilities:\n        drop:\n        - ALL\n    volumeMounts:\n    - name: tmp\n      mountPath: /tmp\n    - name: cache\n      mountPath: /var/cache/nginx\n    - name: run\n      mountPath: /var/run\n  volumes:\n  - name: tmp\n    emptyDir: {}\n  - name: cache\n    emptyDir: {}\n  - name: run\n    emptyDir: {}",
+    "validation_commands": [
+      "kubectl get pod hardened-pod -n pss-demo",
+      "kubectl describe pod hardened-pod -n pss-demo | grep -A 20 'Security Context'",
+      "kubectl exec -n pss-demo hardened-pod -- id",
+      "kubectl exec -n pss-demo hardened-pod -- touch /test-write 2>&1"
+    ],
+    "expected_outputs": ["Running", "securityContext details", "uid=1000", "Read-only file system error"],
+    "cleanup": "kubectl delete namespace pss-demo",
+    "key_concepts": [
+      "Pod-level securityContext applies to all containers; container-level overrides per-container",
+      "runAsNonRoot: true rejects pods where the image user is root (UID 0)",
+      "readOnlyRootFilesystem prevents writes to the container filesystem — use emptyDir/PVC for writable dirs",
+      "capabilities.drop: [ALL] then selectively add back only what's needed",
+      "allowPrivilegeEscalation: false prevents setuid/setgid binaries from gaining more privileges",
+      "seccompProfile: RuntimeDefault uses the container runtime's default syscall filter"
+    ]
+  },
+  {
+    "id": "kcsa-lab-004",
+    "title": "Secrets: Secure Creation and Consumption",
+    "domain": "Kubernetes Security Fundamentals",
+    "difficulty": "beginner",
+    "estimated_minutes": 20,
+    "objective": "Create Kubernetes Secrets and consume them securely as environment variables and as mounted files, understanding the security trade-offs of each approach.",
+    "context": "Secrets are base64-encoded, not encrypted by default. Understanding how to create them without exposing values in shell history, and the difference between env var and volume mount consumption, is KCSA content.",
+    "prerequisites": [
+      "minikube start"
+    ],
+    "tasks": [
+      "Create a Secret named 'db-credentials' from literal values (username=admin, password=supersecret) WITHOUT using --from-literal in a way that exposes it in shell history (use a file or env var)",
+      "Create a pod that consumes the username as an environment variable and the password as a mounted file",
+      "Verify the secret is mounted correctly and the values are accessible",
+      "Show the 'risk': decode the base64 value directly from the Secret object",
+      "Disable automountServiceAccountToken on the pod's ServiceAccount"
+    ],
+    "hints": [
+      "To avoid shell history: create the secret from a file ('kubectl create secret generic ... --from-file=password=./password.txt') or use --from-env-file",
+      "Volume mount for secrets is more secure than env vars — env vars can be logged by crash dumps",
+      "kubectl get secret db-credentials -o jsonpath='{.data.password}' | base64 -d",
+      "Set automountServiceAccountToken: false on the ServiceAccount, not just the Pod"
+    ],
+    "solution": "# Create secret from file (avoids shell history)\necho -n 'supersecret' > /tmp/password.txt\necho -n 'admin' > /tmp/username.txt\nkubectl create secret generic db-credentials \\\n  --from-file=username=/tmp/username.txt \\\n  --from-file=password=/tmp/password.txt\nrm /tmp/password.txt /tmp/username.txt\n\n# Pod that consumes the secret\napiVersion: v1\nkind: Pod\nmetadata:\n  name: secret-consumer\nspec:\n  automountServiceAccountToken: false\n  containers:\n  - name: app\n    image: busybox\n    command: ['sh', '-c', 'echo Username: $DB_USER && cat /secrets/password && sleep 3600']\n    env:\n    - name: DB_USER\n      valueFrom:\n        secretKeyRef:\n          name: db-credentials\n          key: username\n    volumeMounts:\n    - name: secret-vol\n      mountPath: /secrets\n      readOnly: true\n  volumes:\n  - name: secret-vol\n    secret:\n      secretName: db-credentials\n      items:\n      - key: password\n        path: password\n        mode: 0400",
+    "validation_commands": [
+      "kubectl exec secret-consumer -- env | grep DB_USER",
+      "kubectl exec secret-consumer -- cat /secrets/password",
+      "kubectl exec secret-consumer -- ls /var/run/secrets/kubernetes.io/ 2>&1",
+      "kubectl get secret db-credentials -o jsonpath='{.data.password}' | base64 -d"
+    ],
+    "expected_outputs": ["DB_USER=admin", "supersecret", "No such file or directory", "supersecret"],
+    "cleanup": "kubectl delete pod secret-consumer && kubectl delete secret db-credentials",
+    "key_concepts": [
+      "Secrets are base64-encoded, NOT encrypted — anyone with 'get secret' permission can decode them",
+      "Volume mounts are preferred over env vars — env vars can appear in logs, crash dumps, and child processes",
+      "Set mode: 0400 on mounted secret files to prevent world-readable access",
+      "automountServiceAccountToken: false is a best practice for pods that don't call the Kubernetes API",
+      "Use encryption at rest (EncryptionConfiguration) and RBAC to protect Secrets in etcd"
+    ]
+  },
+  {
+    "id": "kcsa-lab-005",
+    "title": "Audit Logging: Enable and Analyze Audit Events",
+    "domain": "Kubernetes Cluster Component Security",
+    "difficulty": "intermediate",
+    "estimated_minutes": 30,
+    "objective": "Configure Kubernetes audit logging on minikube, perform some actions, and analyze the audit log to trace who did what.",
+    "context": "Audit logs are critical for detecting unauthorized access and post-incident forensics. The KCSA exam tests understanding of audit policy levels, stages, and what gets captured. On minikube, you configure this via extra flags.",
+    "prerequisites": [
+      "minikube delete (start fresh)",
+      "Understand: audit stages are RequestReceived, ResponseStarted, ResponseComplete, Panic"
+    ],
+    "tasks": [
+      "Create an audit policy file that: logs Secret access at Metadata level, logs pod creation at RequestResponse level, and logs everything else at Metadata level",
+      "Start minikube with audit logging enabled pointing to your policy file",
+      "Perform actions: create a secret, create a pod, list nodes",
+      "Examine the audit log to find the events for each action",
+      "Identify the user, verb, resource, and response code in each event"
+    ],
+    "hints": [
+      "Audit policy file location: create at /tmp/audit-policy.yaml then pass to minikube",
+      "minikube start --extra-config=apiserver.audit-policy-file=/etc/ssl/certs/audit-policy.yaml --extra-config=apiserver.audit-log-path=/var/log/kubernetes/audit.log --mount-string=/tmp/audit-policy.yaml:/etc/ssl/certs/audit-policy.yaml --mount",
+      "Read logs from minikube: minikube ssh 'sudo cat /var/log/kubernetes/audit.log' | head -50",
+      "Each audit event is a JSON line — use 'jq' to parse: ... | jq '{user:.user.username, verb:.verb, resource:.objectRef.resource}'"
+    ],
+    "solution": "# /tmp/audit-policy.yaml\napiVersion: audit.k8s.io/v1\nkind: Policy\nrules:\n# Log secret access at Metadata (don't log values)\n- level: Metadata\n  resources:\n  - group: ''\n    resources: ['secrets']\n# Log pod mutations at RequestResponse\n- level: RequestResponse\n  verbs: ['create', 'update', 'delete']\n  resources:\n  - group: ''\n    resources: ['pods']\n# Catch-all: Metadata for everything else\n- level: Metadata\n\n# Start minikube\nminikube start \\\n  --mount \\\n  --mount-string=/tmp/audit-policy.yaml:/etc/ssl/certs/audit-policy.yaml \\\n  --extra-config=apiserver.audit-policy-file=/etc/ssl/certs/audit-policy.yaml \\\n  --extra-config=apiserver.audit-log-path=/var/log/kubernetes/audit.log\n\n# View logs\nminikube ssh 'sudo tail -f /var/log/kubernetes/audit.log' | jq '{user:.user.username, verb:.verb, resource:.objectRef.resource, code:.responseStatus.code}'",
+    "validation_commands": [
+      "minikube ssh 'sudo ls /var/log/kubernetes/'",
+      "kubectl create secret generic test-audit-secret --from-literal=key=value",
+      "minikube ssh 'sudo cat /var/log/kubernetes/audit.log' | grep 'secrets' | tail -3 | jq '{user:.user.username,verb:.verb,level:.level}'",
+      "minikube ssh 'sudo cat /var/log/kubernetes/audit.log' | grep 'secrets' | grep -c 'requestObject'"
+    ],
+    "expected_outputs": ["audit.log exists", "secret created", "user+verb+level shown", "0 (secrets logged at Metadata, no requestObject)"],
+    "cleanup": "minikube delete",
+    "key_concepts": [
+      "Audit levels: None, Metadata, Request, RequestResponse — more verbose = more storage cost",
+      "Log Secrets at Metadata level — RequestResponse would log the secret VALUE",
+      "Audit stages: RequestReceived (immediately), ResponseStarted (for streaming), ResponseComplete, Panic",
+      "Audit logs are critical for compliance (SOC2, PCI-DSS require access logging to sensitive data)",
+      "Use a catch-all rule at the end of the policy as a safety net"
+    ]
+  },
+  {
+    "id": "kcsa-lab-006",
+    "title": "Runtime Security: Privileged vs Restricted Container",
+    "domain": "Platform Security",
+    "difficulty": "beginner",
+    "estimated_minutes": 20,
+    "objective": "Understand the security impact of privileged containers by comparing a privileged and a non-privileged container's access to the host system.",
+    "context": "Privileged containers are a major security risk — they have nearly full access to the host kernel. This lab demonstrates WHY privileged mode is dangerous and should be blocked by policy.",
+    "prerequisites": [
+      "minikube start"
+    ],
+    "tasks": [
+      "Deploy a privileged pod and check what it can access on the host (list block devices, see host processes)",
+      "Deploy a non-privileged pod and attempt the same operations — observe the failures",
+      "Try to load a kernel module from inside the privileged container",
+      "Apply a Pod Security Standard 'restricted' namespace label and try to create the privileged pod — observe the rejection"
+    ],
+    "hints": [
+      "privileged: true is set in spec.containers[].securityContext",
+      "List block devices in privileged: ls /dev/sd* or lsblk",
+      "See host processes in privileged: nsenter --target 1 --mount --uts --ipc --net --pid -- ps aux",
+      "Non-privileged containers see only their own processes (PID 1 = their entrypoint)"
+    ],
+    "solution": "# Privileged pod\napiVersion: v1\nkind: Pod\nmetadata:\n  name: privileged-pod\nspec:\n  containers:\n  - name: priv\n    image: alpine\n    command: ['sleep', '3600']\n    securityContext:\n      privileged: true\n---\n# Non-privileged pod\napiVersion: v1\nkind: Pod\nmetadata:\n  name: unprivileged-pod\nspec:\n  containers:\n  - name: unpriv\n    image: alpine\n    command: ['sleep', '3600']\n    securityContext:\n      allowPrivilegeEscalation: false\n      capabilities:\n        drop: [ALL]",
+    "validation_commands": [
+      "kubectl exec privileged-pod -- ls /dev/ | grep -E 'sda|nvme|vda'",
+      "kubectl exec privileged-pod -- id",
+      "kubectl exec unprivileged-pod -- ls /dev/ | wc -l",
+      "kubectl create namespace restricted-test && kubectl label namespace restricted-test pod-security.kubernetes.io/enforce=restricted && kubectl run priv-blocked -n restricted-test --image=alpine --overrides='{\"spec\":{\"containers\":[{\"name\":\"c\",\"image\":\"alpine\",\"securityContext\":{\"privileged\":true}}]}}' 2>&1"
+    ],
+    "expected_outputs": ["block devices visible", "uid=0 (root)", "few devices visible", "Error: pod rejected"],
+    "cleanup": "kubectl delete pod privileged-pod unprivileged-pod && kubectl delete namespace restricted-test",
+    "key_concepts": [
+      "privileged: true gives the container near-root access to the host kernel",
+      "A compromised privileged container can escape to the host node",
+      "The 'restricted' PSS blocks privileged: true and many other dangerous settings",
+      "OPA Gatekeeper or Kyverno can also enforce no-privileged-containers at cluster level",
+      "Even without privileged: true, a container with certain capabilities (NET_ADMIN, SYS_ADMIN) can be dangerous"
+    ]
+  },
+  {
+    "id": "kcsa-lab-007",
+    "title": "Image Security: Scan with Trivy and Set Pull Policy",
+    "domain": "Platform Security",
+    "difficulty": "beginner",
+    "estimated_minutes": 20,
+    "objective": "Scan container images for vulnerabilities using Trivy and understand how to enforce secure image practices in Kubernetes.",
+    "context": "Image scanning is the first line of defense against known vulnerabilities. KCSA tests knowledge of CVE scanning, image hardening, and Kubernetes image pull policies.",
+    "prerequisites": [
+      "minikube start",
+      "Install Trivy: https://aquasecurity.github.io/trivy/latest/getting-started/installation/ (brew install aquasecurity/trivy/trivy OR scoop install trivy)"
+    ],
+    "tasks": [
+      "Scan the 'nginx:latest' image with Trivy — identify how many HIGH and CRITICAL CVEs it has",
+      "Scan 'nginx:alpine' and compare the CVE count",
+      "Scan 'nginxinc/nginx-unprivileged:alpine' and note the improvement",
+      "Deploy a pod with imagePullPolicy: Always and a pinned digest instead of a mutable tag",
+      "Use 'kubectl describe pod' to verify the image digest that was pulled"
+    ],
+    "hints": [
+      "trivy image --severity HIGH,CRITICAL nginx:latest",
+      "trivy image --format table nginx:alpine",
+      "Pin an image by digest: nginx@sha256:<digest>  — get digest with: docker inspect nginx:alpine | jq '.[0].RepoDigests'",
+      "OR: minikube ssh 'docker inspect nginx:alpine' to get digest inside minikube VM"
+    ],
+    "solution": "# Scan commands\ntrivy image --severity HIGH,CRITICAL nginx:latest\ntrivy image --severity HIGH,CRITICAL nginx:alpine\ntrivy image --severity HIGH,CRITICAL nginxinc/nginx-unprivileged:alpine\n\n# Get image digest\nDIGEST=$(docker manifest inspect nginx:alpine | jq -r '.config.digest')\n\n# Pod with pinned image and Always pull policy\napiVersion: v1\nkind: Pod\nmetadata:\n  name: secure-image-pod\nspec:\n  containers:\n  - name: web\n    image: nginx:alpine  # In prod: use @sha256:<digest>\n    imagePullPolicy: Always\n    securityContext:\n      runAsNonRoot: true\n      runAsUser: 101\n      allowPrivilegeEscalation: false\n      capabilities:\n        drop: [ALL]",
+    "validation_commands": [
+      "trivy image --severity CRITICAL nginx:latest 2>/dev/null | grep 'Total:'",
+      "trivy image --severity CRITICAL nginx:alpine 2>/dev/null | grep 'Total:'",
+      "kubectl describe pod secure-image-pod | grep 'Image ID'",
+      "kubectl get pod secure-image-pod -o jsonpath='{.status.containerStatuses[0].imageID}'"
+    ],
+    "expected_outputs": ["CRITICAL count (higher)", "CRITICAL count (lower)", "sha256 digest shown", "sha256 digest in output"],
+    "cleanup": "kubectl delete pod secure-image-pod",
+    "key_concepts": [
+      "Minimal base images (alpine, distroless) dramatically reduce CVE surface area",
+      "Trivy scans OS packages AND language-specific dependencies (pip, npm, go.sum, etc.)",
+      "imagePullPolicy: Always forces the registry check — prevents stale cached images",
+      "Pinning by digest (@sha256:...) is cryptographically immutable — unlike tags which can be overwritten",
+      "Integrate Trivy into CI/CD to fail builds when CRITICAL CVEs are found"
+    ]
+  },
+  {
+    "id": "kcsa-lab-008",
+    "title": "OPA Gatekeeper: Policy as Code",
+    "domain": "Platform Security",
+    "difficulty": "advanced",
+    "estimated_minutes": 35,
+    "objective": "Install OPA Gatekeeper and create a policy that requires all pods to have resource limits defined.",
+    "context": "Gatekeeper uses ValidatingAdmissionWebhook to enforce custom policies written in Rego. This prevents configuration drift and enforces security standards at admission time — before objects are persisted.",
+    "prerequisites": [
+      "minikube start --memory=4096",
+      "kubectl version (ensure cluster is running)"
+    ],
+    "tasks": [
+      "Install OPA Gatekeeper using the official manifest",
+      "Create a ConstraintTemplate that defines a policy requiring all containers to have CPU and memory limits",
+      "Create a Constraint (instance of the template) that enforces this across all namespaces except kube-system",
+      "Try to create a pod WITHOUT resource limits — observe the rejection",
+      "Create a pod WITH proper resource limits — verify it succeeds",
+      "Use the Gatekeeper audit feature to find existing violations"
+    ],
+    "hints": [
+      "Install: kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml",
+      "ConstraintTemplate defines the Rego logic; Constraint is the 'instance' that applies it",
+      "The Rego package must be named: package k8srequiredlimits (match your CRD name)",
+      "Audit results appear in the Constraint object: kubectl describe k8srequiredlimits require-limits"
+    ],
+    "solution": "# ConstraintTemplate\napiVersion: templates.gatekeeper.sh/v1\nkind: ConstraintTemplate\nmetadata:\n  name: k8srequiredlimits\nspec:\n  crd:\n    spec:\n      names:\n        kind: K8sRequiredLimits\n  targets:\n  - target: admission.k8s.gatekeeper.sh\n    rego: |\n      package k8srequiredlimits\n      violation[{\"msg\": msg}] {\n        container := input.review.object.spec.containers[_]\n        not container.resources.limits.cpu\n        msg := sprintf(\"Container '%v' must have CPU limits\", [container.name])\n      }\n      violation[{\"msg\": msg}] {\n        container := input.review.object.spec.containers[_]\n        not container.resources.limits.memory\n        msg := sprintf(\"Container '%v' must have memory limits\", [container.name])\n      }\n---\n# Constraint instance\napiVersion: constraints.gatekeeper.sh/v1beta1\nkind: K8sRequiredLimits\nmetadata:\n  name: require-limits\nspec:\n  match:\n    kinds:\n    - apiGroups: [\"\"]\n      kinds: [\"Pod\"]\n    excludedNamespaces: [\"kube-system\", \"gatekeeper-system\"]",
+    "validation_commands": [
+      "kubectl get constrainttemplate",
+      "kubectl get k8srequiredlimits",
+      "kubectl run no-limits --image=nginx 2>&1",
+      "kubectl run with-limits --image=nginx --limits=cpu=100m,memory=128Mi 2>&1",
+      "kubectl describe k8srequiredlimits require-limits | grep -A 5 'Total Violations'"
+    ],
+    "expected_outputs": ["k8srequiredlimits template exists", "require-limits constraint exists", "Error: admission webhook denied", "pod created", "violation count shown"],
+    "cleanup": "kubectl delete k8srequiredlimits require-limits && kubectl delete constrainttemplate k8srequiredlimits",
+    "key_concepts": [
+      "OPA Gatekeeper uses ValidatingAdmissionWebhook — requests are evaluated BEFORE persistence",
+      "ConstraintTemplate defines the Rego policy logic; Constraint is an instance with scope/parameters",
+      "Gatekeeper has an Audit mode — periodically checks existing resources for violations",
+      "Rego is a declarative policy language — violations[] defines what's disallowed",
+      "Kyverno is a Kubernetes-native alternative to Gatekeeper that uses YAML policies instead of Rego"
+    ]
+  },
+  {
+    "id": "kcsa-lab-009",
+    "title": "mTLS with Service Mesh: Istio Basics",
+    "domain": "Platform Security",
+    "difficulty": "advanced",
+    "estimated_minutes": 40,
+    "objective": "Install Istio on minikube, enable automatic mTLS, and verify that pod-to-pod traffic is encrypted and authenticated.",
+    "context": "Service meshes like Istio implement mTLS transparently via sidecar injection. This enforces Zero Trust networking — every service must present a valid certificate. KCSA tests understanding of mTLS, service mesh concepts, and PeerAuthentication policies.",
+    "prerequisites": [
+      "minikube start --memory=8192 --cpus=4",
+      "Download istioctl: https://istio.io/latest/docs/setup/getting-started/",
+      "istioctl install --set profile=demo -y"
+    ],
+    "tasks": [
+      "Install Istio with the demo profile on minikube",
+      "Enable automatic sidecar injection for a namespace 'mtls-demo'",
+      "Deploy two services: 'client' and 'server' — verify Envoy sidecars are injected",
+      "Apply a PeerAuthentication policy requiring STRICT mTLS in the 'mtls-demo' namespace",
+      "Verify traffic works between client and server (mTLS transparent)",
+      "Try to connect from a pod WITHOUT a sidecar — verify it's blocked by STRICT mode",
+      "Use 'istioctl authn tls-check' to verify mTLS status"
+    ],
+    "hints": [
+      "Enable injection: kubectl label namespace mtls-demo istio-injection=enabled",
+      "Check sidecars: kubectl get pod -n mtls-demo -o jsonpath='{.items[*].spec.containers[*].name}'",
+      "PeerAuthentication with mode: STRICT requires mTLS for ALL communication to selected pods",
+      "istioctl authn tls-check <pod-name> shows the mTLS status for that pod's connections"
+    ],
+    "solution": "# Label namespace for injection\nkubectl create namespace mtls-demo\nkubectl label namespace mtls-demo istio-injection=enabled\n\n# Deploy client and server\nkubectl run server -n mtls-demo --image=nginxinc/nginx-unprivileged:alpine\nkubectl run client -n mtls-demo --image=curlimages/curl -- sleep 3600\n\n# PeerAuthentication - STRICT mTLS\napiVersion: security.istio.io/v1beta1\nkind: PeerAuthentication\nmetadata:\n  name: strict-mtls\n  namespace: mtls-demo\nspec:\n  mtls:\n    mode: STRICT\n\n# Verify\nkubectl exec -n mtls-demo client -- curl -s http://server/\nistioctl authn tls-check client.mtls-demo",
+    "validation_commands": [
+      "kubectl get pods -n mtls-demo -o jsonpath='{range .items[*]}{.metadata.name}: {range .spec.containers[*]}{.name} {end}\\n{end}'",
+      "kubectl get peerauthentication -n mtls-demo",
+      "kubectl exec -n mtls-demo client -- curl -s -o /dev/null -w '%{http_code}' http://server/",
+      "istioctl authn tls-check client.mtls-demo.svc.cluster.local 2>/dev/null | grep mtls-demo"
+    ],
+    "expected_outputs": ["client: curl istio-proxy, server: nginx istio-proxy", "strict-mtls policy", "200", "mTLS status shown"],
+    "cleanup": "kubectl delete namespace mtls-demo",
+    "key_concepts": [
+      "mTLS authenticates BOTH client and server — neither can be an impersonator",
+      "Istio injects Envoy sidecar proxies that handle mTLS transparently (app code unchanged)",
+      "PeerAuthentication STRICT mode rejects non-mTLS connections (enforces Zero Trust)",
+      "PERMISSIVE mode accepts both mTLS and plain text — useful during migration",
+      "Istio's SPIFFE-based identity (spiffe://cluster.local/ns/NS/sa/SA) is the workload certificate identity"
+    ]
+  },
+  {
+    "id": "kcsa-lab-010",
+    "title": "CIS Benchmark: Cluster Security Audit with kube-bench",
+    "domain": "Compliance and Security Frameworks",
+    "difficulty": "intermediate",
+    "estimated_minutes": 25,
+    "objective": "Run kube-bench against your minikube cluster to identify CIS Kubernetes Benchmark violations and understand the remediation steps.",
+    "context": "kube-bench automates CIS Benchmark checks — the same checks used by compliance auditors for SOC2, PCI-DSS, and other frameworks. Understanding how to run it and interpret results is direct KCSA exam content.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl cluster-info (ensure cluster is running)"
+    ],
+    "tasks": [
+      "Run kube-bench inside the minikube cluster as a Kubernetes Job",
+      "Examine the results — identify FAIL and WARN items",
+      "Find the check for: kubelet read-only port, API server anonymous auth, etcd encryption",
+      "Document 3 FAIL items and their remediation steps",
+      "Understand why some checks are INFO or WARN vs FAIL"
+    ],
+    "hints": [
+      "Run kube-bench as a Job: kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job.yaml",
+      "View results: kubectl logs job/kube-bench",
+      "Look for sections: [FAIL], [WARN], [PASS], [INFO]",
+      "kube-bench auto-detects Kubernetes version and applies the appropriate CIS benchmark version",
+      "Some checks are marked WARN not FAIL because they depend on your specific environment/use case"
+    ],
+    "solution": "# Run kube-bench as a Job\nkubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job.yaml\nkubectl wait --for=condition=complete job/kube-bench --timeout=120s\nkubectl logs job/kube-bench > kube-bench-results.txt\n\n# Parse results\ngrep -A 3 '\\[FAIL\\]' kube-bench-results.txt | head -50\n\n# Specific checks to find:\n# 1.2.1 - --anonymous-auth=false on API server\n# 4.2.4 - --read-only-port=0 on kubelet\n# 1.2.33 - etcd encryption at rest\n\ncat kube-bench-results.txt | grep -A 5 'read-only-port'\ncat kube-bench-results.txt | grep -A 5 'encryption-provider-config'\ncat kube-bench-results.txt | grep -A 5 'anonymous-auth'",
+    "validation_commands": [
+      "kubectl get job kube-bench",
+      "kubectl logs job/kube-bench | grep -c '\\[FAIL\\]'",
+      "kubectl logs job/kube-bench | grep -c '\\[PASS\\]'",
+      "kubectl logs job/kube-bench | grep 'read-only-port'"
+    ],
+    "expected_outputs": ["job/kube-bench complete", "number of failures", "number of passes", "check result for read-only-port"],
+    "cleanup": "kubectl delete job kube-bench",
+    "key_concepts": [
+      "CIS Benchmarks are the industry standard for Kubernetes hardening — referenced by SOC2, PCI-DSS, HIPAA",
+      "kube-bench checks: API server flags, etcd config, kubelet settings, RBAC, CNI, addons",
+      "FAIL = definitively insecure; WARN = depends on context; PASS = compliant; INFO = manual check needed",
+      "minikube clusters will have more FAILs than production clusters (single-node, default config)",
+      "CIS Level 1 = practical hardening; Level 2 = maximum security (may impact functionality)"
+    ]
+  }
+]
