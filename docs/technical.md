@@ -7,11 +7,16 @@ Single-file Python CLI (`k8s_exam_prep.py`) with JSON data files. No database, n
 ```
 k8s-exams/
 ├── k8s_exam_prep.py      # Main application
-├── requirements.txt       # Python dependencies (rich only)
+├── requirements.txt       # Python dependencies
+├── .env                   # API keys — gitignored, not committed
 ├── data/
 │   └── kcsa/
 │       ├── questions.json # Exam questions (array of question objects)
 │       └── labs.json      # Lab challenges (array of lab objects)
+├── tests/
+│   ├── validate_questions.py    # Structural validator
+│   └── llm_assess_questions.py  # LLM cognitive assessor
+├── reports/               # Generated assessment reports — gitignored
 ├── .progress.json         # Auto-created; tracks session history (gitignored)
 └── docs/technical.md      # This file
 ```
@@ -28,9 +33,21 @@ k8s-exams/
   "question": "Question text",
   "options": { "A": "...", "B": "...", "C": "...", "D": "..." },
   "answer": "A",
-  "explanation": "Why this is correct and why the others are not."
+  "explanation": "Why this is correct and why the others are not.",
+  "doc_link": "https://kubernetes.io/docs/...",
+  "llm_validated": 0
 }
 ```
+
+`llm_validated` is managed exclusively by `tests/llm_assess_questions.py` and is invisible to the exam simulator:
+
+| Value | Meaning |
+|-------|---------|
+| `0` | Not yet assessed — will be processed on next assessor run |
+| `1` | Clean (no issues found) **or** issues found and fixed inline during assessment |
+| `2` | Issues found that could not be repaired automatically — needs manual edit |
+
+Re-set to `0` on any question to trigger re-assessment. Dated reports in `reports/` are the audit trail for all automatic fixes applied.
 
 ### Lab Object (`labs.json`)
 
@@ -87,13 +104,15 @@ Progress is stored in `.progress.json` (auto-created, gitignored):
 
 ## Validation / Testing
 
-Run the question validator before committing new question files:
+### Structural Validator
+
+Run before committing new question files:
 
 ```
 python tests/validate_questions.py
 ```
 
-The script scans every `data/<exam>/questions.json` and checks:
+Scans every `data/<exam>/questions.json` and checks:
 
 | Check | Severity | Details |
 |---|---|---|
@@ -108,9 +127,64 @@ The script scans every `data/<exam>/questions.json` and checks:
 
 Exit code 0 = all questions pass (no errors). Exit code 1 = at least one error.
 
+### LLM Cognitive Assessor
+
+Run on demand to assess semantic quality using the Claude API.
+
+**Setup** — create a `.env` file in the project root (gitignored):
+
+```
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+```
+pip install anthropic python-dotenv
+
+# Sync mode — stream results one by one with prompt caching
+python tests/llm_assess_questions.py
+
+# Async batch mode — 50% cheaper, results in ~1 hour
+python tests/llm_assess_questions.py --batch
+python tests/llm_assess_questions.py --poll <BATCH_ID>
+
+# Scope to a specific exam or sample
+python tests/llm_assess_questions.py --exam kcsa --limit 20
+
+# Use a cheaper model for faster/lower-cost checks
+python tests/llm_assess_questions.py --model claude-haiku-4-5
+```
+
+The assessor only processes questions with `llm_validated == 0`. In a single API call it evaluates and — where possible — repairs each question. After each run it writes corrected fields and tags back to `questions.json` and saves a dated report to `reports/llm_assessment_YYYYMMDD_HHMMSS.md`.
+
+**Assessment → fix → tag flow:**
+
+| Outcome | Tag set | Action taken |
+|---------|---------|--------------|
+| No issues found | `1` | Question marked clean |
+| Issues found, fix returned | `1` | Corrected fields written to `questions.json`; report records what changed |
+| Issues found, no fix possible | `2` | Question flagged for manual edit |
+| API error | `0` | Question left unchanged; retried automatically on next run |
+
+Questions tagged `2` require a human to open `questions.json`, correct the flagged field, and reset `llm_validated` to `0` for re-assessment. The corresponding report entry describes exactly what needs fixing.
+
+Each question is sent to `claude-opus-4-7` (default) with adaptive thinking enabled. The model evaluates:
+
+| Check | Severity | What is assessed |
+|---|---|---|
+| answer_correctness | ERROR | Is the stated answer definitively best per Kubernetes docs? |
+| question_clarity | WARNING | Is the question unambiguous and grammatically clear? |
+| distractor_quality | WARNING | Are wrong answers plausible but clearly incorrect to an expert? |
+| explanation_accuracy | ERROR | Is the explanation factually correct? |
+| difficulty_calibration | WARNING | Is easy/medium/hard rating appropriate? |
+| domain_relevance | WARNING | Does the question actually test the stated domain? |
+
+The system prompt is cached (prompt caching) so the per-question cost is low after the first call. Batch mode submits all questions in one API call at 50% of standard pricing.
+
 ## Dependencies
 
 - **rich** ≥ 13.0: Terminal UI (panels, tables, markdown rendering, prompts)
+- **anthropic** ≥ 0.92.0: Claude API client (LLM assessor only)
+- **python-dotenv** ≥ 1.0.0: `.env` file loading for `ANTHROPIC_API_KEY` (LLM assessor only)
 - Python stdlib only otherwise: `json`, `os`, `random`, `sys`, `pathlib`, `datetime`
 
 ## Key Design Decisions

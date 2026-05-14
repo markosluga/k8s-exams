@@ -56,6 +56,31 @@ Hands-on scenarios you build on a local minikube cluster. Each lab includes:
 - `pip install rich`
 - For labs: [minikube](https://minikube.sigs.k8s.io/docs/start/) + kubectl
 
+## LLM Question Assessor (optional)
+
+The assessor uses the Claude API to validate question quality. Create a `.env` file in the project root:
+
+```
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+Then run:
+
+```bash
+pip install anthropic python-dotenv
+python tests/llm_assess_questions.py --exam kcsa
+```
+
+Each question carries an `llm_validated` tag:
+
+| Tag | Meaning |
+|-----|---------|
+| `0` | Not yet assessed |
+| `1` | Clean, or issues found and fixed automatically |
+| `2` | Issues found that need a manual edit |
+
+The assessor only processes questions tagged `0`. Where it finds issues it also generates fixes in the same API call, writes corrected fields directly to `questions.json`, and tags the question `1`. Questions it cannot repair automatically get tagged `2` with a description of what needs fixing. A dated report in `reports/` is the audit trail for every fix applied.
+
 ## Roadmap
 
 - [ ] KCNA — Kubernetes and Cloud Native Associate
