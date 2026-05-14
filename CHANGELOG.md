@@ -5,6 +5,33 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.0.6] — 2026-05-14
+### Added
+- Basic validation of question structure - `tests/validate_questions.py` — validates all question files: schema, options, answer key, difficulty, ID format, explanation length, and doc_link URL reachability - this needs tobe evolved into adding a cognitive analysis, for which we will use an LLM via API (Current analysis planned for Claude)
+- +20 new KCSA questions (kcsa-141 through kcsa-160)
+
+---
+
+## [0.0.5] — 2026-05-10
+### Added
+- +40 new KCSA questions (kcsa-101 through kcsa-140)
+
+---
+
+## [0.0.4] — 2026-05-09
+### Added
+- +40 new KCSA questions (kcsa-061 through kcsa-100)
+
+---
+
+## [0.0.3] — 2026-05-08
+### Added
+- Added a hyperlink to the rationale as a `doc_link` field on to the relevant Kubernetes documentation page
+- Doc link rendering logic to the main py file, so that `doc_link` is shwon in the explanation panel after answering each question
+- +20 new KCSA questions (kcsa-041 through kcsa-060)
+
+---
+
 ## [0.0.2] — 2026-05-07
 
 ### Fixed

@@ -85,6 +85,29 @@ Progress is stored in `.progress.json` (auto-created, gitignored):
 3. Create `data/<exam_key>/labs.json` following the lab schema
 4. No other code changes needed — the menus auto-populate from the EXAMS dict
 
+## Validation / Testing
+
+Run the question validator before committing new question files:
+
+```
+python tests/validate_questions.py
+```
+
+The script scans every `data/<exam>/questions.json` and checks:
+
+| Check | Severity | Details |
+|---|---|---|
+| Schema | ERROR | All required fields present with correct types |
+| Options | ERROR | Exactly keys A, B, C, D; values non-empty strings |
+| Answer | ERROR | Answer key exists in options |
+| Difficulty | ERROR | One of `easy`, `medium`, `hard` |
+| ID format | ERROR | Matches `<exam>-NNN` (e.g. `kcsa-042`) |
+| Duplicate IDs | ERROR | Unique across all exam files |
+| Explanation length | WARNING | At least 50 characters |
+| doc_link reachability | ERROR/WARNING | HTTP GET returns 200 |
+
+Exit code 0 = all questions pass (no errors). Exit code 1 = at least one error.
+
 ## Dependencies
 
 - **rich** ≥ 13.0: Terminal UI (panels, tables, markdown rendering, prompts)
