@@ -280,8 +280,9 @@ def run_exam_session(exam_key: str, questions: list, domain_label: str):
             console.print(f"  [bold red]✗  Incorrect.[/]  The correct answer is [green]{correct}[/]"
                           f"  (you chose [red]{answer}[/])\n")
 
+        doc_line = f"\n\n  [dim]Docs:[/] [link={q['doc_link']}]{q['doc_link']}[/link]" if q.get("doc_link") else ""
         console.print(Panel(
-            f"  [bold]Explanation:[/]\n\n  {q['explanation']}",
+            f"  [bold]Explanation:[/]\n\n  {q['explanation']}{doc_line}",
             border_style="dim", padding=(0, 2)
         ))
         console.print()

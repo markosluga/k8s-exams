@@ -20,7 +20,7 @@ run.bat
 ## What's Inside
 
 **KCSA — Kubernetes and Cloud Native Security Associate**
-- 40 exam-style multiple choice questions with detailed explanations
+- 160 exam-style multiple choice questions with detailed explanations and documentation links
 - 10 hands-on minikube lab challenges
 - Progress tracking across sessions
 
@@ -42,12 +42,13 @@ Hands-on scenarios you build on a local minikube cluster. Each lab includes:
 
 | Domain | Questions | Labs |
 |--------|-----------|------|
-| Overview of Cloud Native Security | 6 | — |
-| Kubernetes Cluster Component Security | 9 | 2 |
-| Kubernetes Security Fundamentals | 9 | 4 |
-| Kubernetes Threat Model | 6 | — |
-| Platform Security | 8 | 4 |
-| Compliance and Security Frameworks | 2 | 1 |
+| Overview of Cloud Native Security | 23 | — |
+| Kubernetes Cluster Component Security | 34 | 2 |
+| Kubernetes Security Fundamentals | 29 | 4 |
+| Kubernetes Threat Model | 29 | — |
+| Platform Security | 28 | 4 |
+| Compliance and Security Frameworks | 17 | 1 |
+| **Total** | **160** | **11** |
 
 ## Prerequisites
 
