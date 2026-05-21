@@ -5,6 +5,13 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.1.5] — 2026-05-21 
+### Fixed
+- More fixing reposne lenght after validation
+- Grammatical improvements to improve readability of some responses.
+
+---
+
 ## [0.1.4] — 2026-05-21
 ### Fixed
 - Response lenght so that the long response does not give away the correct answer
