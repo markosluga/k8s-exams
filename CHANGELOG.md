@@ -5,6 +5,14 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.1.4] — 2026-05-21
+### Fixed
+- Response lenght so that the long response does not give away the correct answer
+- Balanced correct response: Mow 40 responses are correct across each A, B, C and D resposne
+
+---
+
+
 ## [0.1.3] — 2026-05-14
 ### Fixed
 - Assessment result incorrectly showed FAIL when all flagged issues were fixed inline; PASS/FAIL and error counts now only consider unresolved (`llm_validated=2`) issues and API failures — fixed questions no longer contribute to the failure count
