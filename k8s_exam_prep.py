@@ -220,11 +220,11 @@ def exam_practice_menu(exam_key: str):
         header(f"📝 {exam['name']} — {domain_label}")
         console.print(f"  [dim]{len(filtered)} questions available[/]\n")
         console.print("  How many questions?")
-        console.print("  [1] Quick (5)   [2] Standard (10)   [3] Full (20)   [4] All\n")
+        console.print("  [1] Quick (20)   [2] Full (60)   [3] All\n")
 
-        count_choice = Prompt.ask("  Count", default="2").strip()
-        count_map = {"1": 5, "2": 10, "3": 20, "4": len(filtered)}
-        count = count_map.get(count_choice, 10)
+        count_choice = Prompt.ask("  Count", default="1").strip()
+        count_map = {"1": 20, "2": 60, "3": len(filtered)}
+        count = count_map.get(count_choice, 20)
         count = min(count, len(filtered))
 
         randomize = Confirm.ask("  Randomize question order?", default=True)
