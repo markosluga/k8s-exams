@@ -5,6 +5,17 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.1.6] — 2026-05-25
+### Added
+- +80 more questions based on the experience I had in the actual exam on thr 22nd of May 2026. These try to emmulate the feel of the exam and fill in the gaps for non-technical questions that were present in the exam and add some questions that present users with policies and commands to select the correcy one, just like in the exam.
+- All additional qeustions have been validated. Two reports added in /reports
+### Fixed
+- More fixing of reposne lenght for 16 initial questions after additional validation
+- More scenarios added - increased the inital +60 to +80 questioons addded in this release
+- Removed git capturing batch id file which is only for durting llm validation and not code.
+
+---
+
 ## [0.1.5] — 2026-05-21 
 ### Fixed
 - More fixing reposne lenght after validation
