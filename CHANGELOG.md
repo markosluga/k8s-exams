@@ -5,6 +5,12 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.1.7] — 2026-05-25 
+### Fixed
+- Woorked to fix teaching in responses where terminology that we are testing for is being explained. Fixed a
+
+---
+
 ## [0.1.6] — 2026-05-25
 ### Added
 - +80 more questions based on the experience I had in the actual exam on thr 22nd of May 2026. These try to emmulate the feel of the exam and fill in the gaps for non-technical questions that were present in the exam and add some questions that present users with policies and commands to select the correcy one, just like in the exam.

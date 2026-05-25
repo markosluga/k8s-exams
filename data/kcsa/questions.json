@@ -2563,12 +2563,12 @@
     "id": "kcsa-161",
     "domain": "Overview of Cloud Native Security",
     "difficulty": "easy",
-    "question": "Why is the Cloud layer considered the most foundational element in the 4C's of Cloud Native Security?",
+    "question": "In the 4C model, a security failure at which layer undermines every other layer regardless of how well those inner layers are hardened?",
     "options": {
-      "A": "A compromise at the Cloud layer exposes all inner layers regardless of their individual security controls",
-      "B": "Cloud providers certify all Kubernetes clusters running on their infrastructure against security standards",
-      "C": "Containers on certified cloud infrastructure are isolated from host vulnerabilities by the hypervisor",
-      "D": "Kubernetes clusters inherit automatic security controls from their underlying cloud provider platform"
+      "A": "The Cloud layer, because its compromise leaves all inner layers running on untrusted infrastructure",
+      "B": "The Code layer, because application vulnerabilities are the most common entry point for attackers",
+      "C": "The Container layer, because a container escape grants the attacker direct access to the host kernel",
+      "D": "The Cluster layer, because a compromised API server gives an attacker control over all workloads"
     },
     "answer": "A",
     "explanation": "In the 4C's model, each inner layer inherits the security posture of the outer layer. A compromise at the Cloud level undermines all inner layers because the underlying infrastructure is untrusted. No amount of cluster or container hardening can compensate for a fully compromised cloud layer.",
@@ -2581,10 +2581,10 @@
     "difficulty": "medium",
     "question": "Which Pod Security Standard profile imposes no restrictions on pod security settings and allows privileged containers?",
     "options": {
-      "A": "Restricted, designed for workloads requiring a hardened and strongly secured configuration",
-      "B": "Privileged, which places no constraints on pod security settings and allows all configurations",
-      "C": "Baseline, designed to prevent known privilege escalation with minimal workload impact",
-      "D": "Enforced, which requires all pods to pass a security validation scan before scheduling"
+      "A": "Restricted",
+      "B": "Privileged",
+      "C": "Baseline",
+      "D": "Enforced"
     },
     "answer": "B",
     "explanation": "PSS defines three profiles. Privileged imposes no restrictions and is equivalent to running without any Pod Security policy. Baseline prevents the most critical privilege escalations. Restricted applies a heavily hardened policy requiring non-root execution and dropped capabilities.",
@@ -2595,12 +2595,12 @@
     "id": "kcsa-163",
     "domain": "Kubernetes Cluster Component Security",
     "difficulty": "easy",
-    "question": "Which Kubernetes component is responsible for selecting a suitable node for a newly created Pod?",
+    "question": "A Pod is created via the API server and enters Pending state with no node assigned. Which component is responsible for selecting a node and writing that assignment back to the cluster?",
     "options": {
-      "A": "kube-controller-manager, which reconciles the desired and actual state of cluster workloads",
-      "B": "kubelet, which manages the lifecycle of containers on each individual worker node",
-      "C": "kube-scheduler, which evaluates resource availability and constraints to assign Pods to nodes",
-      "D": "kube-apiserver, which validates and persists all Pod creation requests to the cluster store"
+      "A": "kube-controller-manager, which detects unscheduled Pods and triggers a reconciliation loop",
+      "B": "kubelet, which polls the API server for Pods that have not yet been bound to a node",
+      "C": "kube-scheduler, which watches for unbound Pods and assigns them to nodes based on resource fit and policy",
+      "D": "kube-apiserver, which selects a node as part of the admission pipeline before persisting the Pod object"
     },
     "answer": "C",
     "explanation": "The kube-scheduler watches for unscheduled Pods and selects a node based on resource requests, taints/tolerations, and affinity rules. It writes the binding back to the API server; the kubelet on the selected node then starts the Pod.",
@@ -2627,12 +2627,12 @@
     "id": "kcsa-165",
     "domain": "Compliance and Security Frameworks",
     "difficulty": "easy",
-    "question": "Which type of organization is primarily subject to PCI DSS compliance requirements?",
+    "question": "A fintech startup stores and processes credit card numbers as part of its checkout flow. Under which compliance framework does this activity place the startup in scope?",
     "options": {
-      "A": "Any entity that stores, processes, or transmits payment card data as part of its operations",
-      "B": "Organizations hosting containerized applications that handle any type of financial transaction",
-      "C": "Healthcare providers that accept digital payments for medical services rendered to patients",
-      "D": "Government contractors that process electronic payments for any category of public service"
+      "A": "PCI DSS",
+      "B": "HIPAA",
+      "C": "SOC 2",
+      "D": "ISO 27001"
     },
     "answer": "A",
     "explanation": "PCI DSS applies to any organization that stores, processes, or transmits cardholder data, regardless of size or industry. This includes merchants, payment processors, issuers, and service providers. A Kubernetes cluster handling card payments falls within PCI DSS scope.",
@@ -2643,12 +2643,12 @@
     "id": "kcsa-166",
     "domain": "Kubernetes Threat Model",
     "difficulty": "medium",
-    "question": "Which communication path in a standard Kubernetes deployment crosses a network trust boundary?",
+    "question": "You are drawing a Kubernetes threat model and must annotate connections that cross a network trust boundary. Which path should be annotated?",
     "options": {
-      "A": "From etcd to kube-controller-manager within the same control plane host",
-      "B": "From the kube-apiserver to the kubelet running on a remote worker node",
-      "C": "From kube-scheduler to etcd within the same control plane network segment",
-      "D": "From kube-controller-manager to kube-apiserver within the same control plane pod"
+      "A": "etcd to kube-controller-manager, when both run on the same control plane host",
+      "B": "kube-apiserver to kubelet, which spans the boundary from the control plane to a remote worker node",
+      "C": "kube-scheduler to kube-apiserver, when both run as static Pods on the same control plane node",
+      "D": "kube-controller-manager to kube-apiserver, when both are deployed within the same Pod network segment"
     },
     "answer": "B",
     "explanation": "The API server communicates with kubelets across the network boundary between control plane and worker nodes. Worker nodes are separate machines that may have different security postures. This connection must use TLS mutual authentication. Intra-control-plane communications on the same host stay within the same trust zone.",
@@ -2659,12 +2659,12 @@
     "id": "kcsa-167",
     "domain": "Kubernetes Cluster Component Security",
     "difficulty": "easy",
-    "question": "When a user runs `kubectl get pods`, which component is the first to receive and process this request?",
+    "question": "Every kubectl command — whether a read, a write, or a delete — passes through a single Kubernetes component first. Which one is it?",
     "options": {
-      "A": "kubelet, which tracks the current state of all pods running on the local node",
-      "B": "etcd, which stores the pod definitions and responds directly to read queries",
-      "C": "kube-apiserver, which authenticates and authorizes the request before querying the store",
-      "D": "kube-controller-manager, which maintains the list of running pods across the cluster"
+      "A": "etcd, the backing store that responds directly to client reads to reduce API server load",
+      "B": "kubelet, which acts as the primary interface for cluster state changes on each node",
+      "C": "kube-apiserver, the single entry point that authenticates, authorizes, and routes all API requests",
+      "D": "kube-controller-manager, which intercepts write requests before they are committed to the store"
     },
     "answer": "C",
     "explanation": "Every kubectl command targets the kube-apiserver first. The API server authenticates the request, authorizes it via RBAC, and then reads from etcd to return the pod list. No other component is directly reachable by kubectl.",
@@ -2677,10 +2677,10 @@
     "difficulty": "medium",
     "question": "A team wants to automatically add required security annotations to every Pod deployed in a namespace. Which admission controller type should they implement?",
     "options": {
-      "A": "ValidatingAdmissionWebhook, which can accept or reject requests based on defined criteria",
-      "B": "ResourceQuota admission controller, which enforces resource constraints on namespace objects",
-      "C": "PodSecurity admission controller, which enforces Pod Security Standard profiles per namespace",
-      "D": "MutatingAdmissionWebhook, which can modify incoming API request objects before persistence"
+      "A": "ValidatingAdmissionWebhook",
+      "B": "ResourceQuota admission controller",
+      "C": "PodSecurity admission controller",
+      "D": "MutatingAdmissionWebhook"
     },
     "answer": "D",
     "explanation": "A MutatingAdmissionWebhook intercepts API requests and can modify the object in-place before it is persisted. This makes it the right choice for automatically injecting annotations, labels, or sidecar containers. A ValidatingAdmissionWebhook can only approve or reject; it cannot change the object.",
@@ -2723,12 +2723,12 @@
     "id": "kcsa-171",
     "domain": "Kubernetes Security Fundamentals",
     "difficulty": "medium",
-    "question": "An attacker compromises a Pod and retrieves the mounted ServiceAccount token. Which Kubernetes control most directly limits what this token can do against the API server?",
+    "question": "After a container escape, an attacker discovers a ServiceAccount token at /var/run/secrets/kubernetes.io/serviceaccount/token and starts making API calls. Which control determines the blast radius of this stolen credential?",
     "options": {
-      "A": "Pod Security Admission, which blocks pods with elevated permissions from running in the namespace",
-      "B": "NetworkPolicy, which restricts which pods are permitted to establish connections to the API server",
-      "C": "RBAC, which defines which API operations the ServiceAccount is authorized to perform",
-      "D": "RuntimeClass, which controls the level of container isolation applied to the compromised pod"
+      "A": "Pod Security Admission",
+      "B": "NetworkPolicy",
+      "C": "RBAC",
+      "D": "RuntimeClass"
     },
     "answer": "C",
     "explanation": "Even with a valid ServiceAccount token, the attacker can only perform the API operations explicitly authorized through RBAC. A ServiceAccount with no bindings has no permissions. This is why least privilege in RBAC is critical: a compromised token for a narrowly scoped ServiceAccount gives minimal access.",
@@ -2741,10 +2741,10 @@
     "difficulty": "easy",
     "question": "Which open-source monitoring tool is purpose-built for collecting, storing, and querying time-series metrics in cloud native environments?",
     "options": {
-      "A": "Jaeger, which provides distributed tracing for monitoring request flows across microservices",
-      "B": "Grafana, which provides visualization dashboards for metrics and log data from various sources",
-      "C": "Fluentd, which collects and routes log data from containers to various storage backends",
-      "D": "Prometheus, which scrapes and stores time-series metrics with a built-in query language"
+      "A": "Jaeger",
+      "B": "Grafana",
+      "C": "Fluentd",
+      "D": "Prometheus"
     },
     "answer": "D",
     "explanation": "Prometheus is the de facto standard for metrics in Kubernetes. It scrapes /metrics endpoints from pods, nodes, and components, stores data as time-series, and provides PromQL for querying. Grafana visualizes Prometheus data but does not collect metrics. Jaeger handles distributed tracing; Fluentd handles log collection.",
@@ -2755,12 +2755,12 @@
     "id": "kcsa-173",
     "domain": "Overview of Cloud Native Security",
     "difficulty": "hard",
-    "question": "The layered structure of the 4C's of Cloud Native Security (Cloud, Cluster, Container, Code) is an application of which foundational security strategy?",
+    "question": "The 4C model states that each layer can only address security concerns within that layer and cannot compensate for weaknesses in outer layers. Which foundational security design principle does this reflect?",
     "options": {
-      "A": "Defense in Depth, which applies independent security controls at multiple layers",
-      "B": "Zero Trust, which requires explicit verification of every request at every boundary",
-      "C": "Secure by Default, which enforces the most restrictive settings automatically",
-      "D": "Least Privilege, which limits permissions to the minimum needed at every layer"
+      "A": "Defense in Depth",
+      "B": "Zero Trust",
+      "C": "Secure by Default",
+      "D": "Least Privilege"
     },
     "answer": "A",
     "explanation": "Defense in Depth uses multiple independent security layers so that if one is breached, others still provide protection. The 4C's model applies this by securing Cloud, then Cluster, then Container, then Code. The Kubernetes security documentation explicitly names Defense in Depth as the model the 4C's augments.",
@@ -2787,12 +2787,12 @@
     "id": "kcsa-175",
     "domain": "Platform Security",
     "difficulty": "medium",
-    "question": "To verify that a container image was not tampered with after signing, which pair of artifacts is required?",
+    "question": "A CI system signs a container image before pushing it to a registry. What two artifacts must a downstream verifier possess to confirm the image has not been tampered with since signing?",
     "options": {
-      "A": "The image SHA-256 digest and the container registry's TLS certificate for transport security",
-      "B": "The image tag and the signing authority's private key to reconstruct the signature locally",
-      "C": "The image's digital signature and the public key of the entity that signed the image",
-      "D": "The image layer manifests and the certificate chain of the container registry provider"
+      "A": "The image tag and the registry TLS certificate used during the push operation",
+      "B": "The image digest and the signing authority private key to recompute the signature locally",
+      "C": "The digital signature attached to the image and the public key of the entity that signed it",
+      "D": "The full list of image layers and a hash of the Dockerfile used to produce the image"
     },
     "answer": "C",
     "explanation": "Image signature verification requires the digital signature (produced over the image digest) and the signer's public key. The public key verifies that the signature was produced by the holder of the corresponding private key. Tools like cosign store signatures in OCI registries and verify them against public keys or keyless OIDC identities.",
@@ -2803,12 +2803,12 @@
     "id": "kcsa-176",
     "domain": "Platform Security",
     "difficulty": "medium",
-    "question": "A cluster operator applies NetworkPolicy resources but traffic restrictions are not enforced. What is the most likely root cause?",
+    "question": "A platform engineer applies a default-deny NetworkPolicy but confirms with kubectl exec that Pods can still communicate freely. What is the most likely explanation?",
     "options": {
-      "A": "NetworkPolicy requires cluster-admin RBAC permissions to take effect across namespaces",
-      "B": "NetworkPolicy enforcement must be explicitly enabled in the kube-apiserver configuration",
-      "C": "NetworkPolicy resources must be applied in a specific order relative to Pod creation",
-      "D": "The CNI plugin installed in the cluster does not support NetworkPolicy enforcement"
+      "A": "The NetworkPolicy was applied after the Pods started and does not affect established connections",
+      "B": "Applying NetworkPolicy requires a cluster-admin token; the engineer used a namespace-scoped role",
+      "C": "The installed CNI plugin does not implement NetworkPolicy enforcement, so the objects are ignored",
+      "D": "NetworkPolicy enforcement is disabled by default and requires a feature gate to be explicitly enabled"
     },
     "answer": "D",
     "explanation": "NetworkPolicy objects are enforced by the CNI plugin, not the API server or kube-proxy. If the CNI (e.g., Flannel) does not support NetworkPolicy, the resources are created successfully but silently have no effect. Calico, Cilium, and Weave support NetworkPolicy; Flannel does not.",
@@ -2835,12 +2835,12 @@
     "id": "kcsa-178",
     "domain": "Kubernetes Cluster Component Security",
     "difficulty": "medium",
-    "question": "A worker node's kube-proxy Pod enters CrashLoopBackOff. What is the most direct impact on workloads on that node?",
+    "question": "kube-proxy has crashed on a worker node and is not running. The application Pods on that node are healthy. What symptom are users most likely to observe?",
     "options": {
-      "A": "Container images can no longer be pulled from the registry on that node",
-      "B": "iptables or IPVS rules become stale and Service-based virtual IP routing stops working",
-      "C": "The node is automatically cordoned and removed from the cluster scheduling pool",
-      "D": "Persistent volume attachments are dropped and stateful workloads lose access to storage"
+      "A": "New container images can no longer be pulled on that node because registry DNS resolution fails",
+      "B": "Service virtual IP routing breaks because iptables or IPVS rules are no longer being updated",
+      "C": "The node is automatically drained and all running Pods are evicted to other nodes in the cluster",
+      "D": "PersistentVolume mounts begin to fail because kube-proxy manages the CSI attachment lifecycle"
     },
     "answer": "B",
     "explanation": "kube-proxy programs iptables or IPVS rules to route Service ClusterIP traffic to backend Pod endpoints. When kube-proxy crashes, these rules are not updated. New Service-based connections and routing to new endpoints fail. Direct Pod-to-Pod communication by IP is unaffected.",
@@ -2867,12 +2867,12 @@
     "id": "kcsa-180",
     "domain": "Kubernetes Cluster Component Security",
     "difficulty": "medium",
-    "question": "Which set of controllers is managed by the kube-controller-manager within a Kubernetes cluster?",
+    "question": "Which of the following accurately lists controllers that run inside kube-controller-manager in a standard Kubernetes cluster?",
     "options": {
-      "A": "Ingress controller, Service controller, and Endpoint Slice controller for network resources",
-      "B": "CustomResourceDefinition controller, API group controller, and OpenAPI schema controller",
-      "C": "CSI volume plugin controller, StorageClass controller, and PersistentVolume binding controller",
-      "D": "Replication controller, Namespace controller, Endpoint controller, and ServiceAccount controller"
+      "A": "Ingress controller, LoadBalancer controller, and DNS controller for external-facing resources",
+      "B": "CRD schema controller, webhook registration controller, and API discovery controller",
+      "C": "CSI provisioner, StorageClass controller, and VolumeAttachment reconciliation controller",
+      "D": "ReplicationController, Namespace controller, Endpoints controller, and ServiceAccount controller"
     },
     "answer": "D",
     "explanation": "The kube-controller-manager runs core control loops: ReplicationController (replica count), Namespace controller (namespace lifecycle), Endpoints controller (keeping Endpoints in sync with Service selectors), and ServiceAccount controller (creating default ServiceAccounts in new namespaces). Cloud-specific controllers run in the cloud-controller-manager.",
@@ -2885,10 +2885,10 @@
     "difficulty": "medium",
     "question": "Which NIST SP 800-53 Rev. 5 control family specifically addresses risks from third-party software vendors and the software supply chain?",
     "options": {
-      "A": "Supply Chain Risk Management (SR), which includes controls for supplier assessment and component provenance",
-      "B": "Audit and Accountability (AU), which covers logging all supplier interactions and access events",
-      "C": "Program Management (PM), which governs enterprise-level risk programs for vendor relationships",
-      "D": "Configuration Management (CM), which controls changes to software components from any source"
+      "A": "Supply Chain Risk Management (SR)",
+      "B": "Audit and Accountability (AU)",
+      "C": "Program Management (PM)",
+      "D": "Configuration Management (CM)"
     },
     "answer": "A",
     "explanation": "NIST SP 800-53 Rev. 5 introduced the Supply Chain Risk Management (SR) control family, covering supplier assessments (SR-6), supply chain controls (SR-3), component authenticity (SR-11), and software bill of materials. For Kubernetes, SR controls address risks from third-party Helm charts, operators, base images, and dependencies.",
@@ -2901,10 +2901,10 @@
     "difficulty": "medium",
     "question": "Which threat intelligence framework provides a structured catalog of adversary tactics and techniques observed in real-world attacks against cloud and container environments?",
     "options": {
-      "A": "CIS Controls, which provide prioritized defensive security actions for organizations",
-      "B": "MITRE ATT&CK, which documents adversary behaviors organized by tactic and technique",
-      "C": "NIST CSF, which provides a voluntary cybersecurity risk management framework",
-      "D": "OWASP Top 10, which catalogs the most critical application security risks and mitigations"
+      "A": "CIS Controls",
+      "B": "MITRE ATT&CK",
+      "C": "NIST CSF",
+      "D": "OWASP Top 10"
     },
     "answer": "B",
     "explanation": "MITRE ATT&CK is a knowledge base of adversary tactics, techniques, and procedures derived from real-world observations. The ATT&CK for Containers matrix covers techniques like using compromised service account tokens (Lateral Movement), deploying container images (Execution), and creating backdoor accounts (Persistence). It differs from defensive frameworks like CIS Controls or NIST CSF.",
@@ -2915,12 +2915,12 @@
     "id": "kcsa-183",
     "domain": "Kubernetes Cluster Component Security",
     "difficulty": "easy",
-    "question": "What type of data does etcd store in a Kubernetes cluster?",
+    "question": "An attacker gains direct unauthenticated access to the etcd cluster in a Kubernetes environment. Why is this considered as severe as holding cluster-admin credentials?",
     "options": {
-      "A": "Container runtime logs from worker nodes for debugging and performance analysis",
-      "B": "Network traffic metrics and flow data for monitoring pod communication patterns",
-      "C": "All cluster state including object definitions, Secrets, ConfigMaps, and resource metadata",
-      "D": "Application-level data written by workloads via PersistentVolumeClaims to etcd volumes"
+      "A": "etcd stores container runtime logs that expose process details and credentials for every worker node",
+      "B": "etcd holds all Kubernetes API objects including Secrets, enabling the attacker to read or modify any cluster state while bypassing RBAC entirely",
+      "C": "etcd caches kubelet credentials that can be replayed to execute arbitrary commands on worker nodes",
+      "D": "etcd stores the TLS private keys used by the API server, which the attacker can use to intercept cluster traffic"
     },
     "answer": "C",
     "explanation": "etcd is the Kubernetes backing store for all cluster state: all API objects (Pods, Deployments, Services), Secrets, ConfigMaps, RBAC rules, and namespace metadata. Because etcd contains the entire cluster configuration, direct access to etcd bypasses all RBAC controls and is equivalent to cluster-admin access.",
@@ -2931,12 +2931,12 @@
     "id": "kcsa-184",
     "domain": "Kubernetes Cluster Component Security",
     "difficulty": "easy",
-    "question": "When using a managed Kubernetes service such as GKE or EKS, which operational responsibility is transferred to the cloud provider?",
+    "question": "A team migrates from a self-managed Kubernetes cluster to a cloud provider managed service. Which component does the team no longer need to upgrade, patch, or back up?",
     "options": {
-      "A": "Deploying and patching container runtimes on worker nodes on behalf of the customer",
-      "B": "Managing the application workloads and their container security context configuration",
-      "C": "Providing and rotating TLS certificates for all customer workloads and Ingress resources",
-      "D": "Maintaining the control plane including etcd, kube-apiserver, and kube-scheduler"
+      "A": "Worker node operating systems, which the cloud provider now patches automatically on a fixed schedule",
+      "B": "The container runtime on each worker node, which the managed service updates without customer involvement",
+      "C": "The control plane, including etcd, kube-apiserver, kube-scheduler, and kube-controller-manager",
+      "D": "Application workload configurations, which the provider manages as part of the hosted service agreement"
     },
     "answer": "D",
     "explanation": "In managed Kubernetes services (GKE, EKS, AKS), the cloud provider owns and operates the control plane: etcd, kube-apiserver, kube-scheduler, and kube-controller-manager. The customer retains responsibility for worker nodes, workloads, RBAC configuration, and application security.",
@@ -2947,12 +2947,12 @@
     "id": "kcsa-185",
     "domain": "Kubernetes Security Fundamentals",
     "difficulty": "medium",
-    "question": "How can a Kubernetes administrator enforce Pod Security Standards without installing any third-party admission tools?",
+    "question": "A platform team wants to block privileged Pods from being scheduled in a production namespace using only Kubernetes built-in capabilities, with no additional tooling installed. What is the correct approach?",
     "options": {
-      "A": "Enable the built-in PodSecurity admission controller and label namespaces with the desired enforcement mode",
-      "B": "Deploy OPA Gatekeeper with ConstraintTemplates defining pod security requirements per namespace",
-      "C": "Install Kyverno and configure ClusterPolicies that validate Pod security settings at admission time",
-      "D": "Create PodSecurityPolicy resources with appropriate security rules applied to each namespace"
+      "A": "Label the namespace with pod-security.kubernetes.io/enforce: restricted to activate the built-in PodSecurity admission controller",
+      "B": "Deploy OPA Gatekeeper and apply a ConstraintTemplate that rejects Pods with privileged: true in the spec",
+      "C": "Install Kyverno and write a ClusterPolicy that blocks any Pod spec containing privileged containers",
+      "D": "Create a PodSecurityPolicy resource with privileged: false and bind it to the namespace service account"
     },
     "answer": "A",
     "explanation": "Since Kubernetes 1.25, the PodSecurity admission controller is built in and stable. It is configured by adding pod-security.kubernetes.io/enforce labels to namespaces. This requires no external tools. PodSecurityPolicy was removed in 1.25; OPA Gatekeeper and Kyverno are third-party alternatives.",
@@ -2979,12 +2979,12 @@
     "id": "kcsa-187",
     "domain": "Kubernetes Security Fundamentals",
     "difficulty": "medium",
-    "question": "Why is it insecure to store sensitive values such as passwords or API keys in a Kubernetes ConfigMap?",
+    "question": "A developer proposes storing a database password in a ConfigMap so the application Pod can read it as an environment variable. What is the primary security objection to this approach?",
     "options": {
-      "A": "ConfigMaps do not support RBAC controls, making it impossible to restrict access per individual key",
-      "B": "ConfigMaps are stored in etcd using a weaker encoding than is used for Kubernetes Secrets",
-      "C": "ConfigMaps store data in plaintext without any encoding, readable by anyone with ConfigMap access",
-      "D": "ConfigMaps are automatically distributed to all cluster nodes, greatly increasing the attack surface"
+      "A": "ConfigMaps cannot be referenced as environment variables; that mounting mechanism is reserved for Secrets",
+      "B": "ConfigMap values are encoded with a weaker algorithm than Kubernetes Secrets, making them easier to decode",
+      "C": "ConfigMaps store data in plaintext; anyone with ConfigMap read access can see the password in full",
+      "D": "ConfigMaps are replicated to all cluster nodes automatically, making the password visible in node filesystems"
     },
     "answer": "C",
     "explanation": "ConfigMaps store data in plaintext in etcd and are intended for non-sensitive configuration. Any user or ServiceAccount with get/list access to a ConfigMap can read every value it contains. Secrets should be used for sensitive data instead â€” not because base64 provides security (it does not; it is trivially reversible), but because Secrets support encryption-at-rest, are mounted via tmpfs (in-memory) on nodes rather than written to disk, are a separately RBAC-controlled resource, and integrate with external secret stores via CSI drivers.",
@@ -2995,12 +2995,12 @@
     "id": "kcsa-188",
     "domain": "Kubernetes Threat Model",
     "difficulty": "medium",
-    "question": "A compromised Pod attempts to call the Kubernetes API server. Assuming proper security controls are in place, which defense most directly limits what the attacker can do?",
+    "question": "Malicious code running inside a compromised Pod uses the auto-mounted ServiceAccount token to query the Kubernetes API. On a properly hardened cluster, what most directly limits the attacker ability to cause damage?",
     "options": {
-      "A": "The Pod is automatically quarantined from the cluster network when suspicious activity is detected",
-      "B": "The API server blocks all connections originating from Pods that are past their scheduled lifetime",
-      "C": "The admission controller rejects all API requests that originate from within the cluster network",
-      "D": "The mounted ServiceAccount token grants only the RBAC permissions assigned to that ServiceAccount"
+      "A": "The API server automatically quarantines Pods that issue an unusually high number of API requests",
+      "B": "The RBAC permissions assigned to the ServiceAccount bound to the Pod limit what API operations succeed",
+      "C": "NetworkPolicy blocks all traffic from Pods to the API server endpoint unless explicitly permitted",
+      "D": "The admission controller revokes ServiceAccount tokens issued to Pods with elevated Linux capabilities"
     },
     "answer": "D",
     "explanation": "The primary limiting factor is RBAC. The ServiceAccount token authenticates API calls, and RBAC defines what is authorized. A ServiceAccount with minimal permissions limits the blast radius even if the Pod is compromised. No automatic quarantine or global rejection occurs; RBAC gates what the attacker can do.",
@@ -3027,12 +3027,12 @@
     "id": "kcsa-190",
     "domain": "Platform Security",
     "difficulty": "hard",
-    "question": "Which statement correctly describes the trade-off between Kata Containers (microVM-based) and gVisor (user-space kernel) sandboxing approaches?",
+    "question": "A security team is evaluating Kata Containers and gVisor for isolating multi-tenant workloads. Which comparison is accurate?",
     "options": {
-      "A": "gVisor provides stronger isolation than Kata Containers because it runs inside a hardware VM boundary",
-      "B": "Kata Containers provide stronger VM-level isolation than gVisor but require more memory per workload instance",
-      "C": "Both approaches have equivalent isolation properties and differ only in operational complexity and setup",
-      "D": "gVisor requires more memory per container than Kata Containers due to full kernel emulation overhead"
+      "A": "gVisor offers stronger isolation than Kata Containers because it uses hardware virtualization at the syscall layer",
+      "B": "Kata Containers provide hardware VM-level isolation, which is stronger than gVisor but requires more memory per Pod",
+      "C": "Both technologies provide equivalent isolation; the only meaningful difference is startup latency",
+      "D": "gVisor requires more memory per container because it runs a full Linux kernel in user space for each instance"
     },
     "answer": "B",
     "explanation": "Kata Containers runs each pod inside a lightweight VM with a dedicated kernel, providing hardware-enforced isolation. gVisor intercepts syscalls in user space with a sandboxed kernel. Kata provides stronger isolation guarantees (hardware VM boundary) but has higher per-pod memory overhead since each pod requires its own mini-kernel and VM. gVisor has lower overhead but software-based isolation.",
@@ -3045,10 +3045,10 @@
     "difficulty": "medium",
     "question": "Which tool from the Sigstore project is used to cryptographically sign container images and attach signatures to OCI-compatible registries?",
     "options": {
-      "A": "trivy, which performs static vulnerability scanning of container image layers and filesystems",
-      "B": "syft, which generates Software Bill of Materials from container images and local filesystems",
-      "C": "cosign, which provides container image signing and verification using key pairs or OIDC tokens",
-      "D": "rekor, which is the Sigstore transparency log that records all signing events for audit"
+      "A": "trivy",
+      "B": "syft",
+      "C": "cosign",
+      "D": "rekor"
     },
     "answer": "C",
     "explanation": "cosign is the Sigstore tool for signing and verifying container images. It supports key pair signing and keyless signing via OIDC identities, with signatures stored in OCI registries. Kubernetes admission controllers can use cosign-based policies to block unsigned images. rekor is the transparency log; trivy scans CVEs; syft generates SBOMs.",
@@ -3157,10 +3157,10 @@
     "difficulty": "medium",
     "question": "Which compliance standard evaluates how effectively a service organization manages security, availability, and confidentiality over a period of time?",
     "options": {
-      "A": "PCI DSS, which mandates specific security controls for organizations processing payment card data",
-      "B": "SOC 2, which assesses service organizations against the AICPA Trust Services Criteria over time",
-      "C": "ISO 27001, which certifies an organization's information security management system quality",
-      "D": "FedRAMP, which governs cloud service authorization for US federal government agencies"
+      "A": "PCI DSS",
+      "B": "SOC 2",
+      "C": "ISO 27001",
+      "D": "FedRAMP"
     },
     "answer": "B",
     "explanation": "SOC 2 Type II evaluates whether security controls of a service organization operated effectively over a defined period (typically 6-12 months) against the AICPA Trust Services Criteria: Security, Availability, Processing Integrity, Confidentiality, and Privacy.",
@@ -3173,10 +3173,10 @@
     "difficulty": "medium",
     "question": "Which Kubernetes feature must be configured to create a forensic record of who accessed or modified a Kubernetes Secret and when?",
     "options": {
-      "A": "Falco, which detects anomalous runtime system call behavior inside running containers",
-      "B": "etcd, which maintains an internal transaction log of all read and write operations",
-      "C": "API server audit logging, which records all requests including resource access and changes",
-      "D": "Pod Security Admission, which logs policy violations encountered at admission time"
+      "A": "Falco",
+      "B": "etcd",
+      "C": "API server audit logging",
+      "D": "Pod Security Admission"
     },
     "answer": "C",
     "explanation": "The Kubernetes API server audit log records every request: user identity, resource accessed, action taken (verb), and timestamp. To capture Secret access, configure an audit policy with level: Metadata or higher for secrets resources. etcd does not produce human-readable access logs; Falco monitors system calls, not Kubernetes API operations.",
@@ -3187,12 +3187,12 @@
     "id": "kcsa-200",
     "domain": "Platform Security",
     "difficulty": "medium",
-    "question": "What capability does a service mesh provide for securing internal cluster traffic that standard Kubernetes NetworkPolicy cannot?",
+    "question": "A security requirement states that all inter-service communication must be encrypted in transit and that policy must be enforced based on HTTP method and path, not just IP address and port. Which solution satisfies both requirements?",
     "options": {
-      "A": "IP-based traffic filtering between pods using iptables rules programmed on worker nodes",
-      "B": "Namespace-level network segmentation enforced by the CNI plugin for cross-namespace traffic",
-      "C": "Blocking unauthorized API server calls from compromised pods using token-based validation",
-      "D": "Mutual TLS for traffic encryption and identity-based L7 policy enforcement between services"
+      "A": "Kubernetes NetworkPolicy with ipBlock rules restricting pod-to-pod traffic at the IP layer",
+      "B": "A CNI plugin configured with namespace-level egress filtering for cross-service communication",
+      "C": "A service mesh providing mutual TLS encryption and L7-aware policy enforcement between services",
+      "D": "An Ingress controller with TLS termination and hostname-based routing rules for external traffic"
     },
     "answer": "D",
     "explanation": "Kubernetes NetworkPolicy operates at L3/L4 (IP and port). A service mesh like Istio adds mTLS encrypting all east-west traffic with cryptographic service identity, L7 policy enforcement (allow GET /api, deny POST /admin), and request-level telemetry. NetworkPolicy can allow or block connections but cannot inspect HTTP content or encrypt payloads.",
@@ -3286,9 +3286,9 @@
     "question": "A Falco rule triggers because a bash shell is spawned inside a container that should never run one. Which security category best describes this detection capability?",
     "options": {
       "A": "Supply chain security, since the unexpected shell indicates it was injected during the image build",
-      "B": "Runtime threat detection, which identifies anomalous process execution within running containers",
-      "C": "Identity and access management, since shell execution represents an authentication violation",
-      "D": "Compliance monitoring, which verifies that container behavior matches its declared security profile"
+      "B": "Runtime threat detection that identifies anomalous process execution within running containers",
+      "C": "Identity and access management because shell execution represents an authentication violation",
+      "D": "Compliance monitoring, as it verifies that container behavior matches its declared security profile"
     },
     "answer": "B",
     "explanation": "Falco specializes in runtime security: detecting anomalous behavior in running containers by monitoring Linux system calls via eBPF or a kernel module. Detecting an unexpected shell spawn is a classic runtime signal, often indicating an attacker using kubectl exec or exploiting a remote code execution vulnerability.",
@@ -3301,10 +3301,10 @@
     "difficulty": "hard",
     "question": "Which Kubernetes authorization mode specifically limits the API resources a kubelet can access to only those related to workloads scheduled on that particular node?",
     "options": {
-      "A": "RBAC mode, which uses ClusterRole bindings to assign explicit permissions to kubelet service accounts",
-      "B": "ABAC mode, which uses a policy file to restrict kubelet access based on attribute matching",
-      "C": "Node authorization mode, which scopes each kubelet's API permissions to its own node's workloads",
-      "D": "Webhook mode, which delegates every kubelet authorization decision to an external service"
+      "A": "RBAC mode",
+      "B": "ABAC mode",
+      "C": "Node authorization mode",
+      "D": "Webhook mode"
     },
     "answer": "C",
     "explanation": "Node authorization mode (--authorization-mode=Node) combined with NodeRestriction admission controller limits kubelets to reading Secrets, ConfigMaps, and PVCs only for Pods scheduled on their own node, and writing only their own Node object and Pods. RBAC alone cannot express this node-specific scoping.",
@@ -3365,10 +3365,10 @@
     "difficulty": "easy",
     "question": "Which `imagePullPolicy` value instructs the kubelet to always fetch the image from the registry when starting or restarting a Pod?",
     "options": {
-      "A": "IfNotPresent, which pulls the image only when it is absent from the local node cache",
-      "B": "Never, which forces the kubelet to use only locally cached images and never contact the registry",
-      "C": "Always, which instructs the kubelet to pull the image from the registry on every Pod start",
-      "D": "OnStartup, which pulls the image when the node restarts but uses the cache between restarts"
+      "A": "IfNotPresent",
+      "B": "Never",
+      "C": "Always",
+      "D": "OnStartup"
     },
     "answer": "C",
     "explanation": "imagePullPolicy: Always ensures the kubelet contacts the registry on every Pod creation or restart, guaranteeing the latest image is used. It is the default for images tagged :latest. IfNotPresent (default for other tags) uses the cache if available. OnStartup is not a valid imagePullPolicy value.",
@@ -3445,10 +3445,10 @@
     "difficulty": "hard",
     "question": "Which Kubernetes Secret encryption provider offers the strongest protection because keys are never stored within the cluster itself?",
     "options": {
-      "A": "aescbc, which uses AES-CBC encryption with the key stored in the EncryptionConfiguration file",
-      "B": "aesgcm, which uses AES-GCM with the encryption key stored in the API server manifest",
-      "C": "secretbox, which uses XSalsa20 and Poly1305 with keys embedded in the configuration",
-      "D": "kms, which delegates all key operations to an external key management service store"
+      "A": "aescbc",
+      "B": "aesgcm",
+      "C": "secretbox",
+      "D": "kms"
     },
     "answer": "D",
     "explanation": "The KMS envelope encryption provider sends the data encryption key to an external KMS (AWS KMS, GCP KMS, HashiCorp Vault) for encryption and decryption. The key itself is never stored in the cluster or etcd. aescbc, aesgcm, and secretbox all store their keys in the EncryptionConfiguration manifest, accessible to anyone with API server host access.",
@@ -3493,10 +3493,10 @@
     "difficulty": "medium",
     "question": "Which Kubernetes resource enables cluster administrators to specify that certain Pods should use an alternative container runtime handler such as gVisor or Kata Containers?",
     "options": {
-      "A": "PodSecurityContext, which configures the isolation level and security settings for each pod",
-      "B": "ContainerProfile, which assigns named runtime security configurations to container groups",
-      "C": "RuntimeClass, which maps a named handler to a specific container runtime implementation",
-      "D": "SecurityContext, which sets Linux-level parameters and runtime constraints per container"
+      "A": "PodSecurityContext",
+      "B": "ContainerProfile",
+      "C": "RuntimeClass",
+      "D": "SecurityContext"
     },
     "answer": "C",
     "explanation": "RuntimeClass is a cluster-scoped resource that maps a name (e.g., gvisor) to a containerd runtime handler (e.g., runsc). Pods reference it via spec.runtimeClassName. Admission controllers can enforce specific RuntimeClasses for namespaces to ensure high-security workloads use sandboxed runtimes.",
