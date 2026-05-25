@@ -20,7 +20,7 @@ run.bat
 ## What's Inside
 
 **KCSA — Kubernetes and Cloud Native Security Associate**
-- 160 exam-style multiple choice questions with detailed explanations and documentation links
+- (NEW!💥) 240 exam-style multiple choice questions with detailed explanations and documentation links
 - 10 hands-on minikube lab challenges
 - Progress tracking across sessions
 
