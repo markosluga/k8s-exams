@@ -1,0 +1,139 @@
+- id: 141
+  question: "Which field in a Service spec determines whether the Service will allocate a virtual IP inside the cluster?"
+  options:
+    A: "clusterIP"
+    B: "type"
+    C: "externalIPs"
+    D: "sessionAffinity"
+  answer: A
+  explanations:
+    A: "The 'clusterIP' field holds the internal virtual IP; setting it to 'None' creates a headless Service. (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)"
+    B: "'type' defines how the Service is exposed (ClusterIP, NodePort, LoadBalancer, etc.) but does not allocate the IP itself."
+    C: "'externalIPs' expose the Service on existing node IPs, not internal virtual IPs."
+    D: "'sessionAffinity' controls client‑IP stickiness, not IP allocation."
+
+- id: 142
+  question: "What does setting 'spec.strategy.type: Recreate' on a Deployment do?"
+  options:
+    A: "Deletes all existing Pods before creating new ones, causing downtime"
+    B: "Creates new Pods alongside old ones and then removes the old ones"
+    C: "Performs a rolling update with maxSurge set to 0"
+    D: "Disables updates entirely"
+  answer: A
+  explanations:
+    A: "Recreate tears down the old ReplicaSet before bringing up the new one, which can cause a period without any Pods. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    B: "That describes the RollingUpdate strategy."
+    C: "maxSurge is a RollingUpdate parameter; Recreate does not use it."
+    D: "Recreate still performs an update, just not concurrently."
+
+- id: 143
+  question: "Which annotation enables automatic sidecar injection for the Istio service mesh?"
+  options:
+    A: "sidecar.istio.io/inject: \"true\""
+    B: "istio.io/inject: \"enabled\""
+    C: "inject.istio.io/sidecar: \"yes\""
+    D: "istio.sidecar/inject: \"true\""
+  answer: A
+  explanations:
+    A: "Istio uses the annotation sidecar.istio.io/inject: \"true\" to trigger automatic sidecar injection. (https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection)"
+    B: "Incorrect annotation key."
+    C: "Wrong format and namespace."
+    D: "Invalid annotation."
+
+- id: 144
+  question: "What is the effect of adding the label 'app=frontend' to a pod and creating a Service with selector 'app=frontend'?"
+  options:
+    A: "The Service will route traffic to that pod (and any others with the same label)"
+    B: "The pod will be deleted automatically"
+    C: "The Service will expose the pod on an external IP address automatically"
+    D: "The pod will restart immediately"
+  answer: A
+  explanations:
+    A: "Service selectors match pod labels, causing traffic to be forwarded to matching pods. (https://kubernetes.io/docs/concepts/services-networking/service/#service-definition)"
+    B: "Labels do not trigger deletion."
+    C: "External exposure depends on Service type (e.g., LoadBalancer), not just the label."
+    D: "Adding a label does not restart a pod."
+
+- id: 145
+  question: "Which field in a PersistentVolume definition controls the access mode (e.g., ReadWriteOnce, ReadOnlyMany)?"
+  options:
+    A: "accessModes"
+    B: "capacity"
+    C: "storageClassName"
+    D: "persistentVolumeReclaimPolicy"
+  answer: A
+  explanations:
+    A: "'accessModes' specifies allowed access patterns such as ReadWriteOnce (RWO) or ReadOnlyMany (ROX). (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)"
+    B: "'capacity' defines size, not access mode."
+    C: "'storageClassName' links to a StorageClass."
+    D: "'persistentVolumeReclaimPolicy' determines what happens after a PVC is released."
+
+- id: 146
+  question: "What does the 'spec.minReadySeconds' field in a Deployment control?"
+  options:
+    A: "The minimum number of seconds a newly created pod must be ready before it is considered available"
+    B: "The delay before a pod is terminated during a rollout"
+    C: "The interval between successive rollouts"
+    D: "The time the Deployment controller waits before scaling"
+  answer: A
+  explanations:
+    A: "'minReadySeconds' forces a pod to stay ready for at least that duration before the Deployment counts it as available. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#deployment-strategy)"
+    B: "Termination delay is governed by 'terminationGracePeriodSeconds'."
+    C: "Rollout pacing is controlled by maxSurge/maxUnavailable."
+    D: "Scaling delays are not managed by this field."
+
+- id: 147
+  question: "Which Kubernetes object provides a stable network identity (DNS name) for each pod in a StatefulSet?"
+  options:
+    A: "Headless Service"
+    B: "Ingress"
+    C: "ConfigMap"
+    D: "DaemonSet"
+  answer: A
+  explanations:
+    A: "A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. (https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id)"
+    B: "Ingress handles external HTTP routing."
+    C: "ConfigMap stores configuration data."
+    D: "DaemonSet runs a copy on each node, not per‑pod DNS names."
+
+- id: 148
+  question: "What is the purpose of the 'spec.selector' field in a Job definition?"
+  options:
+    A: "Select which Pods the Job should manage"
+    B: "Define the Service that fronts the Job"
+    C: "Specify node affinity for Job Pods"
+    D: "Jobs do not have a selector field"
+  answer: D
+  explanations:
+    A: "Jobs create Pods directly; they do not use a selector."
+    B: "Jobs are not exposed via Services."
+    C: "Node affinity is set inside the pod template, not via a selector."
+    D: "Correct – the Job spec has no selector field. (https://kubernetes.io/docs/concepts/workloads/controllers/job/#job-spec)"
+
+- id: 149
+  question: "Which field in a Service definition enables session affinity based on client IP?"
+  options:
+    A: "sessionAffinity: ClientIP"
+    B: "affinity: clientIP"
+    C: "stickySessions: true"
+    D: "loadBalancerSourceRanges"
+  answer: A
+  explanations:
+    A: "Setting 'sessionAffinity: ClientIP' makes the Service route requests from the same client IP to the same backend pod. (https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode)"
+    B: "'affinity' is not a Service field."
+    C: "Sticky sessions are not a native Service option."
+    D: "'loadBalancerSourceRanges' restricts which external IPs can access a LoadBalancer Service."
+
+- id: 150
+  question: "What does the 'kubectl get svc -o wide' command display that the plain 'kubectl get svc' does not?"
+  options:
+    A: "The Service's cluster IP, external IPs, and ports"
+    B: "The full YAML manifest of each Service"
+    C: "The list of endpoints backing the Service"
+    D: "Additional columns such as external IPs and node ports"
+  answer: D
+  explanations:
+    A: "Standard output already includes cluster IP and ports."
+    B: "Full YAML requires '-o yaml'."
+    C: "Endpoints are shown with 'kubectl get endpoints'."
+    D: "'-o wide' adds extra columns like EXTERNAL-IP, PORT(S), AGE, and sometimes NODE-PORT for NodePort services. (https://kubernetes.io/docs/reference/kubectl/overview/#custom-columns)"

@@ -1,0 +1,139 @@
+- id: 41
+  question: "Which annotation can be added to a Pod to ensure it is scheduled on a node with a specific label?"
+  options:
+    A: "scheduler.kubernetes.io/affinity: \"key=value\""
+    B: "nodeSelector: {\"key\": \"value\"}"
+    C: "node.kubernetes.io/required-labels: \"key=value\""
+    D: "affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution"
+  answer: D
+  explanations:
+    A: "This is not a valid annotation."
+    B: "nodeSelector is a field, not an annotation."
+    C: "No such annotation exists."
+    D: "nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution specifies required node labels for scheduling. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#nodeaffinity-v1-core)"
+
+- id: 42
+  question: "What is the effect of setting 'spec.strategy.type' to 'Recreate' in a Deployment?"
+  options:
+    A: "Pods are terminated before new ones are created"
+    B: "Pods are updated in place without downtime"
+    C: "Deployment creates a new ReplicaSet before scaling down the old one"
+    D: "Kubernetes ignores the field and uses RollingUpdate"
+  answer: A
+  explanations:
+    A: "Recreate deletes all existing Pods before creating new ones, causing downtime. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    B: "That describes RollingUpdate."
+    C: "That's the RollingUpdate behavior."
+    D: "The field is respected; default is RollingUpdate."
+
+- id: 43
+  question: "Which field in a Service spec controls whether the Service allocates a node port?"
+  options:
+    A: "type: NodePort"
+    B: "externalIPs"
+    C: "clusterIP"
+    D: "sessionAffinity"
+  answer: A
+  explanations:
+    A: "Setting type to NodePort instructs Kubernetes to allocate a port on each node. (https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)"
+    B: "externalIPs expose external addresses, not node ports."
+    C: "clusterIP is the virtual IP for the Service."
+    D: "sessionAffinity affects client affinity, not port allocation."
+
+- id: 44
+  question: "In a Pod spec, which field allows you to define a command that runs before the container starts?"
+  options:
+    A: "livenessProbe"
+    B: "readinessProbe"
+    C: "initContainers"
+    D: "preStop"
+  answer: C
+  explanations:
+    A: "livenessProbe checks health after start."
+    B: "readinessProbe checks readiness after start."
+    C: "initContainers run to completion before app containers start. (https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)"
+    D: "preStop is a lifecycle hook that runs on termination."
+
+- id: 45
+  question: "What does the 'kubectl get all' command list by default?"
+  options:
+    A: "All resources in the cluster"
+    B: "Pods, Services, Deployments, ReplicaSets, and StatefulSets in the current namespace"
+    C: "Only Pods and Services"
+    D: "Nodes and PersistentVolumes"
+  answer: B
+  explanations:
+    A: "It does not list every resource type."
+    B: "It shows the common workload resources in the namespace. (https://kubernetes.io/docs/reference/kubectl/overview/#resource-types)"
+    C: "It includes more than just Pods and Services."
+    D: "Nodes and PVs are not part of 'all' output."
+
+- id: 46
+  question: "Which Kubernetes object is used to provide a stable DNS name for an external service not running inside the cluster?"
+  options:
+    A: "ExternalName Service"
+    B: "Ingress"
+    C: "EndpointSlice"
+    D: "ConfigMap"
+  answer: A
+  explanations:
+    A: "ExternalName Service maps a DNS name to an external address. (https://kubernetes.io/docs/concepts/services-networking/service/#externalname)"
+    B: "Ingress manages inbound HTTP(S) traffic."
+    C: "EndpointSlice lists endpoints for internal Services."
+    D: "ConfigMap stores configuration data."
+
+- id: 47
+  question: "What is the purpose of the 'kubectl apply --prune' flag?"
+  options:
+    A: "Delete resources not defined in the applied manifest"
+    B: "Force a server‑side apply"
+    C: "Validate the manifest without making changes"
+    D: "Show a diff before applying"
+  answer: A
+  explanations:
+    A: "--prune removes objects previously applied that are no longer present. (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)"
+    B: "Server‑side apply uses --dry-run=server."
+    C: "--dry-run validates without changes."
+    D: "--diff shows differences."
+
+- id: 48
+  question: "Which field in a PersistentVolumeClaim spec defines the desired storage size?"
+  options:
+    A: "capacity"
+    B: "resources.requests.storage"
+    C: "volumeMode"
+    D: "accessModes"
+  answer: B
+  explanations:
+    A: "capacity is part of PersistentVolume, not PVC."
+    B: "resources.requests.storage requests the size. (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)"
+    C: "volumeMode defines filesystem or block."
+    D: "accessModes define read/write permissions."
+
+- id: 49
+  question: "When using a Service of type LoadBalancer on a cloud provider, which component creates the external load balancer?"
+  options:
+    A: "kube-controller-manager"
+    B: "kube-scheduler"
+    C: "cloud-controller-manager"
+    D: "etcd"
+  answer: C
+  explanations:
+    A: "Controller manager runs internal controllers, not cloud LB creation."
+    B: "Scheduler assigns pods."
+    C: "cloud-controller-manager interacts with the cloud API to provision load balancers. (https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/)"
+    D: "etcd stores state."
+
+- id: 50
+  question: "Which of the following best describes a DaemonSet?"
+  options:
+    A: "Runs exactly one replica of a pod across the cluster"
+    B: "Ensures a copy of a pod runs on every node (or a subset)"
+    C: "Provides horizontal scaling based on CPU usage"
+    D: "Creates a new namespace for each pod"
+  answer: B
+  explanations:
+    A: "That describes a Job with parallelism=1."
+    B: "DaemonSet maintains a pod on each node (or selected nodes). (https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)"
+    C: "Horizontal scaling is done by HPA."
+    D: "Namespaces are separate resources."

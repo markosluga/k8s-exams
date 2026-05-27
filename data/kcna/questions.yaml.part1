@@ -1,0 +1,139 @@
+- id: 1
+  question: "Which Kubernetes API object is used to define a set of Pods that should be scheduled together on the same node for performance reasons?"
+  options:
+    A: "DaemonSet"
+    B: "ReplicaSet"
+    C: "PodAffinity"
+    D: "StatefulSet"
+  answer: C
+  explanations:
+    A: "DaemonSet ensures a copy runs on every node, not for grouping pods together. (https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)"
+    B: "ReplicaSet manages replica counts but does not influence node placement. (https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)"
+    C: "PodAffinity allows scheduling pods on the same node based on label selectors. (https://kubernetes.io/docs/concepts/scheduling-eviction/affinity/)"
+    D: "StatefulSet provides stable identities, not node co‑location guarantees. (https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)"
+
+- id: 2
+  question: "What is the primary purpose of a Kubernetes Service of type LoadBalancer?"
+  options:
+    A: "Expose a Service externally using a cloud provider's load balancer"
+    B: "Provide an internal DNS name for Pods"
+    C: "Persist data across Pod restarts"
+    D: "Run a single replica of a Pod"
+  answer: A
+  explanations:
+    A: "LoadBalancer creates an external load balancer that routes traffic to the Service. (https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)"
+    B: "Internal DNS is provided by ClusterIP Services. (https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)"
+    C: "Persistence is handled by PersistentVolumes, not Services. (https://kubernetes.io/docs/concepts/storage/persistent-volumes/)"
+    D: "Running a single replica is managed by Deployments, not Service types. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)"
+
+- id: 3
+  question: "In a Kubernetes manifest, which field specifies the container image to use?"
+  options:
+    A: "imagePullPolicy"
+    B: "command"
+    C: "image"
+    D: "resources"
+  answer: C
+  explanations:
+    A: "imagePullPolicy defines when the image is pulled, not the image name. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core)"
+    B: "command overrides the container's entrypoint, not the image reference. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core)"
+    C: "The image field contains the container image name and tag. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core)"
+    D: "resources define CPU/memory limits, unrelated to image selection. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#resourcerequirements-v1-core)"
+
+- id: 4
+  question: "Which component watches the health of the control‑plane nodes and updates their Ready status?"
+  options:
+    A: "kube‑scheduler"
+    B: "node‑controller"
+    C: "kube‑proxy"
+    D: "etcd"
+  answer: B
+  explanations:
+    A: "Scheduler assigns Pods; it does not monitor node health. (https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/)"
+    B: "Node controller marks nodes NotReady when they miss heartbeats. (https://kubernetes.io/docs/concepts/architecture/control-plane/)"
+    C: "kube‑proxy handles network rules, not node status. (https://kubernetes.io/docs/concepts/services-networking/kube-proxy/)"
+    D: "etcd stores cluster data; it does not evaluate node health. (https://kubernetes.io/docs/concepts/architecture/etcd/)"
+
+- id: 5
+  question: "When using a ConfigMap as environment variables, which key in the pod spec is used?"
+  options:
+    A: "envFrom"
+    B: "configMapKeyRef"
+    C: "volumeMounts"
+    D: "args"
+  answer: A
+  explanations:
+    A: "envFrom imports all key‑value pairs from a ConfigMap as env vars. (https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)"
+    B: "configMapKeyRef references a single key, not the whole map. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#envvarsource-v1-core)"
+    C: "volumeMounts mount ConfigMaps as files, not env vars. (https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#use-configmap-as-a-volume)"
+    D: "args provide command‑line arguments, unrelated to ConfigMaps. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core)"
+
+- id: 6
+  question: "What does the Kubernetes Admission controller 'NamespaceLifecycle' enforce?"
+  options:
+    A: "Ensures Pods cannot be created in terminated namespaces"
+    B: "Validates image signatures before pull"
+    C: "Limits the number of Services per namespace"
+    D: "Encrypts Secrets at rest"
+  answer: A
+  explanations:
+    A: "NamespaceLifecycle prevents creation of resources in a namespace that is terminating. (https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#namespacelifecycle)"
+    B: "ImagePolicyWebhook validates images, not NamespaceLifecycle. (https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook)"
+    C: "ResourceQuota enforces limits, not NamespaceLifecycle. (https://kubernetes.io/docs/concepts/policy/resource-quotas/)"
+    D: "Encryption at rest is configured via EncryptionConfiguration, not an admission controller. (https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)"
+
+- id: 7
+  question: "Which Kubernetes object can be used to run a one‑off task that executes a container and then exits?"
+  options:
+    A: "Job"
+    B: "CronJob"
+    C: "DaemonSet"
+    D: "ReplicaSet"
+  answer: A
+  explanations:
+    A: "Job creates Pods that run to completion and then terminate. (https://kubernetes.io/docs/concepts/workloads/controllers/job/)"
+    B: "CronJob schedules Jobs periodically, not a single execution. (https://kubernetes.io/docs/concepts/workloads/controllers/cron-job/)"
+    C: "DaemonSet runs a copy on every node continuously. (https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)"
+    D: "ReplicaSet maintains a set number of Pods, not one‑off tasks. (https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)"
+
+- id: 8
+  question: "What flag is used with 'kubectl apply' to perform a server‑side dry‑run?"
+  options:
+    A: "--dry-run=client"
+    B: "--dry-run=server"
+    C: "--validate=false"
+    D: "--force"
+  answer: B
+  explanations:
+    A: "client dry‑run validates locally without contacting the API server. (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)"
+    B: "--dry-run=server sends the request to the API server for validation only. (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)"
+    C: "--validate controls schema validation, not dry‑run behavior. (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)"
+    D: "--force is used with delete/replace, not for dry‑run. (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)"
+
+- id: 9
+  question: "In a Pod spec, which field determines the DNS policy applied to the Pod?"
+  options:
+    A: "dnsPolicy"
+    B: "hostNetwork"
+    C: "subdomain"
+    D: "restartPolicy"
+  answer: A
+  explanations:
+    A: "dnsPolicy sets the DNS configuration for the Pod. (https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-dns-policy)"
+    B: "hostNetwork binds the Pod to the node network, unrelated to DNS policy. (https://kubernetes.io/docs/concepts/containers/runtime-class/#hostnetwork)"
+    C: "subdomain is used for DNS subdomains, not the policy itself. (https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#subdomain)"
+    D: "restartPolicy controls Pod restart behavior, not DNS. (https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)"
+
+- id: 10
+  question: "Which of the following best describes the purpose of the 'taint' feature on a node?"
+  options:
+    A: "Prevent Pods from being scheduled unless they tolerate the taint"
+    B: "Automatically delete Pods when the node is under memory pressure"
+    C: "Mark a node as deprecated for future upgrades"
+    D: "Enable node‑level logging of container output"
+  answer: A
+  explanations:
+    A: "Taints repel Pods that do not have matching tolerations. (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)"
+    B: "Memory pressure eviction is handled by the kubelet, not taints. (https://kubernetes.io/docs/concepts/scheduling-eviction/resource-eviction/)"
+    C: "Deprecation is a policy decision, not enforced by taints. (https://kubernetes.io/docs/reference/using-api/deprecation-guide/)"
+    D: "Logging is configured via logging drivers, not node taints. (https://kubernetes.io/docs/concepts/cluster-administration/logging/)"

@@ -1,0 +1,139 @@
+- id: 121
+  question: "Which field in a Pod spec determines the maximum number of times a failed init container will be retried?"
+  options:
+    A: "restartPolicy"
+    B: "activeDeadlineSeconds"
+    C: "initContainer.backoffLimit"
+    D: "initContainer.retryPolicy"
+  answer: A
+  explanations:
+    A: "restartPolicy applies to all containers, including init containers, controlling retry behavior. (https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)"
+    B: "activeDeadlineSeconds caps total pod runtime, not retries."
+    C: "backoffLimit is a Job field, not a pod field."
+    D: "retryPolicy is not a valid field."
+
+- id: 122
+  question: "What does the 'spec.selector' field in a ReplicaSet control?"
+  options:
+    A: "Which Pods the ReplicaSet should manage"
+    B: "The Service that fronts the ReplicaSet"
+    C: "Node selection for the Pods"
+    D: "The container image used by the Pods"
+  answer: A
+  explanations:
+    A: "selector matches pod labels, defining ownership of Pods for the ReplicaSet. (https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/#what-is-a-replicaset)"
+    B: "Services are separate resources."
+    C: "Node selection is done via nodeSelector/affinity."
+    D: "Container image is defined in the pod template spec."
+
+- id: 123
+  question: "Which annotation enables automatic sidecar injection for the Open Service Mesh (OSM)?"
+  options:
+    A: "openservicemesh.io/inject: \"true\""
+    B: "osm.io/sidecar-inject: \"enabled\""
+    C: "sidecar.osm.io/inject: \"yes\""
+    D: "osm.io/inject: \"true\""
+  answer: A
+  explanations:
+    A: "OSM uses the annotation openservicemesh.io/inject: \"true\" to trigger injection. (https://openservicemesh.io/docs/installation/sidecar-injection/)"
+    B: "Incorrect namespace."
+    C: "Wrong annotation format."
+    D: "Namespace is missing the 'openservicemesh.io' prefix."
+
+- id: 124
+  question: "What is the effect of setting 'spec.strategy.type: Recreate' on a StatefulSet?"
+  options:
+    A: "Deletes all existing Pods before creating new ones, causing downtime"
+    B: "Creates new Pods alongside old ones and then removes the old ones"
+    C: "Performs a rolling update with maxSurge set to 0"
+    D: "StatefulSets do not support the Recreate strategy"
+  answer: D
+  explanations:
+    A: "Recreate is not a valid strategy for StatefulSets."
+    B: "That describes RollingUpdate."
+    C: "maxSurge applies to Deployments."
+    D: "StatefulSets only support RollingUpdate. (https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies)"
+
+- id: 125
+  question: "Which field in a Service spec allows you to specify a static external IP address for a LoadBalancer Service?"
+  options:
+    A: "loadBalancerIP"
+    B: "externalIPs"
+    C: "staticIP"
+    D: "fixedIP"
+  answer: A
+  explanations:
+    A: "loadBalancerIP requests a specific external IP from the cloud provider for a LoadBalancer Service. (https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)"
+    B: "externalIPs expose the Service on existing node IPs, not a static LB IP."
+    C: "staticIP is not a field."
+    D: "fixedIP does not exist."
+
+- id: 126
+  question: "What does the 'kubectl get pods --show-labels' command display?"
+  options:
+    A: "Only the pod names"
+    B: "Pod names together with all of their labels"
+    C: "The raw YAML manifest of each pod"
+    D: "The resource usage of each pod"
+  answer: B
+  explanations:
+    A: "--show-labels adds label column to the output."
+    B: "It prints a table with NAME, READY, STATUS, RESTARTS, AGE, and LABELS columns. (https://kubernetes.io/docs/reference/kubectl/overview/#custom-columns)"
+    C: "Use '-o yaml' for raw manifest."
+    D: "Resource usage requires 'kubectl top'."
+
+- id: 127
+  question: "Which field in a Pod spec can be used to mount a secret as a volume?"
+  options:
+    A: "volumes"
+    B: "envFrom"
+    C: "configMapKeyRef"
+    D: "imagePullSecrets"
+  answer: A
+  explanations:
+    A: "The volumes list can include a secret volume source, which is then mounted via volumeMounts. (https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets)"
+    B: "envFrom imports secret data as environment variables, not as a volume."
+    C: "configMapKeyRef references a ConfigMap key, not a secret."
+    D: "imagePullSecrets are for registry credentials."
+
+- id: 128
+  question: "What is the purpose of the 'spec.tolerations' field with 'effect: NoSchedule' on a pod?"
+  options:
+    A: "Allows the pod to be scheduled on nodes with matching NoSchedule taints"
+    B: "Evicts the pod immediately when a NoSchedule taint is added"
+    C: "Prevents the pod from ever being scheduled on any node"
+    D: "Changes the pod's DNS policy"
+  answer: A
+  explanations:
+    A: "NoSchedule tolerations let the pod be placed on nodes that have matching NoSchedule taints. (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-based-evictions)"
+    B: "NoSchedule does not trigger eviction; it only blocks scheduling."
+    C: "It permits scheduling, not blocks it entirely."
+    D: "DNS policy is unrelated."
+
+- id: 129
+  question: "Which of the following is a valid way to expose a pod using a NodePort Service?"
+  options:
+    A: "Create a Service with type: NodePort and specify a nodePort number"
+    B: "Add the annotation 'service.kubernetes.io/nodeport: true' to the pod"
+    C: "Set spec.hostNetwork: true in the pod spec"
+    D: "Run 'kubectl expose pod' without specifying a type"
+  answer: A
+  explanations:
+    A: "Defining a Service of type NodePort and optionally providing a nodePort creates the external port. (https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)"
+    B: "Annotations do not control Service type."
+    C: "hostNetwork changes networking namespace, not Service exposure."
+    D: "'kubectl expose' defaults to ClusterIP unless a type is given."
+
+- id: 130
+  question: "What does setting 'spec.minReadySeconds' in a Deployment control?"
+  options:
+    A: "The minimum number of seconds a new pod must be ready before it is considered available"
+    B: "The delay before a pod is terminated during a rollout"
+    C: "The interval between successive rollouts"
+    D: "The time the Deployment controller waits before scaling"
+  answer: A
+  explanations:
+    A: "minReadySeconds forces a pod to stay ready for the given period before the Deployment counts it as available. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#deployment-strategy)"
+    B: "Termination delay is controlled by terminationGracePeriodSeconds."
+    C: "Rollout timing is governed by maxSurge/maxUnavailable."
+    D: "Scaling delay is not configurable via this field."

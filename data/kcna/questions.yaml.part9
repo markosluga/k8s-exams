@@ -1,0 +1,139 @@
+- id: 81
+  question: "Which field in a Service definition controls whether the Service assigns a cluster‑internal IP?"
+  options:
+    A: "clusterIP"
+    B: "type"
+    C: "externalIPs"
+    D: "sessionAffinity"
+  answer: A
+  explanations:
+    A: "Setting clusterIP to "None" creates a headless Service; otherwise a virtual IP is allocated. (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)"
+    B: "type defines Service type (ClusterIP, NodePort, etc.) but does not directly control IP allocation."
+    C: "externalIPs expose the Service outside the cluster."
+    D: "sessionAffinity affects client routing, not IP allocation."
+
+- id: 82
+  question: "What does the 'kubectl rollout restart deployment/<name>' command do?"
+  options:
+    A: "Deletes the Deployment and recreates it from scratch"
+    B: "Updates the Deployment's pod template annotation to trigger a rolling restart of its Pods"
+    C: "Scales the Deployment down to zero and back up"
+    D: "Force‑applies a new replica count of zero"
+  answer: B
+  explanations:
+    A: "The object remains; only Pods are restarted."
+    B: "rollout restart adds a temporary annotation causing the controller to recreate Pods. (https://kubernetes.io/docs/reference/kubectl/overview/#kubectl-rollout)"
+    C: "Scaling is not performed automatically."
+    D: "It does not change replica count."
+
+- id: 83
+  question: "Which of the following is a valid way to make a pod tolerable to a taint with effect 'NoSchedule'?"
+  options:
+    A: "Add a toleration with operator 'Exists' and effect 'NoSchedule'"
+    B: "Add a nodeSelector matching the taint key"
+    C: "Set spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution"
+    D: "Add an annotation 'taint.toleration.kubernetes.io/NoSchedule'"
+  answer: A
+  explanations:
+    A: "A toleration with operator 'Exists' and matching effect allows scheduling on tainted nodes. (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-based-evictions)"
+    B: "nodeSelector does not bypass taints."
+    C: "Affinity influences node choice but not taint tolerance."
+    D: "Annotations are not used for tolerations."
+
+- id: 84
+  question: "What is the primary purpose of a PodDisruptionBudget (PDB)?"
+  options:
+    A: "Limit the number of simultaneous voluntary evictions for a set of pods"
+    B: "Define resource limits for pods"
+    C: "Specify the maximum number of replicas for a deployment"
+    D: "Enforce network policies for pod communication"
+  answer: A
+  explanations:
+    A: "PDB ensures that a certain number or percentage of pods remain available during voluntary disruptions. (https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)"
+    B: "Resource limits are set in the pod spec."
+    C: "Replica count is managed by Deployments/StatefulSets."
+    D: "Network policies are separate resources."
+
+- id: 85
+  question: "Which field in a Deployment's pod template determines the container's startup command?"
+  options:
+    A: "command"
+    B: "args"
+    C: "entrypoint"
+    D: "run"
+  answer: A
+  explanations:
+    A: "'command' overrides the container image's ENTRYPOINT. (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core)"
+    B: "'args' overrides CMD arguments, not the command itself."
+    C: "'entrypoint' is not a Kubernetes field."
+    D: "'run' does not exist in the spec."
+
+- id: 86
+  question: "What does the 'spec.strategy.type: Recreate' option do for a Deployment?"
+  options:
+    A: "Deletes all existing Pods before creating new ones, causing downtime"
+    B: "Creates new Pods alongside old ones and then removes the old ones"
+    C: "Performs a rolling update with maxSurge set to 0"
+    D: "Disables updates entirely"
+  answer: A
+  explanations:
+    A: "Recreate tears down the old ReplicaSet before bringing up the new one, leading to downtime. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    B: "That describes RollingUpdate."
+    C: "maxSurge is irrelevant for Recreate."
+    D: "Updates are still performed, just not concurrently."
+
+- id: 87
+  question: "Which Kubernetes object can be used to expose a set of Pods on a specific port using Layer 4 (TCP/UDP) load balancing without a cloud provider?"
+  options:
+    A: "Service of type LoadBalancer"
+    B: "Ingress"
+    C: "Service of type NodePort"
+    D: "Service of type ClusterIP"
+  answer: C
+  explanations:
+    A: "LoadBalancer depends on a cloud provider integration."
+    B: "Ingress operates at HTTP layer (L7)."
+    C: "NodePort opens a port on each node, providing L4 load balancing across pods. (https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)"
+    D: "ClusterIP is internal only."
+
+- id: 88
+  question: "What is the effect of setting 'spec.revisionHistoryLimit' in a Deployment?"
+  options:
+    A: "Limits the number of old ReplicaSets that are retained for rollback"
+    B: "Sets the maximum number of Pods the Deployment can create"
+    C: "Controls how many times the Deployment can be updated per day"
+    D: "Defines the number of times the Deployment controller retries a failed rollout"
+  answer: A
+  explanations:
+    A: "revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit)"
+    B: "Replica count is set by spec.replicas."
+    C: "No such rate‑limit exists."
+    D: "Retry behavior is governed by backoff settings, not this field."
+
+- id: 89
+  question: "Which field in a Service spec enables TCP keep‑alive probes for the Service's endpoints?"
+  options:
+    A: "keepAliveTime"
+    B: "sessionAffinityConfig"
+    C: "externalTrafficPolicy"
+    D: "none – keep‑alive is handled by the underlying socket implementation"
+  answer: D
+  explanations:
+    A: "No such field exists."
+    B: "sessionAffinityConfig relates to client IP affinity, not keep‑alive."
+    C: "externalTrafficPolicy controls source IP handling."
+    D: "Kubernetes does not expose a keep‑alive setting; it relies on the OS/TCP stack."
+
+- id: 90
+  question: "When defining a Deployment, which field determines the maximum number of Pods that can be unavailable during a rolling update?"
+  options:
+    A: "spec.strategy.rollingUpdate.maxUnavailable"
+    B: "spec.strategy.rollingUpdate.maxSurge"
+    C: "spec.replicas"
+    D: "spec.minReadySeconds"
+  answer: A
+  explanations:
+    A: "maxUnavailable limits how many Pods may be down during the rollout. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    B: "maxSurge controls extra Pods, not unavailable ones."
+    C: "replicas sets desired count, not rollout behavior."
+    D: "minReadySeconds defines readiness delay after pod start."

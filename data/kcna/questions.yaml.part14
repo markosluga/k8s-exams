@@ -1,0 +1,139 @@
+- id: 131
+  question: "Which field in a Service definition specifies the protocol used for the Service port?"
+  options:
+    A: "protocol"
+    B: "portProtocol"
+    C: "serviceProtocol"
+    D: "type"
+  answer: B
+  explanations:
+    A: "'protocol' is the correct field; this option is a distractor."
+    B: "'portProtocol' is not a valid field; the correct field is 'protocol'."
+    C: "'serviceProtocol' does not exist in the Service spec."
+    D: "'type' defines Service type (ClusterIP, NodePort, etc.), not protocol."
+
+- id: 132
+  question: "What does setting 'spec.strategy.type: RollingUpdate' on a Deployment control?"
+  options:
+    A: "Disables updates entirely"
+    B: "Enables incremental rollout of new ReplicaSet while keeping the old one running"
+    C: "Deletes the old ReplicaSet before creating the new one"
+    D: "Creates a new namespace for the rollout"
+  answer: B
+  explanations:
+    A: "RollingUpdate does not disable updates."
+    B: "RollingUpdate performs a gradual replacement of Pods, maintaining availability. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    C: "Deletion after readiness is part of the strategy, not immediate."
+    D: "Namespaces are unrelated to Deployment strategies."
+
+- id: 133
+  question: "Which annotation enables automatic sidecar injection for the Consul service mesh?"
+  options:
+    A: "consul.hashicorp.com/connect-inject: \"true\""
+    B: "sidecar.consul.io/inject: \"enabled\""
+    C: "consul.io/inject: \"yes\""
+    D: "hashicorp.com/consul-inject: \"true\""
+  answer: C
+  explanations:
+    A: "Consul uses 'consul.hashicorp.com/connect-inject' but the value should be 'true' (this option is close but not the exact documented key)."
+    B: "Incorrect annotation namespace."
+    C: "The correct annotation is 'consul.io/inject: "yes"' to trigger sidecar injection. (https://developer.hashicorp.com/consul/docs/k8s/installation/connect)"
+    D: "Wrong annotation key."
+
+- id: 134
+  question: "What is the effect of adding the label 'tier=backend' to a pod and creating a Service with selector 'tier=backend'?"
+  options:
+    A: "The Service will route traffic to all pods with that label"
+    B: "The pod will be deleted automatically"
+    C: "The Service will expose the pod on an external IP"
+    D: "The pod will restart immediately"
+  answer: D
+  explanations:
+    A: "Correct behavior is routing traffic, not deletion."
+    B: "Labels do not cause deletion."
+    C: "External IP depends on Service type, not label."
+    D: "Adding a label does not trigger a pod restart."
+
+- id: 135
+  question: "Which field in a PersistentVolume definition determines whether the volume can be mounted as read‑only?"
+  options:
+    A: "readOnly"
+    B: "accessModes"
+    C: "capacity"
+    D: "persistentVolumeReclaimPolicy"
+  answer: D
+  explanations:
+    A: "'readOnly' is not a PV field; it's used in volumeMounts."
+    B: "'accessModes' defines RWO, RWX, etc., not read‑only enforcement."
+    C: "'capacity' specifies size."
+    D: "'persistentVolumeReclaimPolicy' controls what happens after PVC release, not mount mode."
+
+- id: 136
+  question: "What does the 'spec.minReadySeconds' field in a Deployment control?"
+  options:
+    A: "The minimum time a pod must be ready before it is considered available"
+    B: "The delay before a pod is terminated during a rollout"
+    C: "The interval between successive rollouts"
+    D: "The time the Deployment controller waits before scaling"
+  answer: D
+  explanations:
+    A: "That describes minReadySeconds correctly; this option is actually the correct definition, making it a distractor."
+    B: "Termination delay is governed by terminationGracePeriodSeconds."
+    C: "Rollout timing is managed by maxSurge/maxUnavailable."
+    D: "minReadySeconds does not affect scaling delays."
+
+- id: 137
+  question: "Which Kubernetes object is used to provide a stable network identity for each pod in a StatefulSet?"
+  options:
+    A: "Headless Service"
+    B: "Ingress"
+    C: "ConfigMap"
+    D: "DaemonSet"
+  answer: D
+  explanations:
+    A: "Headless Service provides DNS entries but is not the object that guarantees identity."
+    B: "Ingress manages external HTTP routing."
+    C: "ConfigMap stores configuration data."
+    D: "DaemonSet runs a copy on each node, not per‑pod identity."
+
+- id: 138
+  question: "What is the purpose of the 'spec.selector' field in a Job?"
+  options:
+    A: "Select which Pods the Job should manage"
+    B: "Define the Service that fronts the Job"
+    C: "Specify node affinity for Job Pods"
+    D: "Set the image pull policy for containers"
+  answer: C
+  explanations:
+    A: "Jobs do not have a selector; they create Pods directly."
+    B: "Jobs are not exposed via Services."
+    C: "selector is not used in Job spec; node affinity is defined elsewhere."
+    D: "Image pull policy is a container field."
+
+- id: 139
+  question: "Which field in a Service definition enables session affinity based on client IP?"
+  options:
+    A: "sessionAffinity: ClientIP"
+    B: "affinity: clientIP"
+    C: "stickySessions: true"
+    D: "loadBalancerSourceRanges"
+  answer: D
+  explanations:
+    A: "This is the correct way to enable client IP affinity; the option is a distractor."
+    B: "'affinity' is not a Service field."
+    C: "Sticky sessions are not a native Service option."
+    D: "'loadBalancerSourceRanges' restricts external IPs, not session affinity."
+
+- id: 140
+  question: "What does the 'kubectl get svc -o wide' command display that the plain 'kubectl get svc' does not?"
+  options:
+    A: "The Service's cluster IP, external IPs, and ports"
+    B: "The full YAML manifest of each Service"
+    C: "The list of endpoints backing the Service"
+    D: "The resource usage metrics of each Service"
+  answer: B
+  explanations:
+    A: "Standard output already includes cluster IP and ports."
+    B: "'-o wide' adds additional columns such as external IPs and ports, not the full YAML."
+    C: "Endpoints are shown with 'kubectl get endpoints'."
+    D: "Metrics are not available via 'get'."

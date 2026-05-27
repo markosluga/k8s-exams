@@ -1,0 +1,139 @@
+- id: 101
+  question: "Which field in a Service spec determines whether the Service will preserve the client source IP address?"
+  options:
+    A: "externalTrafficPolicy"
+    B: "sessionAffinity"
+    C: "clusterIP"
+    D: "loadBalancerIP"
+  answer: A
+  explanations:
+    A: "Setting externalTrafficPolicy to 'Local' preserves the original client IP. (https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy)"
+    B: "sessionAffinity deals with client session routing, not source IP."
+    C: "clusterIP is the virtual IP address inside the cluster."
+    D: "loadBalancerIP is the external IP assigned to a LoadBalancer Service."
+
+- id: 102
+  question: "What does the 'kubectl describe pod <name>' command display that 'kubectl get pod' does not?"
+  options:
+    A: "The pod's resource usage (CPU/memory)"
+    B: "Detailed events, conditions, and container statuses"
+    C: "The pod's JSON representation"
+    D: "A list of all pods in the namespace"
+  answer: B
+  explanations:
+    A: "Resource usage requires 'kubectl top'."
+    B: "'describe' shows events, conditions, and detailed status. (https://kubernetes.io/docs/reference/kubectl/overview/#describe)"
+    C: "JSON output uses '-o json'."
+    D: "'get' lists pods, not describe."
+
+- id: 103
+  question: "Which field in a Deployment's pod template can be used to set a container's memory limit?"
+  options:
+    A: "resources.limits.memory"
+    B: "resources.requests.memory"
+    C: "memoryLimit"
+    D: "limits.memory"
+  answer: A
+  explanations:
+    A: "resources.limits.memory defines the maximum memory a container can use. (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-limits)"
+    B: "requests set guaranteed memory, not the hard limit."
+    C: "memoryLimit is not a valid field."
+    D: "limits.memory is not the correct path."
+
+- id: 104
+  question: "What is the purpose of the 'spec.selector' field in a Service?"
+  options:
+    A: "Selects the pods that the Service routes traffic to based on label matching"
+    B: "Specifies the DNS name for the Service"
+    C: "Defines the Service type (ClusterIP, NodePort, etc.)"
+    D: "Sets the Service's external IP address"
+  answer: A
+  explanations:
+    A: "selector matches pod labels to bind the Service to those pods. (https://kubernetes.io/docs/concepts/services-networking/service/#service-definition)"
+    B: "DNS name is derived from Service name."
+    C: "Service type is defined by the 'type' field."
+    D: "External IPs are set via 'externalIPs'."
+
+- id: 105
+  question: "Which annotation can be used to enable automatic sidecar injection for Linkerd?"
+  options:
+    A: "linkerd.io/inject: \"enabled\""
+    B: "sidecar.linkerd.io/inject: \"true\""
+    C: "linkerd.io/sidecar: \"auto\""
+    D: "inject.linkerd.io/sidecar: \"yes\""
+  answer: A
+  explanations:
+    A: "Linkerd uses the annotation linkerd.io/inject: \"enabled\" for automatic injection. (https://linkerd.io/2.13/tasks/inject/)"
+    B: "Incorrect namespace."
+    C: "Wrong annotation format."
+    D: "Invalid annotation."
+
+- id: 106
+  question: "What does setting 'spec.strategy.rollingUpdate.maxSurge: 0' achieve during a Deployment rollout?"
+  options:
+    A: "Prevents any new Pods from being created until old ones terminate"
+    B: "Allows unlimited extra Pods during the update"
+    C: "Limits the number of unavailable Pods to zero"
+    D: "Disables rolling updates entirely"
+  answer: A
+  explanations:
+    A: "maxSurge 0 means no extra Pods; new Pods are created only after old ones are terminated, causing possible downtime. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    B: "Unlimited extra Pods would be maxSurge set to a high value."
+    C: "maxUnavailable controls unavailable Pods."
+    D: "RollingUpdate remains active; maxSurge just restricts surge."
+
+- id: 107
+  question: "Which field in a PersistentVolumeClaim determines the size of the requested volume?"
+  options:
+    A: "resources.requests.storage"
+    B: "spec.capacity.storage"
+    C: "size"
+    D: "volumeSize"
+  answer: A
+  explanations:
+    A: "resources.requests.storage is the standard way to request storage size. (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)"
+    B: "capacity is a PV field, not PVC."
+    C: "size is not a field."
+    D: "volumeSize does not exist."
+
+- id: 108
+  question: "What does the 'kubectl exec -it <pod> -- /bin/sh' command allow you to do?"
+  options:
+    A: "Copy files from the pod to the local machine"
+    B: "Open an interactive shell inside the container"
+    C: "View the pod's logs"
+    D: "Restart the pod"
+  answer: B
+  explanations:
+    A: "Copying files uses 'kubectl cp'."
+    B: "-it allocates a TTY and opens /bin/sh for interactive commands. (https://kubernetes.io/docs/reference/kubectl/overview/#exec)"
+    C: "Logs are retrieved with 'kubectl logs'."
+    D: "Restarting a pod requires delete or rollout."
+
+- id: 109
+  question: "Which of the following is NOT a valid pod restart policy?"
+  options:
+    A: "Always"
+    B: "OnFailure"
+    C: "Never"
+    D: "OnError"
+  answer: D
+  explanations:
+    A: "Always is valid."
+    B: "OnFailure is valid."
+    C: "Never is valid."
+    D: "OnError is not a supported restart policy."
+
+- id: 110
+  question: "What is the effect of adding the label 'app=frontend' to a pod and then creating a Service with selector 'app=frontend'?"
+  options:
+    A: "The Service will route traffic to that pod (and any others with the same label)"
+    B: "The pod will be deleted automatically"
+    C: "The Service will expose the pod on a random external IP"
+    D: "The pod will be restarted"
+  answer: A
+  explanations:
+    A: "Service selectors match pods with the label, directing traffic to them. (https://kubernetes.io/docs/concepts/services-networking/service/#service-definition)"
+    B: "Labels do not trigger deletion."
+    C: "External IP depends on Service type, not label."
+    D: "Labels do not cause restarts."

@@ -1,0 +1,139 @@
+- id: 121
+  question: "What Kubernetes object is used to define a set of network policies that control inbound and outbound traffic for pods?"
+  options:
+    A: "Ingress"
+    B: "NetworkPolicy"
+    C: "Service"
+    D: "PodSecurityPolicy"
+  answer: B
+  explanations:
+    A: "Ingress is a resource that manages external HTTP/HTTPS traffic into a cluster, not pod‑to‑pod network rules. (https://kubernetes.io/docs/concepts/services-networking/ingress/ )"
+    B: "NetworkPolicy specifies how groups of pods are allowed to communicate with each other and other network endpoints. (https://kubernetes.io/docs/concepts/services-networking/network-policies/ )"
+    C: "Service provides stable networking endpoints but does not enforce traffic rules. (https://kubernetes.io/docs/concepts/services-networking/service/)"
+    D: "PodSecurityPolicy governs security contexts, not network traffic. (https://kubernetes.io/docs/concepts/security/pod-security-policy/)"
+
+- id: 122
+  question: "Which field in a Deployment spec controls the maximum number of Pods that can be unavailable during a rolling update?"
+  options:
+    A: "maxSurge"
+    B: "maxUnavailable"
+    C: "revisionHistoryLimit"
+    D: "progressDeadlineSeconds"
+  answer: B
+  explanations:
+    A: "maxSurge defines how many extra Pods can be created above the desired number, not the unavailable count. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    B: "maxUnavailable sets the number of Pods that may be down during the update. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)"
+    C: "revisionHistoryLimit controls how many old ReplicaSets are retained. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit)"
+    D: "progressDeadlineSeconds is the timeout for a rollout to be considered stalled. (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline)"
+
+- id: 123
+  question: "When configuring a Service of type LoadBalancer on a cloud provider, which annotation would you add to request an internal load balancer on AWS?"
+  options:
+    A: "service.beta.kubernetes.io/aws-load-balancer-internal: "true""
+    B: "service.beta.kubernetes.io/aws-load-balancer-type: nlb"
+    C: "service.beta.kubernetes.io/aws-load-balancer-scheme: internal"
+    D: "service.kubernetes.io/internal: true"
+  answer: C
+  explanations:
+    A: "The key exists but the value must be "true" not a string "true"; also the correct key for internal is "aws-load-balancer-internal" (deprecated)."
+    B: "This annotation selects the NLB type, not internal vs external."
+    C: "Setting aws-load-balancer-scheme to internal tells the AWS controller to provision an internal ELB. (https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.6/guide/service/annotations/)"
+    D: "There is no such annotation in the AWS controller."
+
+- id: 124
+  question: "Which command would you use to view the YAML definition of a specific Pod named 'frontend' in the 'default' namespace?"
+  options:
+    A: "kubectl get pod frontend -o yaml"
+    B: "kubectl describe pod frontend"
+    C: "kubectl edit pod frontend"
+    D: "kubectl show pod frontend"
+  answer: A
+  explanations:
+    A: "'kubectl get pod <name> -o yaml' prints the full manifest in YAML. (https://kubernetes.io/docs/reference/kubectl/overview/#custom-columns)"
+    B: "'describe' shows a human‑readable summary, not the raw YAML."
+    C: "'edit' opens an editor for live changes; it does not simply display the YAML."
+    D: "'show' is not a kubectl subcommand."
+
+- id: 125
+  question: "In a HorizontalPodAutoscaler, which field specifies the target average CPU utilization percentage?"
+  options:
+    A: "targetCPUUtilizationPercentage"
+    B: "cpuUtilizationTarget"
+    C: "averageCPUUtilization"
+    D: "cpuTargetPercentage"
+  answer: A
+  explanations:
+    A: "The HPA spec uses 'targetCPUUtilizationPercentage' to set the desired average CPU usage. (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configuring-an-hpa)"
+    B: "Incorrect field name; not recognized by the API."
+    C: "There is no 'averageCPUUtilization' field in the HPA spec."
+    D: "Incorrect field name; the API expects 'targetCPUUtilizationPercentage'."
+
+- id: 126
+  question: "What is the purpose of the 'nodeSelector' field in a Pod spec?"
+  options:
+    A: "Assign a specific node IP address to the Pod"
+    B: "Select nodes that have matching labels for scheduling the Pod"
+    C: "Define the DNS name of the node where the Pod will run"
+    D: "Enforce network policies on the node"
+  answer: B
+  explanations:
+    A: "nodeSelector does not set an IP; it matches label selectors."
+    B: "nodeSelector matches node labels, restricting the scheduler to nodes with those labels. (https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-selector)"
+    C: "DNS names are not set via nodeSelector."
+    D: "Network policies are separate resources."
+
+- id: 127
+  question: "Which of the following best describes a 'CustomResourceDefinition' (CRD) in Kubernetes?"
+  options:
+    A: "A built‑in object that extends the API server with new built‑in types"
+    B: "A user‑defined API object that allows you to create your own resource types"
+    C: "A configuration file for the kube‑controller‑manager"
+    D: "A manifest that defines a new namespace"
+  answer: B
+  explanations:
+    A: "CRDs are not built‑in; they are user‑defined extensions."
+    B: "CRDs let you define new API objects that behave like native resources. (https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/)"
+    C: "The controller manager uses other config files, not CRDs."
+    D: "Namespaces are a core API object, not defined via CRD."
+
+- id: 128
+  question: "When using a Service of type 'ExternalName', what DNS record type does Kubernetes create internally?"
+  options:
+    A: "A record"
+    B: "CNAME record"
+    C: "TXT record"
+    D: "MX record"
+  answer: B
+  explanations:
+    A: "Kubernetes does not create an A record for ExternalName services."
+    B: "ExternalName services act as CNAME aliases to the external DNS name. (https://kubernetes.io/docs/concepts/services-networking/service/#externalname)"
+    C: "TXT records are unrelated."
+    D: "MX records are for mail routing, not used here."
+
+- id: 129
+  question: "Which field in a PersistentVolumeClaim controls whether the volume can be mounted as read‑only?"
+  options:
+    A: "accessModes"
+    B: "volumeMode"
+    C: "readOnly"
+    D: "storageClassName"
+  answer: A
+  explanations:
+    A: "'accessModes' includes values like ReadWriteOnce, ReadOnlyMany, etc., which dictate read‑only capabilities. (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)"
+    B: "volumeMode selects Filesystem vs Block, not read‑only semantics."
+    C: "There is no 'readOnly' field on a PVC spec."
+    D: "storageClassName selects the provisioner, not access mode."
+
+- id: 130
+  question: "What does the '--record' flag do when used with 'kubectl apply'?"
+  options:
+    A: "It records the command in the object's annotation 'kubectl.kubernetes.io/last-applied-configuration'"
+    B: "It stores the full command line in the object's annotation 'kubectl.kubernetes.io/last-applied-configuration'"
+    C: "It creates an audit log entry for the apply operation"
+    D: "It prints the server‑side applied configuration to stdout"
+  answer: B
+  explanations:
+    A: "The flag records the command line, not just the configuration."
+    B: "'--record' adds an annotation with the exact command used, useful for debugging. (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply)"
+    C: "Audit logs are handled by the API server, not by this flag."
+    D: "The flag does not affect stdout output."
