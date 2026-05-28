@@ -1,1 +1,753 @@
-[]
+[
+  {
+    "id": "kcna-lab-001",
+    "title": "Pod Basics: Deploy and Expose a Simple Application",
+    "domain": "Workloads",
+    "difficulty": "beginner",
+    "estimated_minutes": 15,
+    "objective": "Create a Deployment that runs a single nginx pod and expose it via a Service of type ClusterIP.",
+    "context": "A developer needs a quick local instance of a web server for testing static assets within the cluster.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl version --client"
+    ],
+    "tasks": [
+      "Create a Deployment named `nginx-deploy` with the image `nginx:alpine` and 1 replica.",
+      "Expose the Deployment with a Service named `nginx-svc` on port 80.",
+      "Verify the Service endpoint resolves to the pod IP and returns the default nginx page.",
+      "Cleanup the resources."
+    ],
+    "hints": [
+      "Use a Deployment manifest to manage pod replicas. See the Deployment docs: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+      "Expose a Deployment via a Service. Review Service types: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types",
+      "Validate the Service by curling the ClusterIP from another pod. Reference troubleshooting connectivity: https://kubernetes.io/docs/tasks/debug-application-networking/connect-applications-service/"
+    ],
+    "solution": "cat <<'EOF' > kcna-001-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+EOF
+kubectl apply -f kcna-001-deploy.yaml",
+    "validation_commands": [
+      "kubectl get pods -l app=nginx -o jsonpath='{.items[0].status.phase}'",
+      "kubectl get svc nginx-svc -o jsonpath='{.spec.clusterIP}'",
+      "kubectl run curl-pod --image=curlimages/curl --rm -i --restart=Never -- curl -s http://$(kubectl get svc nginx-svc -o jsonpath='{.spec.clusterIP}')"
+    ],
+    "expected_outputs": ["Running", "<cluster-ip>", "<html>"],
+    "cleanup": "kubectl delete -f kcna-001-deploy.yaml",
+    "key_concepts": [
+      "Deployments provide declarative updates and replica management.",
+      "Services expose a set of pods and give them a stable virtual IP.",
+      "ClusterIP is the default service type for internal cluster communication.",
+      "kubectl apply can create multiple resources from a single YAML file."
+    ]
+  },
+  {
+    "id": "kcna-lab-002",
+    "title": "ConfigMap: Inject Configuration into Pods",
+    "domain": "Configuration",
+    "difficulty": "beginner",
+    "estimated_minutes": 20,
+    "objective": "Create a ConfigMap with application configuration and mount it as a file inside a pod.",
+    "context": "A micro‑service reads its configuration from a file at `/etc/config/app.conf`. You need to provide that file without baking it into the container image.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl"
+    ],
+    "tasks": [
+      "Create a ConfigMap named `app-config` from a local file `app.conf`.",
+      "Deploy a pod that mounts the ConfigMap at `/etc/config`.",
+      "Verify the pod can read the configuration file.",
+      "Cleanup the ConfigMap and pod."
+    ],
+    "hints": [
+      "ConfigMaps store key‑value pairs or entire files. See the ConfigMap guide: https://kubernetes.io/docs/concepts/configuration/configmap/",
+      "Mount a ConfigMap as a volume to expose its data as files. Reference volume mounts: https://kubernetes.io/docs/concepts/storage/volumes/#configmap",
+      "Use `kubectl exec` to cat the file inside the running container."
+    ],
+    "solution": "echo 'greeting=Hello KCNA' > app.conf
+kubectl create configmap app-config --from-file=app.conf
+cat <<'EOF' > kcna-002-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: [\"sh\", \"-c\", \"sleep 3600\"]
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/config
+  volumes:
+  - name: config-volume
+    configMap:
+      name: app-config
+EOF
+kubectl apply -f kcna-002-pod.yaml",
+    "validation_commands": [
+      "kubectl exec configmap-pod -- cat /etc/config/app.conf",
+      "kubectl get configmap app-config -o jsonpath='{.data.app\.conf}'"
+    ],
+    "expected_outputs": ["greeting=Hello KCNA", "greeting=Hello KCNA"],
+    "cleanup": "kubectl delete pod configmap-pod && kubectl delete configmap app-config && rm app.conf kcna-002-pod.yaml",
+    "key_concepts": [
+      "ConfigMaps decouple configuration from container images.",
+      "A ConfigMap can be consumed as environment variables or as files via a volume.",
+      "Changes to a ConfigMap are reflected in pods that consume it (if mounted as a volume)."
+    ]
+  },
+  {
+    "id": "kcna-lab-003",
+    "title": "Secret: Store and Use Sensitive Data",
+    "domain": "Security",
+    "difficulty": "beginner",
+    "estimated_minutes": 20,
+    "objective": "Create a Secret containing a password and consume it as an environment variable in a pod.",
+    "context": "A small application needs a database password at runtime but you must avoid exposing the value in the container image or pod spec.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl"
+    ],
+    "tasks": [
+      "Create a Secret named `db-pass` with a key `password`.",
+      "Deploy a pod that reads the secret as an env var `DB_PASSWORD`.",
+      "Verify the pod can echo the password (without exposing it to the host shell).",
+      "Cleanup the Secret and pod."
+    ],
+    "hints": [
+      "Secrets are base64‑encoded objects. See the Secret documentation: https://kubernetes.io/docs/concepts/configuration/secret/",
+      "Consume a Secret as an environment variable using `envFrom` or `valueFrom`. Reference env var injection: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/",
+      "Use `kubectl exec` to print the env var inside the container."
+    ],
+    "solution": "echo -n 's3cr3tP@ss' > password.txt
+kubectl create secret generic db-pass --from-file=password=./password.txt
+cat <<'EOF' > kcna-003-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: [\"sh\", \"-c\", \"sleep 3600\"]
+    env:
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-pass
+          key: password
+EOF
+kubectl apply -f kcna-003-pod.yaml",
+    "validation_commands": [
+      "kubectl exec secret-pod -- printenv DB_PASSWORD",
+      "kubectl get secret db-pass -o jsonpath='{.data.password}' | base64 -d"
+    ],
+    "expected_outputs": ["s3cr3tP@ss", "s3cr3tP@ss"],
+    "cleanup": "kubectl delete pod secret-pod && kubectl delete secret db-pass && rm password.txt kcna-003-pod.yaml",
+    "key_concepts": [
+      "Secrets keep sensitive data out of container images.",
+      "Kubernetes stores Secret data base64‑encoded; RBAC controls who can read them.",
+      "Environment variable injection is simple, but mounting as a file can be more secure for large data."
+    ]
+  },
+  {
+    "id": "kcna-lab-004",
+    "title": "Service Types: Expose an Application Externally",
+    "domain": "Networking",
+    "difficulty": "intermediate",
+    "estimated_minutes": 25,
+    "objective": "Expose a Deployment via a NodePort service and access it from the host machine.",
+    "context": "A teammate needs to reach a demo web service running in the cluster from their laptop without using an Ingress controller.",
+    "prerequisites": [
+      "minikube start --ports=30080:80",
+      "kubectl"
+    ],
+    "tasks": [
+      "Deploy a Deployment named `demo-app` running `httpd`.",
+      "Create a Service of type NodePort exposing port 80 on the cluster and mapping it to a host port.",
+      "Determine the allocated NodePort and curl the service from the host.",
+      "Cleanup the resources."
+    ],
+    "hints": [
+      "NodePort services allocate a port in the 30000‑32767 range. See Service types: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport",
+      "Use `kubectl get svc` to discover the assigned NodePort.",
+      "Access the service via `http://$(minikube ip):<nodePort>` from the host."
+    ],
+    "solution": "cat <<'EOF' > kcna-004-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: httpd
+        image: httpd:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: demo
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+EOF
+kubectl apply -f kcna-004-deploy.yaml",
+    "validation_commands": [
+      "kubectl get svc demo-nodeport -o jsonpath='{.spec.ports[0].nodePort}'",
+      "curl -s http://$(minikube ip):30080 | grep -i 'It works'"
+    ],
+    "expected_outputs": ["30080", "It works!"],
+    "cleanup": "kubectl delete -f kcna-004-deploy.yaml",
+    "key_concepts": [
+      "NodePort exposes a service on each node's IP at a static port.",
+      "Useful for quick demos, but not recommended for production traffic.",
+      "Minikube forwards NodePort ports to the host automatically when started with `--ports`."
+    ]
+  },
+  {
+    "id": "kcna-lab-005",
+    "title": "Ingress: Route HTTP Traffic with Host‑Based Rules",
+    "domain": "Networking",
+    "difficulty": "intermediate",
+    "estimated_minutes": 30,
+    "objective": "Install an Ingress controller and configure an Ingress resource that routes traffic based on host name.",
+    "context": "You need a single external endpoint that forwards requests to two different services (`app‑v1` and `app‑v2`) depending on the requested host.",
+    "prerequisites": [
+      "minikube start --addons=ingress",
+      "kubectl"
+    ],
+    "tasks": [
+      "Deploy two Deployments (`app-v1` and `app-v2`) each exposing port 80.",
+      "Create Services for each Deployment.",
+      "Create an Ingress that routes `v1.example.com` to `app‑v1` and `v2.example.com` to `app‑v2`.",
+      "Test the routing by adding host entries to /etc/hosts and curling each host.",
+      "Cleanup all resources."
+    ],
+    "hints": [
+      "Ingress resources rely on an Ingress controller; minikube’s built‑in controller is enabled via the `ingress` addon. See Ingress docs: https://kubernetes.io/docs/concepts/services-networking/ingress/",
+      "Host‑based routing uses the `host` field in the Ingress rule. Review the rule syntax.",
+      "After creating the Ingress, the controller creates a LoadBalancer IP (often the minikube IP). Use `kubectl get ingress` to see the address."
+    ],
+    "solution": "cat <<'EOF' > kcna-005-manifests.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v1
+  template:
+    metadata:
+      labels:
+        app: v1
+    spec:
+      containers:
+      - name: httpd
+        image: httpd:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-v1
+spec:
+  selector:
+    app: v1
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v2
+  template:
+    metadata:
+      labels:
+        app: v2
+    spec:
+      containers:
+      - name: httpd
+        image: httpd:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-v2
+spec:
+  selector:
+    app: v2
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+spec:
+  rules:
+  - host: v1.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-v1
+            port:
+              number: 80
+  - host: v2.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-v2
+            port:
+              number: 80
+EOF
+kubectl apply -f kcna-005-manifests.yaml",
+    "validation_commands": [
+      "kubectl get ingress demo-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'",
+      "echo '$(minikube ip) v1.example.com v2.example.com' | sudo tee -a /etc/hosts",
+      "curl -s http://v1.example.com | grep -i 'It works'",
+      "curl -s http://v2.example.com | grep -i 'It works'"
+    ],
+    "expected_outputs": ["<minikube‑ip>", "It works!", "It works!"],
+    "cleanup": "kubectl delete -f kcna-005-manifests.yaml && sudo sed -i '/v1.example.com/d' /etc/hosts && sudo sed -i '/v2.example.com/d' /etc/hosts",
+    "key_concepts": [
+      "Ingress abstracts HTTP routing and works with a controller (NGINX, GCE, etc.).",
+      "Host‑based rules let a single IP serve multiple virtual hosts.",
+      "Minikube’s ingress addon provides a lightweight NGINX controller for local testing."
+    ]
+  },
+  {
+    "id": "kcna-lab-006",
+    "title": "Horizontal Pod Autoscaler (HPA): Scale Based on CPU Usage",
+    "domain": "Workloads",
+    "difficulty": "intermediate",
+    "estimated_minutes": 30,
+    "objective": "Create an HPA that automatically scales a Deployment from 1 to 3 replicas when CPU utilization exceeds 50%.",
+    "context": "A web service experiences variable traffic. You need to ensure sufficient replicas during spikes without manual intervention.",
+    "prerequisites": [
+      "minikube start --addons=metrics-server",
+      "kubectl"
+    ],
+    "tasks": [
+      "Deploy a simple `php-apache` Deployment with resource requests for CPU.",
+      "Create an HPA targeting the Deployment with a CPU utilization threshold of 50% and a max of 3 replicas.",
+      "Generate load using `kubectl run busybox` to push CPU usage above the threshold.",
+      "Observe the replica count scaling up, then scale down after load stops.",
+      "Cleanup all resources."
+    ],
+    "hints": [
+      "HPA requires the Metrics Server to provide CPU metrics. See metrics‑server docs: https://github.com/kubernetes-sigs/metrics-server",
+      "Define CPU requests in the pod spec; the HPA works against the percentage of requested CPU.",
+      "Use `kubectl top pods` to view current CPU usage.",
+      "Load can be generated with `stress` or a busybox loop that curls the service repeatedly."
+    ],
+    "solution": "cat <<'EOF' > kcna-006-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-apache
+  template:
+    metadata:
+      labels:
+        app: php-apache
+    spec:
+      containers:
+      - name: php-apache
+        image: php:8.2-apache
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "200m"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: php-apache-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: php-apache
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+EOF
+kubectl apply -f kcna-006-deploy.yaml",
+    "validation_commands": [
+      "kubectl get hpa php-apache-hpa -o jsonpath='{.status.currentReplicas}'",
+      "kubectl run load-generator --image=busybox --restart=Never -- /bin/sh -c 'while true; do wget -qO- http://php-apache; done'",
+      "sleep 60 && kubectl get hpa php-apache-hpa -o jsonpath='{.status.currentReplicas}'",
+      "kubectl delete pod load-generator"
+    ],
+    "expected_outputs": ["1", "3"],
+    "cleanup": "kubectl delete -f kcna-006-deploy.yaml",
+    "key_concepts": [
+      "HPA automatically adjusts replica count based on observed metrics.",
+      "Metrics Server must be running for CPU/Memory metrics.",
+      "Resource requests are required for percentage‑based scaling."
+    ]
+  },
+  {
+    "id": "kcna-lab-007",
+    "title": "Persistent Volume Claim (PVC): Attach Storage to a Pod",
+    "domain": "Storage",
+    "difficulty": "beginner",
+    "estimated_minutes": 20,
+    "objective": "Create a PersistentVolume backed by hostPath and mount it into a pod, then write and read a file.",
+    "context": "A stateful application needs a directory that persists across pod restarts on the local node.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl"
+    ],
+    "tasks": [
+      "Create a PersistentVolume named `host-pv` using `hostPath`.",
+      "Create a PersistentVolumeClaim `host-pvc` that binds to the PV.",
+      "Deploy a pod that mounts the PVC at `/data` and writes a file.",
+      "Delete the pod and recreate it to verify the data persists.",
+      "Cleanup the PVC, PV, and pod."
+    ],
+    "hints": [
+      "A `hostPath` PV uses a directory on the node's filesystem. See PV docs: https://kubernetes.io/docs/concepts/storage/volumes/#hostpath",
+      "PVCs request storage; the PV must satisfy the claim's size and access mode.",
+      "Mount the PVC via a `volumeMount` in the pod spec.",
+      "Use `kubectl exec` to write and read files inside the container."
+    ],
+    "solution": "cat <<'EOF' > kcna-007-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /tmp/kcna-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: [\"sh\", \"-c\", \"sleep 3600\"]
+    volumeMounts:
+    - name: data-volume
+      mountPath: /data
+  volumes:
+  - name: data-volume
+    persistentVolumeClaim:
+      claimName: host-pvc
+EOF
+kubectl apply -f kcna-007-pv.yaml",
+    "validation_commands": [
+      "kubectl exec pvc-pod -- sh -c 'echo hello > /data/greeting.txt'",
+      "kubectl exec pvc-pod -- cat /data/greeting.txt",
+      "kubectl delete pod pvc-pod && kubectl run pvc-pod --image=busybox --restart=Never --command -- sh -c 'cat /data/greeting.txt'"
+    ],
+    "expected_outputs": ["hello", "hello"],
+    "cleanup": "kubectl delete -f kcna-007-pv.yaml && rm -rf /tmp/kcna-data",
+    "key_concepts": [
+      "PersistentVolumes provide cluster‑wide storage resources.",
+      "A PVC is a claim for storage that can be bound to a matching PV.",
+      "Data in a PV survives pod deletion, enabling stateful workloads."
+    ]
+  },
+  {
+    "id": "kcna-lab-008",
+    "title": "RBAC: Grant Read‑Only Access to a Namespace",
+    "domain": "Security",
+    "difficulty": "beginner",
+    "estimated_minutes": 15,
+    "objective": "Create a Role that allows read‑only access to all resources in a namespace and bind it to a user.",
+    "context": "A junior developer needs to view resources in the `dev` namespace but must not be able to modify anything.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl"
+    ],
+    "tasks": [
+      "Create a namespace `dev`.",
+      "Create a Role `dev-reader` that grants `get`, `list`, and `watch` on all resource kinds.",
+      "Create a ServiceAccount `reader-sa` in the `dev` namespace.",
+      "Bind the Role to the ServiceAccount via a RoleBinding.",
+      "Verify the ServiceAccount can list pods but cannot create them.",
+      "Cleanup all created objects."
+    ],
+    "hints": [
+      "Roles are namespace‑scoped; see RBAC docs: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole",
+      "RoleBinding links a Role to a subject (user, group, or ServiceAccount).",
+      "Use `kubectl auth can-i` with the `--as` flag to test permissions for the ServiceAccount."
+    ],
+    "solution": "cat <<'EOF' > kcna-008-rbac.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dev-reader
+  namespace: dev
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get","list","watch"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: reader-sa
+  namespace: dev
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-reader-binding
+  namespace: dev
+subjects:
+- kind: ServiceAccount
+  name: reader-sa
+  namespace: dev
+roleRef:
+  kind: Role
+  name: dev-reader
+  apiGroup: rbac.authorization.k8s.io
+EOF
+kubectl apply -f kcna-008-rbac.yaml",
+    "validation_commands": [
+      "kubectl auth can-i list pods --as=system:serviceaccount:dev:reader-sa -n dev",
+      "kubectl auth can-i create pods --as=system:serviceaccount:dev:reader-sa -n dev"
+    ],
+    "expected_outputs": ["yes", "no"],
+    "cleanup": "kubectl delete -f kcna-008-rbac.yaml",
+    "key_concepts": [
+      "RBAC controls who can do what in the cluster.",
+      "Roles are scoped to a namespace; ClusterRoles apply cluster‑wide.",
+      "RoleBindings associate a Role with a user, group, or ServiceAccount."
+    ]
+  },
+  {
+    "id": "kcna-lab-009",
+    "title": "Pod Disruption Budget (PDB): Maintain Availability During Upgrades",
+    "domain": "Workloads",
+    "difficulty": "intermediate",
+    "estimated_minutes": 25,
+    "objective": "Create a Deployment of three replicas and a PodDisruptionBudget that ensures at least two pods remain available during voluntary disruptions.",
+    "context": "During a rolling upgrade of the node pool you must guarantee the service stays available.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl"
+    ],
+    "tasks": [
+      "Deploy a Deployment named `web-app` with 3 replicas of `nginx`.",
+      "Create a PodDisruptionBudget `web-pdb` with `minAvailable: 2`.",
+      "Simulate a node drain and verify that at most one pod is evicted.",
+      "Observe that the Deployment respects the PDB and maintains two running pods.",
+      "Cleanup resources."
+    ],
+    "hints": [
+      "PDBs protect pods from voluntary disruptions like node drains. See PDB docs: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/",
+      "`minAvailable` can be an absolute number or a percentage.",
+      "Use `kubectl drain <node>` to trigger evictions; the PDB will block excess evictions."
+    ],
+    "solution": "cat <<'EOF' > kcna-009-pdb.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: web-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: web
+EOF
+kubectl apply -f kcna-009-pdb.yaml",
+    "validation_commands": [
+      "kubectl get pdb web-pdb -o jsonpath='{.status.allowedDisruptions}'",
+      "kubectl get nodes -o name | head -1 | xargs -I{} kubectl drain {} --ignore-daemonsets --delete-emptydir-data --force",
+      "kubectl get pods -l app=web -o jsonpath='{range .items[*]}{.metadata.name}:{.status.phase} '"
+    ],
+    "expected_outputs": ["1", "Running Running Running"],
+    "cleanup": "kubectl delete -f kcna-009-pdb.yaml && kubectl uncordon $(kubectl get nodes -o name | head -1)",
+    "key_concepts": [
+      "PDBs limit the number of pods that can be voluntarily evicted.",
+      "Useful for maintaining service availability during node maintenance or rolling updates.",
+      "`minAvailable` ensures a minimum number of ready pods; `maxUnavailable` works inversely."
+    ]
+  },
+  {
+    "id": "kcna-lab-010",
+    "title": "Troubleshooting: Diagnose a CrashLoopBackOff Pod",
+    "domain": "Observability",
+    "difficulty": "intermediate",
+    "estimated_minutes": 20,
+    "objective": "Deploy a pod with a misconfigured command that crashes, then use `kubectl describe` and logs to identify and fix the issue.",
+    "context": "A newly created microservice fails to start due to a typo in the entrypoint command, causing a CrashLoopBackOff.",
+    "prerequisites": [
+      "minikube start",
+      "kubectl"
+    ],
+    "tasks": [
+      "Create a pod `faulty-pod` that runs `nginx -g 'daemon off;'` but misspells the flag (e.g., `-g 'daemon off'`).",
+      "Observe the pod entering CrashLoopBackOff.",
+      "Use `kubectl describe pod` and `kubectl logs` to find the error.",
+      "Patch the pod spec to correct the command and verify it runs.",
+      "Cleanup the pod."
+    ],
+    "hints": [
+      "`kubectl get pods` shows the status; `kubectl describe` reveals the last state and reason.",
+      "`kubectl logs` fetches the container’s stdout/stderr from the last attempt.",
+      "To fix, you can delete and recreate the pod with the corrected command or use `kubectl patch`."
+    ],
+    "solution": "cat <<'EOF' > kcna-010-faulty.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: faulty-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    command: [\"nginx\", \"-g\", \"daemon off\"] # missing trailing semicolon causes syntax error
+EOF
+kubectl apply -f kcna-010-faulty.yaml",
+    "validation_commands": [
+      "kubectl get pod faulty-pod -o jsonpath='{.status.phase}'",
+      "kubectl describe pod faulty-pod | grep -i 'Reason'",
+      "kubectl logs faulty-pod --previous | grep -i 'error'",
+      "kubectl delete pod faulty-pod",
+      "cat <<'EOF2' > kcna-010-fixed.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fixed-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    command: [\"nginx\", \"-g\", \"daemon off;\"]
+EOF
+kubectl apply -f kcna-010-fixed.yaml",
+      "kubectl get pod fixed-pod -o jsonpath='{.status.phase}'"
+    ],
+    "expected_outputs": ["CrashLoopBackOff", "Error", "daemon off;", "Running"],
+    "cleanup": "kubectl delete pod fixed-pod",
+    "key_concepts": [
+      "CrashLoopBackOff indicates a container repeatedly fails to start.",
+      "`kubectl describe` shows the last state and exit code.",
+      "`kubectl logs --previous` retrieves logs from the previous container instance.",
+      "Fixing the command or image resolves the loop."
+    ]
+  }
+]
