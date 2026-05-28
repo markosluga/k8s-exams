@@ -5,6 +5,13 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.2.0] — 2026-05-28
+### Added
+- KCNA (Kubernetes and Cloud Native Associate) exam questions — 230 questions covering Kubernetes Fundamentals
+- KCNA exam is now available in the exam prep tool alongside KCSA
+
+---
+
 ## [0.1.7] — 2026-05-25 
 ### Fixed
 - Woorked to fix teaching in responses where terminology that we are testing for is being explained. Fixed a

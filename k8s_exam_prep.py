@@ -42,7 +42,7 @@ EXAMS = {
         "emoji": "🔐",
         "available": True,
     },
-    "kcna": {"name": "KCNA", "full_name": "Kubernetes and Cloud Native Associate", "emoji": "☁️", "available": False},
+    "kcna": {"name": "KCNA", "full_name": "Kubernetes and Cloud Native Associate", "emoji": "☁️", "data_dir": "kcna", "available": True},
     "cka": {"name": "CKA", "full_name": "Certified Kubernetes Administrator", "emoji": "⚙️", "available": False},
     "ckad": {"name": "CKAD", "full_name": "Certified Kubernetes Application Developer", "emoji": "🚀", "available": False},
     "cks": {"name": "CKS", "full_name": "Certified Kubernetes Security Specialist", "emoji": "🛡️", "available": False},

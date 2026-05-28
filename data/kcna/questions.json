@@ -1,0 +1,3682 @@
+[
+  {
+    "id": "kcna-001",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes API object is used to define a set of Pods that should be scheduled together on the same node for performance reasons?",
+    "options": {
+      "A": "DaemonSet",
+      "B": "ReplicaSet",
+      "C": "PodAffinity",
+      "D": "StatefulSet"
+    },
+    "answer": "C",
+    "explanation": "Answer C: PodAffinity allows scheduling pods on the same node based on label selectors. A: DaemonSet ensures a copy runs on every node, not for grouping pods together. B: ReplicaSet manages replica counts but does not influence node placement. D: StatefulSet provides stable identities, not node coÃ¢â‚¬â€˜location guarantees.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-002",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the primary purpose of a Kubernetes Service of type LoadBalancer?",
+    "options": {
+      "A": "Expose a Service externally using a cloud provider's load balancer",
+      "B": "Provide an internal DNS name for Pods",
+      "C": "Persist data across Pod restarts",
+      "D": "Run a single replica of a Pod"
+    },
+    "answer": "A",
+    "explanation": "Answer A: LoadBalancer creates an external load balancer that routes traffic to the Service. B: Internal DNS is provided by ClusterIP Services. C: Persistence is handled by PersistentVolumes, not Services. D: Running a single replica is managed by Deployments, not Service types.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-003",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Kubernetes manifest, which field specifies the container image to use?",
+    "options": {
+      "A": "imagePullPolicy",
+      "B": "command",
+      "C": "image",
+      "D": "resources"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The image field contains the container image name and tag. A: imagePullPolicy defines when the image is pulled, not the image name. B: command overrides the container's entrypoint, not the image reference. D: resources define CPU/memory limits, unrelated to image selection.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-004",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which component watches the health of the controlÃ¢â‚¬â€˜plane nodes and updates their Ready status?",
+    "options": {
+      "A": "kubeÃ¢â‚¬â€˜scheduler",
+      "B": "nodeÃ¢â‚¬â€˜controller",
+      "C": "kubeÃ¢â‚¬â€˜proxy",
+      "D": "etcd"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Node controller marks nodes NotReady when they miss heartbeats. A: Scheduler assigns Pods; it does not monitor node health. C: kubeÃ¢â‚¬â€˜proxy handles network rules, not node status. D: etcd stores cluster data; it does not evaluate node health.",
+    "doc_link": "https://kubernetes.io/docs/concepts/architecture/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-005",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When using a ConfigMap as environment variables, which key in the pod spec is used?",
+    "options": {
+      "A": "envFrom",
+      "B": "configMapKeyRef",
+      "C": "volumeMounts",
+      "D": "args"
+    },
+    "answer": "A",
+    "explanation": "Answer A: envFrom imports all keyÃ¢â‚¬â€˜value pairs from a ConfigMap as env vars. B: configMapKeyRef references a single key, not the whole map. C: volumeMounts mount ConfigMaps as files, not env vars. D: args provide commandÃ¢â‚¬â€˜line arguments, unrelated to ConfigMaps.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-006",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the Kubernetes Admission controller 'NamespaceLifecycle' enforce?",
+    "options": {
+      "A": "Ensures Pods cannot be created in terminated namespaces",
+      "B": "Validates image signatures before pull",
+      "C": "Limits the number of Services per namespace",
+      "D": "Encrypts Secrets at rest"
+    },
+    "answer": "A",
+    "explanation": "Answer A: NamespaceLifecycle prevents creation of resources in a namespace that is terminating. B: ImagePolicyWebhook validates images, not NamespaceLifecycle. C: ResourceQuota enforces limits, not NamespaceLifecycle. D: Encryption at rest is configured via EncryptionConfiguration, not an admission controller.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#namespacelifecycle",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-007",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object can be used to run a oneÃ¢â‚¬â€˜off task that executes a container and then exits?",
+    "options": {
+      "A": "Job",
+      "B": "CronJob",
+      "C": "DaemonSet",
+      "D": "ReplicaSet"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Job creates Pods that run to completion and then terminate. B: CronJob schedules Jobs periodically, not a single execution. C: DaemonSet runs a copy on every node continuously. D: ReplicaSet maintains a set number of Pods, not oneÃ¢â‚¬â€˜off tasks.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-008",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What flag is used with 'kubectl apply' to perform a serverÃ¢â‚¬â€˜side dryÃ¢â‚¬â€˜run?",
+    "options": {
+      "A": "--dry-run=client",
+      "B": "--dry-run=server",
+      "C": "--validate=false",
+      "D": "--force"
+    },
+    "answer": "B",
+    "explanation": "Answer B: --dry-run=server sends the request to the API server for validation only. A: client dryÃ¢â‚¬â€˜run validates locally without contacting the API server. C: --validate controls schema validation, not dryÃ¢â‚¬â€˜run behavior. D: --force is used with delete/replace, not for dryÃ¢â‚¬â€˜run.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-009",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Pod spec, which field determines the DNS policy applied to the Pod?",
+    "options": {
+      "A": "dnsPolicy",
+      "B": "hostNetwork",
+      "C": "subdomain",
+      "D": "restartPolicy"
+    },
+    "answer": "A",
+    "explanation": "Answer A: dnsPolicy sets the DNS configuration for the Pod. B: hostNetwork binds the Pod to the node network, unrelated to DNS policy. C: subdomain is used for DNS subdomains, not the policy itself. D: restartPolicy controls Pod restart behavior, not DNS.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-dns-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-010",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following best describes the purpose of the 'taint' feature on a node?",
+    "options": {
+      "A": "Prevent Pods from being scheduled unless they tolerate the taint",
+      "B": "Automatically delete Pods when the node is under memory pressure",
+      "C": "Mark a node as deprecated for future upgrades",
+      "D": "Enable nodeÃ¢â‚¬â€˜level logging of container output"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Taints repel Pods that do not have matching tolerations. B: Memory pressure eviction is handled by the kubelet, not taints. C: Deprecation is a policy decision, not enforced by taints. D: Logging is configured via logging drivers, not node taints.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-011",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec controls how many times a container is restarted after it exits with a nonÃ¢â‚¬â€˜zero status?",
+    "options": {
+      "A": "restartPolicy",
+      "B": "terminationGracePeriodSeconds",
+      "C": "backoffLimit",
+      "D": "livenessProbe"
+    },
+    "answer": "A",
+    "explanation": "Answer A: restartPolicy defines the Pod restart behavior (Always, OnFailure, Never). B: terminationGracePeriodSeconds sets the time to wait before forceÃ¢â‚¬â€˜killing a Pod. C: backoffLimit applies to Jobs, not plain Pods. D: livenessProbe determines health checks, not restart count.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-012",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What annotation can be added to a Service to enable the AWS Load Balancer Controller to provision an NLB?",
+    "options": {
+      "A": "service.beta.kubernetes.io/aws-load-balancer-type: nlb",
+      "B": "service.kubernetes.io/aws-nlb: true",
+      "C": "service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0",
+      "D": "service.kubernetes.io/load-balancer: nlb"
+    },
+    "answer": "A",
+    "explanation": "Answer A: The annotation service.beta.kubernetes.io/aws-load-balancer-type: nlb tells the controller to create a Network Load Balancer. B: This annotation does not exist in the controller spec. C: This annotation configures internal ELB, not NLB type. D: Incorrect annotation key; the controller uses the service.beta.kubernetes.io prefix.",
+    "doc_link": "https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.6/guide/service/annotations/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-013",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Deployment manifest, which field determines the maximum number of Pods that can be unavailable during a rolling update?",
+    "options": {
+      "A": "maxSurge",
+      "B": "maxUnavailable",
+      "C": "revisionHistoryLimit",
+      "D": "progressDeadlineSeconds"
+    },
+    "answer": "B",
+    "explanation": "Answer B: maxUnavailable sets how many Pods can be down during the rollout. A: maxSurge controls the number of extra Pods created during update, not unavailable ones. C: revisionHistoryLimit defines how many old ReplicaSets to retain. D: progressDeadlineSeconds is the timeout for a rollout to be considered stalled.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-014",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used to grant a set of permissions to a group of users or service accounts?",
+    "options": {
+      "A": "Role",
+      "B": "ClusterRole",
+      "C": "RoleBinding",
+      "D": "NetworkPolicy"
+    },
+    "answer": "B",
+    "explanation": "Answer B: ClusterRole can be used across the whole cluster and can be bound via ClusterRoleBinding. A: Role is namespaceÃ¢â‚¬â€˜scoped; it does not grant clusterÃ¢â‚¬â€˜wide permissions. C: RoleBinding ties a Role to subjects; it does not define permissions itself. D: NetworkPolicy controls network traffic, not RBAC permissions.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-015",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'imagePullSecrets' field in a Pod spec?",
+    "options": {
+      "A": "Specify a list of Docker image tags to pull",
+      "B": "Provide credentials for pulling images from a private registry",
+      "C": "Define the order in which images are pulled",
+      "D": "Encrypt the image layers before runtime"
+    },
+    "answer": "B",
+    "explanation": "Answer B: imagePullSecrets references Secret objects that contain registry credentials. A: imagePullSecrets does not list tags; it references Secret objects. C: Pull order is not controlled by this field. D: Encryption of image layers is handled by the container runtime, not by this field.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-016",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a valid value for the 'restartPolicy' field in a Pod spec?",
+    "options": {
+      "A": "Always",
+      "B": "OnFailure",
+      "C": "Never",
+      "D": "OnExit"
+    },
+    "answer": "D",
+    "explanation": "Answer D: OnExit is not a supported restart policy. A: Always is a standard restart policy. B: OnFailure restarts the container only when it exits with nonÃ¢â‚¬â€˜zero code. C: Never disables automatic restarts.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-017",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When defining a Service of type 'ExternalName', which field must be provided?",
+    "options": {
+      "A": "externalIPs",
+      "B": "loadBalancerIP",
+      "C": "externalName",
+      "D": "clusterIP"
+    },
+    "answer": "C",
+    "explanation": "Answer C: externalName holds the DNS name to which the Service will resolve. A: externalIPs is for external IP addresses, not for ExternalName services. B: loadBalancerIP applies to LoadBalancer services. D: clusterIP is allocated automatically; not required for ExternalName.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#externalname",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-018",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command shows the events that have occurred on a specific node?",
+    "options": {
+      "A": "kubectl get events --field-selector involvedObject.kind=Node",
+      "B": "kubectl describe node <node-name>",
+      "C": "kubectl logs node <node-name>",
+      "D": "kubectl get pods --all-namespaces --field-selector spec.nodeName=<node-name>"
+    },
+    "answer": "B",
+    "explanation": "Answer B: kubectl describe node prints the Events section for that node. A: Field selector can filter events, but describing the node directly shows its recent events more clearly. C: kubectl logs works on Pods, not nodes. D: This lists Pods scheduled on the node, not node events.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#kubectl-describe",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-019",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a HorizontalPodAutoscaler (HPA) spec, which metric type can be used to scale based on custom application metrics?",
+    "options": {
+      "A": "Resource",
+      "B": "Object",
+      "C": "External",
+      "D": "Pods"
+    },
+    "answer": "D",
+    "explanation": "The Pods metric type in HPA v2 is designed for custom per-pod application metrics (e.g., requests per second per pod). External is for metrics sourced from outside the cluster. A (Object) applies to specific objects like Ingress. C (Resource) covers standard CPU/memory usage.",
+    "doc_link": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-custom-metrics",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-020",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl top pod' command require to be installed in the cluster?",
+    "options": {
+      "A": "Metrics Server",
+      "B": "Heapster",
+      "C": "Prometheus Adapter",
+      "D": "KubeÃ¢â‚¬â€˜stateÃ¢â‚¬â€˜metrics"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Metrics Server provides resource usage metrics for the top command. B: Heapster is deprecated in favor of Metrics Server. C: Prometheus Adapter is for custom metrics, not the basic top command. D: kubeÃ¢â‚¬â€˜stateÃ¢â‚¬â€˜metrics exposes object state, not resource usage.",
+    "doc_link": "https://github.com/kubernetes-sigs/metrics-server",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-021",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment's pod template specifies the container's listening port?",
+    "options": {
+      "A": "containerPort",
+      "B": "servicePort",
+      "C": "targetPort",
+      "D": "hostPort"
+    },
+    "answer": "A",
+    "explanation": "Answer A: containerPort defines the port exposed by the container. B: servicePort belongs to Service objects, not pod specs. C: targetPort is a Service field mapping to containerPort. D: hostPort binds the container port to the node, not the definition of the listening port.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-022",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'serviceAccountName' field in a pod spec?",
+    "options": {
+      "A": "Assign a static IP to the pod",
+      "B": "Mount a secret volume automatically",
+      "C": "Specify the service account whose credentials the pod uses",
+      "D": "Set the DNS name for the pod"
+    },
+    "answer": "C",
+    "explanation": "Answer C: serviceAccountName links the pod to a ServiceAccount for API access. A: Static IPs are set via hostNetwork or specific Service types. B: Secrets are mounted via volumes, not via serviceAccountName. D: Pod DNS is derived from its name and namespace.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-023",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is a valid way to limit a pod's CPU usage?",
+    "options": {
+      "A": "cpu: \"500m\" in the limits section",
+      "B": "memory: \"500Mi\" in the limits section",
+      "C": "request: \"500m\" in the requests section",
+      "D": "nodeSelector: cpu: high"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Setting limits.cpu to 500m caps CPU usage. B: memory limits affect RAM, not CPU. C: Requests define guaranteed resources, not hard limits. D: nodeSelector influences scheduling, not resource limits.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-limits",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-024",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Service manifest, which field determines whether the Service gets a stable virtual IP?",
+    "options": {
+      "A": "type: ClusterIP",
+      "B": "externalIPs",
+      "C": "loadBalancerIP",
+      "D": "sessionAffinity"
+    },
+    "answer": "A",
+    "explanation": "Setting type: ClusterIP (the default) causes Kubernetes to allocate a stable virtual IP for the Service. sessionAffinity controls client-IP routing stickiness but has no effect on IP allocation. externalIPs expose the Service externally. B (type) is the parent field but ClusterIP is the specific value that drives allocation.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-025",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl explain' command do?",
+    "options": {
+      "A": "Shows the resource usage of a pod",
+      "B": "Displays the API schema for a resource type",
+      "C": "Creates a new namespace",
+      "D": "Deletes a deployment"
+    },
+    "answer": "B",
+    "explanation": "Answer B: kubectl explain prints the fields and documentation for a resource. A: Resource usage is shown by 'kubectl top'. C: Namespace creation uses 'kubectl create namespace'. D: Deletion uses 'kubectl delete'.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#explain",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-026",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which object type is used to define a set of node-level labels and taints that should be applied to a group of nodes?",
+    "options": {
+      "A": "Node",
+      "B": "NodePool",
+      "C": "MachineSet",
+      "D": "NodeGroup"
+    },
+    "answer": "B",
+    "explanation": "Answer B: NodePool (in many managed services) groups nodes and can set labels/taints. A: Node objects represent individual nodes, not groups. C: MachineSet is a Cluster API concept, not core Kubernetes. D: NodeGroup is a cloud provider term, not a native Kubernetes object.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-027",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When a pod's liveness probe fails, what action does the kubelet take?",
+    "options": {
+      "A": "Restarts the pod's container",
+      "B": "Deletes the pod",
+      "C": "Scales the deployment down",
+      "D": "Sends an alert to the cluster admin"
+    },
+    "answer": "A",
+    "explanation": "Answer A: A failing liveness probe triggers a container restart. B: Deletion is not automatic; only restart occurs. C: Scaling is managed by the controller, not liveness. D: Alerts require external monitoring.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-028",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a builtÃ¢â‚¬â€˜in admission controller in Kubernetes?",
+    "options": {
+      "A": "NamespaceLifecycle",
+      "B": "NodeRestriction",
+      "C": "PodSecurityPolicy",
+      "D": "ResourceQuota"
+    },
+    "answer": "C",
+    "explanation": "PodSecurityPolicy was deprecated in Kubernetes v1.21 and removed in v1.25. It is no longer a built-in admission controller in current Kubernetes. NamespaceLifecycle (A), NodeRestriction (B), and ResourceQuota (D) remain built-in admission controllers enabled by default.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-029",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the default service discovery method for Pods in a Kubernetes cluster?",
+    "options": {
+      "A": "Environment variables only",
+      "B": "DNS via CoreDNS",
+      "C": "Static host entries",
+      "D": "Etcd queries"
+    },
+    "answer": "B",
+    "explanation": "Answer B: CoreDNS provides DNS resolution for services and pods. A: Env vars are provided but DNS is primary. C: Static hosts are not used by default. D: Etcd is internal storage, not discovery.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-030",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field controls the maximum number of pods that can be scheduled on a node?",
+    "options": {
+      "A": "maxPods",
+      "B": "podCIDR",
+      "C": "nodeSelector",
+      "D": "allocatable"
+    },
+    "answer": "A",
+    "explanation": "Answer A: maxPods is a kubelet configuration flag limiting pod count per node. B: podCIDR defines IP range, not pod count. C: nodeSelector is for pod scheduling constraints. D: allocatable reports resources, not a config field.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-031",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What Kubernetes object is used to enforce network traffic rules between pods?",
+    "options": {
+      "A": "Ingress",
+      "B": "NetworkPolicy",
+      "C": "Service",
+      "D": "ConfigMap"
+    },
+    "answer": "B",
+    "explanation": "Answer B: NetworkPolicy specifies how pods are allowed to communicate. A: Ingress defines external HTTP(S) routing, not intraÃ¢â‚¬â€˜cluster traffic control. C: Service provides stable networking endpoints, not policy enforcement. D: ConfigMap stores configuration data, not network rules.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-032",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a pod spec allows you to mount a ConfigMap as a volume?",
+    "options": {
+      "A": "envFrom",
+      "B": "configMapKeyRef",
+      "C": "volumes",
+      "D": "imagePullSecrets"
+    },
+    "answer": "C",
+    "explanation": "Answer C: volumes can reference a ConfigMap to expose its contents as files. A: envFrom imports ConfigMap data as environment variables, not as a volume. B: configMapKeyRef references a single key, not a whole volume. D: imagePullSecrets is for private registry credentials.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#use-configmap-as-a-volume",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-033",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Deployment, which strategy type is used by default?",
+    "options": {
+      "A": "Recreate",
+      "B": "RollingUpdate",
+      "C": "BlueGreen",
+      "D": "Canary"
+    },
+    "answer": "B",
+    "explanation": "Answer B: RollingUpdate gradually replaces pods and is the default strategy. A: Recreate replaces all pods at once, not default. C: BlueGreen is a deployment pattern, not a builtÃ¢â‚¬â€˜in strategy. D: Canary is a rollout pattern, not a native strategy type.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-034",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes API object represents a set of rules that control which pods can be accessed via a Service?",
+    "options": {
+      "A": "EndpointSlice",
+      "B": "Ingress",
+      "C": "NetworkPolicy",
+      "D": "ServiceAccount"
+    },
+    "answer": "C",
+    "explanation": "Answer C: NetworkPolicy can restrict which pods a Service can reach. A: EndpointSlice lists endpoints for a Service, not policy. B: Ingress governs inbound traffic from outside the cluster. D: ServiceAccount provides identity, not network rules.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-035",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl port-forward' command enable?",
+    "options": {
+      "A": "Expose a Service externally via a LoadBalancer",
+      "B": "Forward a local port to a pod's port for debugging",
+      "C": "Create a NodePort service automatically",
+      "D": "Scale a deployment to zero"
+    },
+    "answer": "B",
+    "explanation": "Answer B: portÃ¢â‚¬â€˜forward proxies traffic from a local port to a pod, useful for debugging. A: LoadBalancer services are created via Service spec, not portÃ¢â‚¬â€˜forward. C: NodePort is a Service type, unrelated to portÃ¢â‚¬â€˜forward. D: Scaling is done with 'kubectl scale'.",
+    "doc_link": "https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-036",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec defines the port that the Service proxies to on the target Pods?",
+    "options": {
+      "A": "port",
+      "B": "targetPort",
+      "C": "nodePort",
+      "D": "protocol"
+    },
+    "answer": "B",
+    "explanation": "Answer B: 'targetPort' tells the Service which container port to forward traffic to. A: 'port' is the Service's own port exposed to clients. C: 'nodePort' is used for NodePort services, not the internal target. D: 'protocol' defines TCP/UDP, not the target port.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#serviceport-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-037",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'metadata.ownerReferences' field in a Kubernetes object?",
+    "options": {
+      "A": "Define which ServiceAccount owns the object",
+      "B": "Link the object to its managing controller for garbage collection",
+      "C": "Specify the user who created the object",
+      "D": "Set the node on which the pod must run"
+    },
+    "answer": "B",
+    "explanation": "Answer B: They record the controller that created the object, enabling cascading deletion. A: OwnerReferences are not about ServiceAccounts. C: Creator information is stored in annotations or audit logs. D: Node selection uses nodeSelector or affinity, not ownerReferences.",
+    "doc_link": "https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-038",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which component of the control plane stores the desired state of the cluster?",
+    "options": {
+      "A": "kube-scheduler",
+      "B": "etcd",
+      "C": "kube-controller-manager",
+      "D": "kube-proxy"
+    },
+    "answer": "B",
+    "explanation": "Answer B: etcd is the distributed keyÃ¢â‚¬â€˜value store holding all cluster configuration. A: Scheduler assigns pods; it does not store state. C: Controller manager runs controllers that act on state, but state lives in etcd. D: kube-proxy handles network rules on nodes.",
+    "doc_link": "https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-039",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When a pod is created with 'restartPolicy: Never', what happens if the container exits with a nonÃ¢â‚¬â€˜zero code?",
+    "options": {
+      "A": "The pod is deleted automatically",
+      "B": "The container is restarted once",
+      "C": "The pod remains in Failed state and is not restarted",
+      "D": "The node is marked NotReady"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The pod enters Failed phase and stays until manually removed. A: Pods are not autoÃ¢â‚¬â€˜deleted; they stay for inspection. B: Never policy disables restarts entirely. D: Node readiness is unrelated to pod restart policy.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-040",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is a valid way to expose a pod directly without a Service?",
+    "options": {
+      "A": "kubectl expose pod <name> --type=ClusterIP",
+      "B": "kubectl port-forward pod/<name> <localPort>:<podPort>",
+      "C": "Add a hostPort to the container spec",
+      "D": "Create a DaemonSet for the pod"
+    },
+    "answer": "B",
+    "explanation": "Answer B: port-forward proxies a local port to the pod, providing direct access. A: expose creates a Service, not direct exposure. C: hostPort binds the container port to the node, still requires node network access. D: DaemonSet schedules pods on nodes but does not expose them directly.",
+    "doc_link": "https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-041",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation can be added to a Pod to ensure it is scheduled on a node with a specific label?",
+    "options": {
+      "A": "scheduler.kubernetes.io/affinity: \"key=value\"",
+      "B": "nodeSelector: {\"key\": \"value\"}",
+      "C": "node.kubernetes.io/required-labels: \"key=value\"",
+      "D": "affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution"
+    },
+    "answer": "D",
+    "explanation": "Answer D: nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution specifies required node labels for scheduling. A: This is not a valid annotation. B: nodeSelector is a field, not an annotation. C: No such annotation exists.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#nodeaffinity-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-042",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.strategy.type' to 'Recreate' in a Deployment?",
+    "options": {
+      "A": "Pods are terminated before new ones are created",
+      "B": "Pods are updated in place without downtime",
+      "C": "Deployment creates a new ReplicaSet before scaling down the old one",
+      "D": "Kubernetes ignores the field and uses RollingUpdate"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Recreate deletes all existing Pods before creating new ones, causing downtime. B: That describes RollingUpdate. C: That's the RollingUpdate behavior. D: The field is respected; default is RollingUpdate.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-043",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec controls whether the Service allocates a node port?",
+    "options": {
+      "A": "type: NodePort",
+      "B": "externalIPs",
+      "C": "clusterIP",
+      "D": "sessionAffinity"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Setting type to NodePort instructs Kubernetes to allocate a port on each node. B: externalIPs expose external addresses, not node ports. C: clusterIP is the virtual IP for the Service. D: sessionAffinity affects client affinity, not port allocation.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#nodeport",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-044",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Pod spec, which field allows you to define a command that runs before the container starts?",
+    "options": {
+      "A": "livenessProbe",
+      "B": "readinessProbe",
+      "C": "initContainers",
+      "D": "preStop"
+    },
+    "answer": "C",
+    "explanation": "Answer C: initContainers run to completion before app containers start. A: livenessProbe checks health after start. B: readinessProbe checks readiness after start. D: preStop is a lifecycle hook that runs on termination.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/init-containers/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-045",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl get all' command list by default?",
+    "options": {
+      "A": "All resources in the cluster",
+      "B": "Pods, Services, Deployments, ReplicaSets, and StatefulSets in the current namespace",
+      "C": "Only Pods and Services",
+      "D": "Nodes and PersistentVolumes"
+    },
+    "answer": "B",
+    "explanation": "Answer B: It shows the common workload resources in the namespace. A: It does not list every resource type. C: It includes more than just Pods and Services. D: Nodes and PVs are not part of 'all' output.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#resource-types",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-046",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used to provide a stable DNS name for an external service not running inside the cluster?",
+    "options": {
+      "A": "ExternalName Service",
+      "B": "Ingress",
+      "C": "EndpointSlice",
+      "D": "ConfigMap"
+    },
+    "answer": "A",
+    "explanation": "Answer A: ExternalName Service maps a DNS name to an external address. B: Ingress manages inbound HTTP(S) traffic. C: EndpointSlice lists endpoints for internal Services. D: ConfigMap stores configuration data.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#externalname",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-047",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'kubectl apply --prune' flag?",
+    "options": {
+      "A": "Delete resources not defined in the applied manifest",
+      "B": "Force a serverÃ¢â‚¬â€˜side apply",
+      "C": "Validate the manifest without making changes",
+      "D": "Show a diff before applying"
+    },
+    "answer": "A",
+    "explanation": "Answer A: --prune removes objects previously applied that are no longer present. B: ServerÃ¢â‚¬â€˜side apply uses --dry-run=server. C: --dry-run validates without changes. D: --diff shows differences.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-048",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolumeClaim spec defines the desired storage size?",
+    "options": {
+      "A": "capacity",
+      "B": "resources.requests.storage",
+      "C": "volumeMode",
+      "D": "accessModes"
+    },
+    "answer": "B",
+    "explanation": "Answer B: resources.requests.storage requests the size. A: capacity is part of PersistentVolume, not PVC. C: volumeMode defines filesystem or block. D: accessModes define read/write permissions.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-049",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When using a Service of type LoadBalancer on a cloud provider, which component creates the external load balancer?",
+    "options": {
+      "A": "kube-controller-manager",
+      "B": "kube-scheduler",
+      "C": "cloud-controller-manager",
+      "D": "etcd"
+    },
+    "answer": "C",
+    "explanation": "Answer C: cloud-controller-manager interacts with the cloud API to provision load balancers. A: Controller manager runs internal controllers, not cloud LB creation. B: Scheduler assigns pods. D: etcd stores state.",
+    "doc_link": "https://kubernetes.io/docs/concepts/cluster-administration/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-050",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following best describes a DaemonSet?",
+    "options": {
+      "A": "Runs exactly one replica of a pod across the cluster",
+      "B": "Ensures a copy of a pod runs on every node (or a subset)",
+      "C": "Provides horizontal scaling based on CPU usage",
+      "D": "Creates a new namespace for each pod"
+    },
+    "answer": "B",
+    "explanation": "Answer B: DaemonSet maintains a pod on each node (or selected nodes). A: That describes a Job with parallelism=1. C: Horizontal scaling is done by HPA. D: Namespaces are separate resources.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-051",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec defines the maximum number of seconds a container can run before being terminated?",
+    "options": {
+      "A": "terminationGracePeriodSeconds",
+      "B": "activeDeadlineSeconds",
+      "C": "livenessProbe.timeoutSeconds",
+      "D": "readinessProbe.timeoutSeconds"
+    },
+    "answer": "B",
+    "explanation": "Answer B: activeDeadlineSeconds sets a hard deadline for the Pod's overall runtime. A: terminationGracePeriodSeconds is for graceful shutdown, not hard limit. C: livenessProbe timeout is for health checks, not total runtime. D: readinessProbe timeout is also for health checks.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-active-deadline",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-052",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl cp' command do?",
+    "options": {
+      "A": "Copies files between a local machine and a container in a pod",
+      "B": "Creates a snapshot of a PersistentVolume",
+      "C": "Copies a pod definition to another namespace",
+      "D": "Exports a ConfigMap to a file"
+    },
+    "answer": "A",
+    "explanation": "Answer A: kubectl cp copies files to/from containers. B: Snapshotting PVs is done via storage provider tools. C: Copying pod definitions uses 'kubectl get' and 'apply'. D: Exporting ConfigMaps uses 'kubectl get configmap -o yaml'.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#copying-files-to-and-from-containers",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-053",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which admission controller enforces that containers must run as nonÃ¢â‚¬â€˜root users?",
+    "options": {
+      "A": "NamespaceLifecycle",
+      "B": "PodSecurityPolicy",
+      "C": "NodeRestriction",
+      "D": "ServiceAccount"
+    },
+    "answer": "B",
+    "explanation": "Answer B: PodSecurityPolicy can enforce runAsUser settings to prevent root. A: NamespaceLifecycle deals with namespace lifecycle. C: NodeRestriction limits node operations. D: ServiceAccount relates to API access.",
+    "doc_link": "https://kubernetes.io/docs/concepts/policy/pod-security-policy/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-054",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'nodeSelector' field in a pod spec?",
+    "options": {
+      "A": "Specify a node's hostname for scheduling",
+      "B": "Define required node labels for pod placement",
+      "C": "Select a node based on its IP address",
+      "D": "Force the pod to run on the master node"
+    },
+    "answer": "B",
+    "explanation": "Answer B: nodeSelector matches node labels to schedule pods. A: Hostname selection uses nodeName, not nodeSelector. C: IP-based selection is not supported directly. D: Running on master requires taints/tolerations, not nodeSelector.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-055",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment's pod template can be used to set environment variables from a Secret?",
+    "options": {
+      "A": "envFrom",
+      "B": "volumeMounts",
+      "C": "command",
+      "D": "imagePullSecrets"
+    },
+    "answer": "A",
+    "explanation": "Answer A: envFrom can import all keyÃ¢â‚¬â€˜value pairs from a Secret as env vars. B: volumeMounts mount files, not env vars. C: command overrides entrypoint. D: imagePullSecrets are for registry credentials.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information/#use-secret-as-environment-variables",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-056",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl edit' command do?",
+    "options": {
+      "A": "Opens the resource definition in an editor for live modification",
+      "B": "Deletes the specified resource",
+      "C": "Creates a new resource from a file",
+      "D": "Shows a diff between the current and desired state"
+    },
+    "answer": "A",
+    "explanation": "Answer A: kubectl edit opens the resource in $EDITOR and applies changes on save. B: Deletion uses 'kubectl delete'. C: Creation uses 'kubectl apply' or 'create'. D: Diff is shown with '--dry-run=client -o diff' or 'kubectl diff'.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#edit",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-057",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is a valid way to configure a pod to use a specific ServiceAccount?",
+    "options": {
+      "A": "metadata.annotations.serviceAccount: my-sa",
+      "B": "spec.serviceAccountName: my-sa",
+      "C": "spec.accountName: my-sa",
+      "D": "metadata.labels.serviceAccount: my-sa"
+    },
+    "answer": "B",
+    "explanation": "Answer B: serviceAccountName field assigns the ServiceAccount. A: Annotations do not set the ServiceAccount. C: accountName is not a field. D: Labels are metadata, not for ServiceAccount selection.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-058",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.replicas: 0' in a Deployment?",
+    "options": {
+      "A": "Deletes the Deployment entirely",
+      "B": "Scales the Deployment down to zero Pods, keeping the definition",
+      "C": "Prevents any new Pods from being scheduled, but existing Pods stay running",
+      "D": "Triggers a rolling update without changing Pods"
+    },
+    "answer": "B",
+    "explanation": "Answer B: replicas: 0 scales down all Pods while retaining the Deployment spec. A: Deployment object remains; only replicas are zero. C: Existing Pods are terminated when replicas go to zero. D: Rolling update requires change in pod template.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-059",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which component watches for changes to ConfigMaps and updates mounted volumes in running pods?",
+    "options": {
+      "A": "kube-scheduler",
+      "B": "kube-controller-manager",
+      "C": "kubelet",
+      "D": "etcd"
+    },
+    "answer": "C",
+    "explanation": "Answer C: kubelet monitors ConfigMap volume updates and refreshes them. A: Scheduler only assigns pods. B: Controller manager runs higherÃ¢â‚¬â€˜level controllers, not volume updates. D: etcd stores data but does not push updates.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/configmap/#mounted-configmaps-are-updated-automatically",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-060",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl top nodes' command display?",
+    "options": {
+      "A": "CPU and memory usage metrics for each node",
+      "B": "List of all node IP addresses",
+      "C": "Current pod count per node",
+      "D": "Disk usage statistics for each node"
+    },
+    "answer": "A",
+    "explanation": "Answer A: top nodes shows resource usage per node via Metrics Server. B: Node IPs are shown with 'kubectl get nodes -o wide'. C: Pod counts require custom queries or 'kubectl get pods -o wide'. D: Disk usage is not provided by top; requires monitoring tools.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#resource-usage",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-061",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec defines the protocol used for the service port?",
+    "options": {
+      "A": "protocol",
+      "B": "portProtocol",
+      "C": "serviceProtocol",
+      "D": "type"
+    },
+    "answer": "A",
+    "explanation": "Answer A: The 'protocol' field specifies TCP, UDP, or SCTP for the port. B: 'portProtocol' is not a valid field. C: 'serviceProtocol' does not exist. D: 'type' defines Service type (ClusterIP, NodePort, etc.).",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#serviceport-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-062",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.strategy.rollingUpdate.maxSurge' to '25%' do during a Deployment rollout?",
+    "options": {
+      "A": "Limits the number of Pods that can be unavailable to 25%",
+      "B": "Allows up to 25% more Pods than the desired replica count during the update",
+      "C": "Sets the maximum number of Pods that can be created overall",
+      "D": "Specifies the percentage of Pods that must be ready before proceeding"
+    },
+    "answer": "B",
+    "explanation": "Answer B: maxSurge defines extra Pods (as a percentage or count) allowed during rollout. A: That describes maxUnavailable. C: It does not set a global limit. D: Readiness gating is handled by readiness probes.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-063",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object can be used to inject a sidecar container into an existing pod without modifying the pod's manifest?",
+    "options": {
+      "A": "MutatingAdmissionWebhook",
+      "B": "ValidatingAdmissionWebhook",
+      "C": "PodPreset",
+      "D": "InitContainer"
+    },
+    "answer": "A",
+    "explanation": "Answer A: MutatingAdmissionWebhook can modify pod specs on creation, adding sidecars. B: ValidatingWebhook only validates, does not mutate. C: PodPreset is deprecated and only sets env/volumes, not containers. D: InitContainers run before app containers but must be defined in the pod spec.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#mutating-admission-webhooks",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-064",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.tolerations' field in a pod spec?",
+    "options": {
+      "A": "Define which node labels the pod prefers",
+      "B": "Allow the pod to be scheduled onto nodes with matching taints",
+      "C": "Specify resource limits for the pod",
+      "D": "Set the pod's DNS policy"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Tolerations let pods tolerate node taints, enabling scheduling onto those nodes. A: Preferences are expressed via nodeAffinity. C: Resource limits are in resources.requests/limits. D: DNS policy is set via dnsPolicy field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-065",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment's pod template controls the image pull policy for a container?",
+    "options": {
+      "A": "imagePullPolicy",
+      "B": "pullPolicy",
+      "C": "imagePolicy",
+      "D": "restartPolicy"
+    },
+    "answer": "A",
+    "explanation": "Answer A: imagePullPolicy determines when the image is pulled (Always, IfNotPresent, Never). B: pullPolicy is not a valid field. C: imagePolicy does not exist. D: restartPolicy controls container restarts, not image pulling.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-066",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl rollout status' command show for a Deployment?",
+    "options": {
+      "A": "Current replica count and desired replica count",
+      "B": "History of all previous rollouts",
+      "C": "The status of the latest rollout, including progress and any pauses",
+      "D": "The diff between the current and previous pod templates"
+    },
+    "answer": "C",
+    "explanation": "Answer C: rollout status reports progress, conditions, and if the rollout is complete. A: That is shown by 'kubectl get deployment'. B: History is shown by 'kubectl rollout history'. D: Diff requires 'kubectl diff' or 'kubectl rollout history --revision'.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#kubectl-rollout",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-067",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a builtÃ¢â‚¬â€˜in volume type in Kubernetes?",
+    "options": {
+      "A": "emptyDir",
+      "B": "hostPath",
+      "C": "configMap",
+      "D": "secretStore"
+    },
+    "answer": "D",
+    "explanation": "Answer D: secretStore is not a native volume type; secrets are a volume type called 'secret'. A: emptyDir provides temporary storage on the node. B: hostPath mounts a file or directory from the node. C: configMap volumes expose ConfigMap data as files.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-068",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.backoffLimit' in a Job spec?",
+    "options": {
+      "A": "Limits the number of retries for a failed pod before the Job is marked as failed",
+      "B": "Specifies how many times the Job controller should back off before creating a pod",
+      "C": "Defines the maximum number of concurrent pods the Job can run",
+      "D": "Controls the time between retries"
+    },
+    "answer": "A",
+    "explanation": "Answer A: backoffLimit sets the retry count for failed pod attempts. B: Backoff behavior is internal; limit is about retries. C: Parallelism controls concurrency. D: Backoff delay is exponential, not directly set by backoffLimit.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/#retry-limit",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-069",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used to define a set of resources that should be cleaned up automatically when a namespace is deleted?",
+    "options": {
+      "A": "ResourceQuota",
+      "B": "LimitRange",
+      "C": "Finalizer",
+      "D": "Namespace"
+    },
+    "answer": "C",
+    "explanation": "Answer C: Finalizers are metadata entries that block deletion until external cleanup is performed, enabling automated cleanup. A: ResourceQuota limits resource consumption, not cleanup. B: LimitRange sets default limits. D: Namespace itself is the container, not the cleanup mechanism.",
+    "doc_link": "https://kubernetes.io/docs/concepts/overview/working-with-objects/finalizers/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-070",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'spec.selector' field in a Service definition do?",
+    "options": {
+      "A": "Selects which pods the Service routes traffic to based on label matching",
+      "B": "Specifies the DNS name for the Service",
+      "C": "Defines the load balancer type",
+      "D": "Sets the Service's external IP address"
+    },
+    "answer": "A",
+    "explanation": "Answer A: selector matches pod labels to bind the Service to those pods. B: DNS name is derived from Service name. C: Load balancer type is set via 'type' field. D: External IPs are set via 'externalIPs' field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-types",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-071",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec defines the maximum amount of CPU a container can use?",
+    "options": {
+      "A": "resources.limits.cpu",
+      "B": "resources.requests.cpu",
+      "C": "cpuLimit",
+      "D": "cpuQuota"
+    },
+    "answer": "A",
+    "explanation": "Answer A: resources.limits.cpu sets a hard CPU limit for the container. B: requests define guaranteed CPU, not the max limit. C: cpuLimit is not a valid field. D: cpuQuota is not a Kubernetes field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-limits",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-072",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.restartPolicy: Never' in a Job do?",
+    "options": {
+      "A": "Prevents the Job controller from creating any Pods",
+      "B": "Ensures the Pod will not be restarted on failure, causing the Job to fail after the first attempt",
+      "C": "Makes the Job run indefinitely",
+      "D": "Allows the Job to retry indefinitely"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Never disables retries; a failed Pod marks the Job as failed. A: Jobs still create Pods; restartPolicy controls Pod restart behavior. C: Jobs have finite duration; Never does not make them run forever. D: Infinite retries require restartPolicy: OnFailure with backoffLimit.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/#restart-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-073",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec directs the pod to be scheduled by a specific custom scheduler?",
+    "options": {
+      "A": "schedulerName",
+      "B": "nodeSelector",
+      "C": "priorityClassName",
+      "D": "nodeName"
+    },
+    "answer": "A",
+    "explanation": "spec.schedulerName specifies which scheduler should schedule the pod. If omitted, the default scheduler is used. nodeSelector constrains node selection by labels. priorityClassName sets scheduling priority. nodeName directly assigns a pod to a specific node, bypassing the scheduler entirely.",
+    "doc_link": "https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/#specifying-a-scheduler",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-074",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Service definition, what does the 'externalTrafficPolicy: Local' setting achieve?",
+    "options": {
+      "A": "Routes external traffic to any node in the cluster",
+      "B": "Preserves the client source IP by routing only to nodes with endpoints for the Service",
+      "C": "Disables external traffic to the Service",
+      "D": "Enables TLS termination on the Service"
+    },
+    "answer": "B",
+    "explanation": "Answer B: 'Local' routes traffic only to nodes that have endpoint pods, preserving the original client IP. A: That describes the default 'Cluster' policy. C: Service remains reachable; policy does not disable it. D: TLS termination is a feature of Ingress or Service with specific annotations, not this field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-075",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.selector' field in a Deployment?",
+    "options": {
+      "A": "Selects which Pods the Deployment should manage based on label matching",
+      "B": "Specifies the Service selector for the Deployment",
+      "C": "Defines node affinity rules for the Pods",
+      "D": "Sets the image pull policy for containers"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Deployment.selector matches pod labels to identify Pods it owns. B: Service selectors are separate resources. C: Node affinity is defined under pod.affinity. D: Image pull policy is a container field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-076",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolume definition determines the storage class to use?",
+    "options": {
+      "A": "storageClassName",
+      "B": "class",
+      "C": "type",
+      "D": "provisioner"
+    },
+    "answer": "A",
+    "explanation": "Answer A: storageClassName links the PV to a StorageClass. B: 'class' is not a valid field. C: 'type' refers to volume type (e.g., hostPath). D: 'provisioner' is part of a StorageClass, not PV spec.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-077",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl get pods -o wide' command add to the standard pod listing?",
+    "options": {
+      "A": "Shows the pod's node name, IP, and container images",
+      "B": "Displays resource usage (CPU/memory) for each pod",
+      "C": "Provides a JSON representation of the pods",
+      "D": "Lists all events associated with each pod"
+    },
+    "answer": "A",
+    "explanation": "Answer A: -o wide adds columns for NODE, IP, and CONTAINER IMAGE. B: Resource usage requires 'kubectl top'. C: JSON output uses '-o json'. D: Events are shown with 'kubectl describe'.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#custom-columns",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-078",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used to limit the total number of Pods that can be created in a namespace?",
+    "options": {
+      "A": "ResourceQuota",
+      "B": "LimitRange",
+      "C": "PodDisruptionBudget",
+      "D": "NetworkPolicy"
+    },
+    "answer": "A",
+    "explanation": "Answer A: ResourceQuota can restrict the count of Pods, CPU, memory, etc., per namespace. B: LimitRange sets default request/limit values. C: PodDisruptionBudget controls voluntary disruptions. D: NetworkPolicy governs network traffic.",
+    "doc_link": "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-079",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When using a StatefulSet, which field ensures each pod gets a stable network identity?",
+    "options": {
+      "A": "serviceName",
+      "B": "podManagementPolicy",
+      "C": "volumeClaimTemplates",
+      "D": "orderedReady"
+    },
+    "answer": "A",
+    "explanation": "Answer A: StatefulSet creates a Headless Service (serviceName) that provides DNS entries like pod-0.serviceName. B: podManagementPolicy controls creation order, not identity. C: volumeClaimTemplates create PVCs per pod. D: orderedReady is not a field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-080",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.podAntiAffinity' in a pod's affinity rules?",
+    "options": {
+      "A": "Forces the pod to be scheduled on nodes that already run a matching pod",
+      "B": "Prevents the pod from being scheduled on nodes that have pods matching the selector",
+      "C": "Ensures the pod runs on the same node as a matching pod",
+      "D": "Disables all affinity rules for the pod"
+    },
+    "answer": "B",
+    "explanation": "Answer B: podAntiAffinity avoids co-locating pods with specified labels on the same node. A: That describes podAffinity, not anti-affinity. C: Affinity does that, not anti-affinity. D: It only affects anti-affinity, not all affinity.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-081",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service definition controls whether the Service assigns a clusterÃ¢â‚¬â€˜internal IP?",
+    "options": {
+      "A": "clusterIP",
+      "B": "type",
+      "C": "externalIPs",
+      "D": "sessionAffinity"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Setting clusterIP to \"None\" creates a headless Service; otherwise a virtual IP is allocated. B: type defines Service type (ClusterIP, NodePort, etc.) but does not directly control IP allocation. C: externalIPs expose the Service outside the cluster. D: sessionAffinity affects client routing, not IP allocation.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-082",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl rollout restart deployment/<name>' command do?",
+    "options": {
+      "A": "Deletes the Deployment and recreates it from scratch",
+      "B": "Updates the Deployment's pod template annotation to trigger a rolling restart of its Pods",
+      "C": "Scales the Deployment down to zero and back up",
+      "D": "ForceÃ¢â‚¬â€˜applies a new replica count of zero"
+    },
+    "answer": "B",
+    "explanation": "Answer B: rollout restart adds a temporary annotation causing the controller to recreate Pods. A: The object remains; only Pods are restarted. C: Scaling is not performed automatically. D: It does not change replica count.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#kubectl-rollout",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-083",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is a valid way to make a pod tolerable to a taint with effect 'NoSchedule'?",
+    "options": {
+      "A": "Add a toleration with operator 'Exists' and effect 'NoSchedule'",
+      "B": "Add a nodeSelector matching the taint key",
+      "C": "Set spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution",
+      "D": "Add an annotation 'taint.toleration.kubernetes.io/NoSchedule'"
+    },
+    "answer": "A",
+    "explanation": "Answer A: A toleration with operator 'Exists' and matching effect allows scheduling on tainted nodes. B: nodeSelector does not bypass taints. C: Affinity influences node choice but not taint tolerance. D: Annotations are not used for tolerations.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-based-evictions",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-084",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the primary purpose of a PodDisruptionBudget (PDB)?",
+    "options": {
+      "A": "Limit the number of simultaneous voluntary evictions for a set of pods",
+      "B": "Define resource limits for pods",
+      "C": "Specify the maximum number of replicas for a deployment",
+      "D": "Enforce network policies for pod communication"
+    },
+    "answer": "A",
+    "explanation": "Answer A: PDB ensures that a certain number or percentage of pods remain available during voluntary disruptions. B: Resource limits are set in the pod spec. C: Replica count is managed by Deployments/StatefulSets. D: Network policies are separate resources.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/disruptions/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-085",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment's pod template determines the container's startup command?",
+    "options": {
+      "A": "command",
+      "B": "args",
+      "C": "entrypoint",
+      "D": "run"
+    },
+    "answer": "A",
+    "explanation": "Answer A: 'command' overrides the container image's ENTRYPOINT. B: 'args' overrides CMD arguments, not the command itself. C: 'entrypoint' is not a Kubernetes field. D: 'run' does not exist in the spec.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-086",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'spec.strategy.type: Recreate' option do for a Deployment?",
+    "options": {
+      "A": "Deletes all existing Pods before creating new ones, causing downtime",
+      "B": "Creates new Pods alongside old ones and then removes the old ones",
+      "C": "Performs a rolling update with maxSurge set to 0",
+      "D": "Disables updates entirely"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Recreate tears down the old ReplicaSet before bringing up the new one, leading to downtime. B: That describes RollingUpdate. C: maxSurge is irrelevant for Recreate. D: Updates are still performed, just not concurrently.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-087",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object can be used to expose a set of Pods on a specific port using Layer 4 (TCP/UDP) load balancing without a cloud provider?",
+    "options": {
+      "A": "Service of type LoadBalancer",
+      "B": "Ingress",
+      "C": "Service of type NodePort",
+      "D": "Service of type ClusterIP"
+    },
+    "answer": "C",
+    "explanation": "Answer C: NodePort opens a port on each node, providing L4 load balancing across pods. A: LoadBalancer depends on a cloud provider integration. B: Ingress operates at HTTP layer (L7). D: ClusterIP is internal only.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-088",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.revisionHistoryLimit' in a Deployment?",
+    "options": {
+      "A": "Limits the number of old ReplicaSets that are retained for rollback",
+      "B": "Sets the maximum number of Pods the Deployment can create",
+      "C": "Controls how many times the Deployment can be updated per day",
+      "D": "Defines the number of times the Deployment controller retries a failed rollout"
+    },
+    "answer": "A",
+    "explanation": "Answer A: revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. B: Replica count is set by spec.replicas. C: No such rateÃ¢â‚¬â€˜limit exists. D: Retry behavior is governed by backoff settings, not this field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-089",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec enables TCP keepÃ¢â‚¬â€˜alive probes for the Service's endpoints?",
+    "options": {
+      "A": "keepAliveTime",
+      "B": "sessionAffinityConfig",
+      "C": "externalTrafficPolicy",
+      "D": "none Ã¢â‚¬â€œ keepÃ¢â‚¬â€˜alive is handled by the underlying socket implementation"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Kubernetes does not expose a keepÃ¢â‚¬â€˜alive setting; it relies on the OS/TCP stack. A: No such field exists. B: sessionAffinityConfig relates to client IP affinity, not keepÃ¢â‚¬â€˜alive. C: externalTrafficPolicy controls source IP handling.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-090",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When defining a Deployment, which field determines the maximum number of Pods that can be unavailable during a rolling update?",
+    "options": {
+      "A": "spec.strategy.rollingUpdate.maxUnavailable",
+      "B": "spec.strategy.rollingUpdate.maxSurge",
+      "C": "spec.replicas",
+      "D": "spec.minReadySeconds"
+    },
+    "answer": "A",
+    "explanation": "Answer A: maxUnavailable limits how many Pods may be down during the rollout. B: maxSurge controls extra Pods, not unavailable ones. C: replicas sets desired count, not rollout behavior. D: minReadySeconds defines readiness delay after pod start.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-091",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec specifies the DNS policy used by the pod?",
+    "options": {
+      "A": "dnsPolicy",
+      "B": "dnsConfig",
+      "C": "dnsPolicyType",
+      "D": "dnsMode"
+    },
+    "answer": "A",
+    "explanation": "Answer A: dnsPolicy sets the DNS policy (ClusterFirst, Default, etc.) for the pod. B: dnsConfig provides additional DNS settings but does not select the policy. C: dnsPolicyType is not a Kubernetes field. D: dnsMode does not exist.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#dns-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-092",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.restartPolicy: OnFailure' in a Job do?",
+    "options": {
+      "A": "Restarts the pod indefinitely regardless of exit code",
+      "B": "Restarts the pod only when it exits with a nonÃ¢â‚¬â€˜zero status, up to backoffLimit times",
+      "C": "Prevents any restarts, causing the job to fail on first error",
+      "D": "Makes the job run continuously like a Deployment"
+    },
+    "answer": "B",
+    "explanation": "Answer B: OnFailure restarts failed pods, respecting backoffLimit. A: OnFailure restarts only on failure, not indefinitely. C: Never would prevent restarts. D: Jobs are finite; this describes a Deployment.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/#restart-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-093",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation can be used to enable sidecar injection by Istio?",
+    "options": {
+      "A": "sidecar.istio.io/inject: \"true\"",
+      "B": "istio.io/sidecar-inject: \"yes\"",
+      "C": "inject.istio.io/sidecar: \"enabled\"",
+      "D": "istio.sidecar/inject: \"true\""
+    },
+    "answer": "A",
+    "explanation": "Answer A: The standard annotation is sidecar.istio.io/inject. B: Incorrect namespace. C: Wrong annotation format. D: Incorrect ordering of keys.",
+    "doc_link": "https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-094",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.podManagementPolicy: Parallel' in a StatefulSet?",
+    "options": {
+      "A": "Pods are created sequentially, one after another",
+      "B": "All Pods are created simultaneously, speeding up startup",
+      "C": "Pods are never deleted automatically",
+      "D": "The StatefulSet behaves like a Deployment"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Parallel creates all replicas at once. A: Parallel does the opposite of OrderedReady. C: Deletion behavior is unchanged. D: StatefulSet semantics remain.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-095",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service definition determines whether the Service is headless?",
+    "options": {
+      "A": "clusterIP: \"None\"",
+      "B": "type: Headless",
+      "C": "headless: true",
+      "D": "externalName: \"none\""
+    },
+    "answer": "A",
+    "explanation": "Answer A: Setting clusterIP to \"None\" creates a headless Service. B: There is no 'Headless' type. C: No such field. D: ExternalName is a different Service type.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-096",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl get nodes -o jsonpath=\"{.items[*].status.capacity.cpu}\"' command output?",
+    "options": {
+      "A": "A list of node names",
+      "B": "The total CPU capacity of each node in cores",
+      "C": "The current CPU usage of each node",
+      "D": "The pod count per node"
+    },
+    "answer": "B",
+    "explanation": "Answer B: The jsonpath extracts the CPU capacity field. A: Node names are under .metadata.name. C: Usage requires Metrics Server. D: Pod count is not part of capacity.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-097",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used to define a set of rules that restrict which pods can communicate with each other?",
+    "options": {
+      "A": "NetworkPolicy",
+      "B": "PodSecurityPolicy",
+      "C": "ResourceQuota",
+      "D": "Ingress"
+    },
+    "answer": "A",
+    "explanation": "Answer A: NetworkPolicy defines allowed ingress/egress traffic between pods. B: PodSecurityPolicy deals with security contexts. C: ResourceQuota limits resource consumption. D: Ingress manages external HTTP traffic.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-098",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment's pod template can be used to set environment variables from a ConfigMap?",
+    "options": {
+      "A": "envFrom",
+      "B": "env",
+      "C": "configMapRef",
+      "D": "volumeMounts"
+    },
+    "answer": "A",
+    "explanation": "Answer A: envFrom imports all keyÃ¢â‚¬â€˜value pairs from a ConfigMap as env vars. B: env can reference individual keys but not bulk import. C: configMapRef is not a topÃ¢â‚¬â€˜level field. D: volumeMounts mount files, not env vars.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information/#use-configmap-as-environment-variables",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-099",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.type: LoadBalancer' on a Service do in a cloudÃ¢â‚¬â€˜native environment?",
+    "options": {
+      "A": "Creates a NodePort on each node",
+      "B": "Allocates an external IP via the cloud provider's loadÃ¢â‚¬â€˜balancer service",
+      "C": "Exposes the Service only within the cluster",
+      "D": "Disables all traffic to the Service"
+    },
+    "answer": "B",
+    "explanation": "Answer B: LoadBalancer triggers cloud provider provisioning of an external LB. A: NodePort is a different type. C: ClusterIP would keep it internal. D: LoadBalancer exposes, not disables.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-100",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec determines whether the Service will preserve the client source IP address?",
+    "options": {
+      "A": "externalTrafficPolicy",
+      "B": "sessionAffinity",
+      "C": "clusterIP",
+      "D": "loadBalancerIP"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Setting externalTrafficPolicy to 'Local' preserves the original client IP. B: sessionAffinity deals with client session routing, not source IP. C: clusterIP is the virtual IP address inside the cluster. D: loadBalancerIP is the external IP assigned to a LoadBalancer Service.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-101",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl describe pod <name>' command display that 'kubectl get pod' does not?",
+    "options": {
+      "A": "The pod's resource usage (CPU/memory)",
+      "B": "Detailed events, conditions, and container statuses",
+      "C": "The pod's JSON representation",
+      "D": "A list of all pods in the namespace"
+    },
+    "answer": "B",
+    "explanation": "Answer B: 'describe' shows events, conditions, and detailed status. A: Resource usage requires 'kubectl top'. C: JSON output uses '-o json'. D: 'get' lists pods, not describe.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#describe",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-102",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment's pod template can be used to set a container's memory limit?",
+    "options": {
+      "A": "resources.limits.memory",
+      "B": "resources.requests.memory",
+      "C": "memoryLimit",
+      "D": "limits.memory"
+    },
+    "answer": "A",
+    "explanation": "Answer A: resources.limits.memory defines the maximum memory a container can use. B: requests set guaranteed memory, not the hard limit. C: memoryLimit is not a valid field. D: limits.memory is not the correct path.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-limits",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-103",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.selector' field in a Service?",
+    "options": {
+      "A": "Selects the pods that the Service routes traffic to based on label matching",
+      "B": "Specifies the DNS name for the Service",
+      "C": "Defines the Service type (ClusterIP, NodePort, etc.)",
+      "D": "Sets the Service's external IP address"
+    },
+    "answer": "A",
+    "explanation": "Answer A: selector matches pod labels to bind the Service to those pods. B: DNS name is derived from Service name. C: Service type is defined by the 'type' field. D: External IPs are set via 'externalIPs'.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-definition",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-104",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation can be used to enable automatic sidecar injection for Linkerd?",
+    "options": {
+      "A": "linkerd.io/inject: \"enabled\"",
+      "B": "sidecar.linkerd.io/inject: \"true\"",
+      "C": "linkerd.io/sidecar: \"auto\"",
+      "D": "inject.linkerd.io/sidecar: \"yes\""
+    },
+    "answer": "A",
+    "explanation": "Answer A: Linkerd uses the annotation linkerd.io/inject: \"enabled\" for automatic injection. B: Incorrect namespace. C: Wrong annotation format. D: Invalid annotation.",
+    "doc_link": "https://linkerd.io/2/tasks/adding-your-service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-105",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.strategy.rollingUpdate.maxSurge: 0' achieve during a Deployment rollout?",
+    "options": {
+      "A": "Prevents any new Pods from being created until old ones terminate",
+      "B": "Allows unlimited extra Pods during the update",
+      "C": "Limits the number of unavailable Pods to zero",
+      "D": "Disables rolling updates entirely"
+    },
+    "answer": "A",
+    "explanation": "Answer A: maxSurge 0 means no extra Pods; new Pods are created only after old ones are terminated, causing possible downtime. B: Unlimited extra Pods would be maxSurge set to a high value. C: maxUnavailable controls unavailable Pods. D: RollingUpdate remains active; maxSurge just restricts surge.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-106",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolumeClaim determines the size of the requested volume?",
+    "options": {
+      "A": "resources.requests.storage",
+      "B": "spec.capacity.storage",
+      "C": "size",
+      "D": "volumeSize"
+    },
+    "answer": "A",
+    "explanation": "Answer A: resources.requests.storage is the standard way to request storage size. B: capacity is a PV field, not PVC. C: size is not a field. D: volumeSize does not exist.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-107",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl exec -it <pod> -- /bin/sh' command allow you to do?",
+    "options": {
+      "A": "Copy files from the pod to the local machine",
+      "B": "Open an interactive shell inside the container",
+      "C": "View the pod's logs",
+      "D": "Restart the pod"
+    },
+    "answer": "B",
+    "explanation": "Answer B: -it allocates a TTY and opens /bin/sh for interactive commands. A: Copying files uses 'kubectl cp'. C: Logs are retrieved with 'kubectl logs'. D: Restarting a pod requires delete or rollout.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#exec",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-108",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a valid pod restart policy?",
+    "options": {
+      "A": "Always",
+      "B": "OnFailure",
+      "C": "Never",
+      "D": "OnError"
+    },
+    "answer": "D",
+    "explanation": "Answer D: OnError is not a supported restart policy. A: Always is valid. B: OnFailure is valid. C: Never is valid.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-109",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of adding the label 'app=frontend' to a pod and then creating a Service with selector 'app=frontend'?",
+    "options": {
+      "A": "The Service will route traffic to that pod (and any others with the same label)",
+      "B": "The pod will be deleted automatically",
+      "C": "The Service will expose the pod on a random external IP",
+      "D": "The pod will be restarted"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Service selectors match pods with the label, directing traffic to them. B: Labels do not trigger deletion. C: External IP depends on Service type, not label. D: Labels do not cause restarts.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-definition",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-110",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec defines a lifecycle hook that runs just BEFORE the container is terminated?",
+    "options": {
+      "A": "postStart",
+      "B": "preStop",
+      "C": "postStop",
+      "D": "preStart"
+    },
+    "answer": "B",
+    "explanation": "preStop is executed just before the container receives a termination signal, allowing graceful shutdown. postStart runs immediately after the container starts. Kubernetes does not have a postStop or preStart lifecycle hook.",
+    "doc_link": "https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-111",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'spec.selector' field in a DaemonSet control?",
+    "options": {
+      "A": "Which nodes the DaemonSet runs on",
+      "B": "Which pods the DaemonSet manages",
+      "C": "The Service that fronts the DaemonSet",
+      "D": "The label used for pod affinity"
+    },
+    "answer": "B",
+    "explanation": "Answer B: selector matches pod labels created by the DaemonSet, defining ownership. A: Node selection is handled by nodeSelector/affinity, not selector. C: DaemonSets do not create Services. D: Affinity uses separate fields.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#pod-management",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-112",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation enables automatic injection of the Linkerd data plane proxy into a pod?",
+    "options": {
+      "A": "linkerd.io/inject: \"enabled\"",
+      "B": "linkerd.io/inject: \"true\"",
+      "C": "linkerd.io/auto-inject: \"enabled\"",
+      "D": "linkerd.io/proxy: \"auto\""
+    },
+    "answer": "A",
+    "explanation": "Answer A: Linkerd uses linkerd.io/inject: \"enabled\" to trigger injection. B: While true may work in some setups, the documented value is \"enabled\". C: Incorrect annotation key. D: Invalid annotation.",
+    "doc_link": "https://linkerd.io/2/tasks/adding-your-service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-113",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of setting 'spec.tolerations' with 'operator: Exists' and 'effect: NoExecute' on a pod?",
+    "options": {
+      "A": "The pod can be scheduled on nodes with matching NoExecute taints and will not be evicted when the taint is added",
+      "B": "The pod can be scheduled on nodes with matching NoExecute taints but will be evicted after the tolerationSeconds expire",
+      "C": "The pod ignores all taints on nodes",
+      "D": "The pod will never be scheduled on tainted nodes"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Operator Exists matches any key; with NoExecute the pod is evicted after the specified tolerationSeconds (or immediately if omitted). A: NoExecute tolerations allow scheduling but cause eviction after tolerationSeconds. C: Only NoSchedule or PreferNoSchedule can be ignored; NoExecute still triggers eviction. D: It permits scheduling, not prohibits it.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-based-evictions",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-114",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec determines whether the Service will allocate a stable virtual IP inside the cluster?",
+    "options": {
+      "A": "type",
+      "B": "clusterIP",
+      "C": "externalIPs",
+      "D": "sessionAffinity"
+    },
+    "answer": "B",
+    "explanation": "Answer B: clusterIP set to a nonÃ¢â‚¬â€˜None value allocates a stable ClusterIP. Setting it to \"None\" makes the Service headless. A: type defines how the Service is exposed (ClusterIP, NodePort, etc.). C: externalIPs expose the Service outside the cluster. D: sessionAffinity affects routing, not IP allocation.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-115",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is a valid way to reference a ConfigMap key as an environment variable in a pod?",
+    "options": {
+      "A": "env:\n  - name: MY_VAR\n    valueFrom:\n      configMapKeyRef:\n        name: my-config\n        key: my-key",
+      "B": "env:\n  - name: MY_VAR\n    value: \"$(my-config.my-key)\"",
+      "C": "envFrom:\n  - configMapRef:\n      name: my-config",
+      "D": "command:\n  - \"$(MY_VAR)\""
+    },
+    "answer": "A",
+    "explanation": "Answer A: Using valueFrom.configMapKeyRef correctly references a single key. B: $(...) syntax is not interpreted for env values. C: envFrom imports all keys, not a single key. D: Command substitution is not performed by the container runtime.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information/#use-configmap-as-an-environment-variable",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-116",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.revisionHistoryLimit' field in a Deployment?",
+    "options": {
+      "A": "Limit the number of old ReplicaSets retained for rollback",
+      "B": "Set the maximum number of Pods the Deployment can create",
+      "C": "Control how many times the Deployment can be updated per hour",
+      "D": "Define the number of times a failed rollout is retried"
+    },
+    "answer": "A",
+    "explanation": "Answer A: revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. B: Replica count is controlled by spec.replicas. C: No rateÃ¢â‚¬â€˜limit exists. D: Retry behavior is governed by backoff settings, not this field.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-117",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service definition controls whether the Service forwards traffic to pods on the same node only?",
+    "options": {
+      "A": "externalTrafficPolicy: Local",
+      "B": "sessionAffinity: ClientIP",
+      "C": "internalTrafficPolicy: Local",
+      "D": "loadBalancerSourceRanges"
+    },
+    "answer": "C",
+    "explanation": "Answer C: internalTrafficPolicy: Local ensures traffic stays on the same node when possible. A: externalTrafficPolicy affects traffic coming from outside the cluster. B: sessionAffinity controls clientÃ¢â‚¬â€˜IP stickiness, not node locality. D: loadBalancerSourceRanges restrict external IP ranges for LoadBalancer services.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#internaltrafficpolicy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-118",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl apply -k <directory>' command do?",
+    "options": {
+      "A": "Applies a single YAML file in the directory",
+      "B": "Recursively processes Kustomize bases and overlays to generate a final manifest before applying",
+      "C": "Deletes all resources defined in the directory",
+      "D": "Creates a new namespace named after the directory"
+    },
+    "answer": "B",
+    "explanation": "Answer B: -k tells kubectl to run Kustomize on the directory, producing a combined manifest that is then applied. A: -k triggers Kustomize, not a raw file apply. C: Deletion requires 'kubectl delete'. D: Namespace creation is explicit with a manifest.",
+    "doc_link": "https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-119",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What Kubernetes object is used to define a set of network policies that control inbound and outbound traffic for pods?",
+    "options": {
+      "A": "Ingress",
+      "B": "NetworkPolicy",
+      "C": "Service",
+      "D": "PodSecurityPolicy"
+    },
+    "answer": "B",
+    "explanation": "Answer B: NetworkPolicy specifies how groups of pods are allowed to communicate with each other and other network endpoints. A: Ingress is a resource that manages external HTTP/HTTPS traffic into a cluster, not podÃ¢â‚¬â€˜toÃ¢â‚¬â€˜pod network rules. C: Service provides stable networking endpoints but does not enforce traffic rules. D: PodSecurityPolicy governs security contexts, not network traffic.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-120",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment spec controls the maximum number of Pods that can be unavailable during a rolling update?",
+    "options": {
+      "A": "maxSurge",
+      "B": "maxUnavailable",
+      "C": "revisionHistoryLimit",
+      "D": "progressDeadlineSeconds"
+    },
+    "answer": "B",
+    "explanation": "Answer B: maxUnavailable sets the number of Pods that may be down during the update. A: maxSurge defines how many extra Pods can be created above the desired number, not the unavailable count. C: revisionHistoryLimit controls how many old ReplicaSets are retained. D: progressDeadlineSeconds is the timeout for a rollout to be considered stalled.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-121",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When configuring a Service of type LoadBalancer on a cloud provider, which annotation would you add to request an internal load balancer on AWS?",
+    "options": {
+      "A": "service.beta.kubernetes.io/aws-load-balancer-internal: \"true\"",
+      "B": "service.beta.kubernetes.io/aws-load-balancer-type: nlb",
+      "C": "service.beta.kubernetes.io/aws-load-balancer-scheme: internal",
+      "D": "service.kubernetes.io/internal: true"
+    },
+    "answer": "A",
+    "explanation": "service.beta.kubernetes.io/aws-load-balancer-internal: \"true\" is the well-documented annotation for provisioning an internal AWS Elastic Load Balancer using the in-tree cloud provider. Option B selects NLB type. Option C (aws-load-balancer-scheme: internal) is valid only with AWS Load Balancer Controller v2+. D is not a valid annotation.",
+    "doc_link": "https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.6/guide/service/annotations/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-122",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command would you use to view the YAML definition of a specific Pod named 'frontend' in the 'default' namespace?",
+    "options": {
+      "A": "kubectl get pod frontend -o yaml",
+      "B": "kubectl describe pod frontend",
+      "C": "kubectl edit pod frontend",
+      "D": "kubectl show pod frontend"
+    },
+    "answer": "A",
+    "explanation": "Answer A: 'kubectl get pod <name> -o yaml' prints the full manifest in YAML. B: 'describe' shows a humanÃ¢â‚¬â€˜readable summary, not the raw YAML. C: 'edit' opens an editor for live changes; it does not simply display the YAML. D: 'show' is not a kubectl subcommand.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#custom-columns",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-123",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a HorizontalPodAutoscaler, which field specifies the target average CPU utilization percentage?",
+    "options": {
+      "A": "targetCPUUtilizationPercentage",
+      "B": "cpuUtilizationTarget",
+      "C": "averageCPUUtilization",
+      "D": "cpuTargetPercentage"
+    },
+    "answer": "A",
+    "explanation": "Answer A: The HPA spec uses 'targetCPUUtilizationPercentage' to set the desired average CPU usage. B: Incorrect field name; not recognized by the API. C: There is no 'averageCPUUtilization' field in the HPA spec. D: Incorrect field name; the API expects 'targetCPUUtilizationPercentage'.",
+    "doc_link": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configuring-an-hpa",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-124",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following best describes a 'CustomResourceDefinition' (CRD) in Kubernetes?",
+    "options": {
+      "A": "A builtÃ¢â‚¬â€˜in object that extends the API server with new builtÃ¢â‚¬â€˜in types",
+      "B": "A userÃ¢â‚¬â€˜defined API object that allows you to create your own resource types",
+      "C": "A configuration file for the kubeÃ¢â‚¬â€˜controllerÃ¢â‚¬â€˜manager",
+      "D": "A manifest that defines a new namespace"
+    },
+    "answer": "B",
+    "explanation": "Answer B: CRDs let you define new API objects that behave like native resources. A: CRDs are not builtÃ¢â‚¬â€˜in; they are userÃ¢â‚¬â€˜defined extensions. C: The controller manager uses other config files, not CRDs. D: Namespaces are a core API object, not defined via CRD.",
+    "doc_link": "https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-125",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When using a Service of type 'ExternalName', what DNS record type does Kubernetes create internally?",
+    "options": {
+      "A": "A record",
+      "B": "CNAME record",
+      "C": "TXT record",
+      "D": "MX record"
+    },
+    "answer": "B",
+    "explanation": "Answer B: ExternalName services act as CNAME aliases to the external DNS name. A: Kubernetes does not create an A record for ExternalName services. C: TXT records are unrelated. D: MX records are for mail routing, not used here.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#externalname",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-126",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolumeClaim controls whether the volume can be mounted as readÃ¢â‚¬â€˜only?",
+    "options": {
+      "A": "accessModes",
+      "B": "volumeMode",
+      "C": "readOnly",
+      "D": "storageClassName"
+    },
+    "answer": "A",
+    "explanation": "Answer A: 'accessModes' includes values like ReadWriteOnce, ReadOnlyMany, etc., which dictate readÃ¢â‚¬â€˜only capabilities. B: volumeMode selects Filesystem vs Block, not readÃ¢â‚¬â€˜only semantics. C: There is no 'readOnly' field on a PVC spec. D: storageClassName selects the provisioner, not access mode.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-127",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the '--record' flag do when used with 'kubectl apply'?",
+    "options": {
+      "A": "It records the command in the object's annotation 'kubectl.kubernetes.io/last-applied-configuration'",
+      "B": "It stores the full command line in the object's annotation 'kubectl.kubernetes.io/last-applied-configuration'",
+      "C": "It creates an audit log entry for the apply operation",
+      "D": "It prints the serverÃ¢â‚¬â€˜side applied configuration to stdout"
+    },
+    "answer": "B",
+    "explanation": "The (deprecated) --record flag annotates the object with kubernetes.io/change-cause containing the exact kubectl command. This annotation is visible in kubectl rollout history. Note: --record is deprecated since v1.22. The annotation name is kubernetes.io/change-cause, not last-applied-configuration which is used by kubectl apply.",
+    "doc_link": "https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-128",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service definition specifies the protocol used for the Service port?",
+    "options": {
+      "A": "protocol",
+      "B": "portProtocol",
+      "C": "serviceProtocol",
+      "D": "type"
+    },
+    "answer": "A",
+    "explanation": "protocol is the field in a Service port definition that sets the transport protocol (TCP, UDP, SCTP). portProtocol does not exist in the Kubernetes API. containerPort and targetPort refer to container-side and backend port mappings.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-129",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.strategy.type: RollingUpdate' on a Deployment control?",
+    "options": {
+      "A": "Disables updates entirely",
+      "B": "Enables incremental rollout of new ReplicaSet while keeping the old one running",
+      "C": "Deletes the old ReplicaSet before creating the new one",
+      "D": "Creates a new namespace for the rollout"
+    },
+    "answer": "B",
+    "explanation": "Answer B: RollingUpdate performs a gradual replacement of Pods, maintaining availability. A: RollingUpdate does not disable updates. C: Deletion after readiness is part of the strategy, not immediate. D: Namespaces are unrelated to Deployment strategies.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-130",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation enables automatic sidecar injection for the Consul service mesh?",
+    "options": {
+      "A": "consul.hashicorp.com/connect-inject: \\\"true\\\"",
+      "B": "sidecar.consul.io/inject: \\\"enabled\\\"",
+      "C": "consul.io/inject: \\\"yes\\\"",
+      "D": "hashicorp.com/consul-inject: \\\"true\\\""
+    },
+    "answer": "A",
+    "explanation": "consul.hashicorp.com/connect-inject: \"true\" is the correct annotation to enable Consul Connect sidecar injection. The annotation namespace is consul.hashicorp.com. Options B, C, and D use incorrect annotation keys not found in HashiCorp documentation.",
+    "doc_link": "https://developer.hashicorp.com/consul/docs/k8s/connect",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-131",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of adding the label 'tier=backend' to a pod and creating a Service with selector 'tier=backend'?",
+    "options": {
+      "A": "The Service will route traffic to all pods with that label",
+      "B": "The pod will be deleted automatically",
+      "C": "The Service will expose the pod on an external IP",
+      "D": "The pod will restart immediately"
+    },
+    "answer": "A",
+    "explanation": "When a Service selector matches a pod label, Kubernetes creates Endpoints pointing to that pod and the Service routes traffic to all matching pods. Adding a label does not cause pod restart (D), deletion (B), or automatic external IP assignment (C).",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-132",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolume definition determines whether the volume can be mounted as readÃ¢â‚¬â€˜only?",
+    "options": {
+      "A": "readOnly",
+      "B": "accessModes",
+      "C": "capacity",
+      "D": "persistentVolumeReclaimPolicy"
+    },
+    "answer": "B",
+    "explanation": "accessModes on a PersistentVolume specifies mounting semantics: ReadWriteOnce (RWO), ReadOnlyMany (ROX), or ReadWriteMany (RWX). persistentVolumeReclaimPolicy controls what happens after the PVC is released (Retain/Delete/Recycle). volumeMode selects Filesystem vs Block. storageClassName selects the provisioner.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-133",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'spec.minReadySeconds' field in a Deployment control?",
+    "options": {
+      "A": "The minimum time a pod must be ready before it is considered available",
+      "B": "The delay before a pod is terminated during a rollout",
+      "C": "The interval between successive rollouts",
+      "D": "The time the Deployment controller waits before scaling"
+    },
+    "answer": "A",
+    "explanation": "spec.minReadySeconds specifies the minimum number of seconds a newly created pod must be ready without crashing before it is counted as available for the rollout. This prevents a crash-looping pod from advancing the update. terminationGracePeriodSeconds controls graceful shutdown time.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-134",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used to provide a stable network identity for each pod in a StatefulSet?",
+    "options": {
+      "A": "Headless Service",
+      "B": "Ingress",
+      "C": "ConfigMap",
+      "D": "DaemonSet"
+    },
+    "answer": "A",
+    "explanation": "A Headless Service (clusterIP: None) combined with a StatefulSet serviceName field gives each pod a stable DNS name like pod-0.service-name.namespace.svc.cluster.local. DaemonSet runs one pod per node but does not provide per-pod stable network identity. Ingress handles external HTTP. ConfigMap stores configuration.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-135",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.selector' field in a Job?",
+    "options": {
+      "A": "Select which Pods the Job should manage",
+      "B": "Define the Service that fronts the Job",
+      "C": "Specify node affinity for Job Pods",
+      "D": "Set the image pull policy for containers"
+    },
+    "answer": "D",
+    "explanation": "Jobs do not have a user-settable spec.selector field in normal usage. The Job controller automatically manages the selector. Attempting to set spec.selector manually is unusual and typically not required. This is consistent with how CronJobs also lack a top-level selector field.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-136",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service definition enables session affinity based on client IP?",
+    "options": {
+      "A": "sessionAffinity: ClientIP",
+      "B": "affinity: clientIP",
+      "C": "stickySessions: true",
+      "D": "loadBalancerSourceRanges"
+    },
+    "answer": "A",
+    "explanation": "sessionAffinity: ClientIP in a Service spec routes requests from the same client IP to the same backend pod. loadBalancerSourceRanges restricts which external IPs can access a LoadBalancer Service. externalTrafficPolicy and internalTrafficPolicy control traffic locality, not session stickiness.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-137",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the 'kubectl get svc -o wide' command display that the plain 'kubectl get svc' does not?",
+    "options": {
+      "A": "The Service's cluster IP, external IPs, and ports",
+      "B": "The full YAML manifest of each Service",
+      "C": "The list of endpoints backing the Service",
+      "D": "The resource usage metrics of each Service"
+    },
+    "answer": "A",
+    "explanation": "kubectl get svc -o wide appends extra columns such as SELECTOR compared to plain kubectl get svc. It does NOT print the full YAML manifest (that requires -o yaml). C is not what -o wide does. D describes kubectl get endpoints, a separate command.",
+    "doc_link": "https://kubernetes.io/docs/home/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-138",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec determines whether the Service will allocate a virtual IP inside the cluster?",
+    "options": {
+      "A": "clusterIP",
+      "B": "type",
+      "C": "externalIPs",
+      "D": "sessionAffinity"
+    },
+    "answer": "A",
+    "explanation": "Answer A: The 'clusterIP' field holds the internal virtual IP; setting it to 'None' creates a headless Service. B: 'type' defines how the Service is exposed (ClusterIP, NodePort, LoadBalancer, etc.) but does not allocate the IP itself. C: 'externalIPs' expose the Service on existing node IPs, not internal virtual IPs. D: 'sessionAffinity' controls clientÃ¢â‚¬â€˜IP stickiness, not IP allocation.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-139",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.strategy.type: Recreate' on a Deployment do?",
+    "options": {
+      "A": "Deletes all existing Pods before creating new ones, causing downtime",
+      "B": "Creates new Pods alongside old ones and then removes the old ones",
+      "C": "Performs a rolling update with maxSurge set to 0",
+      "D": "Disables updates entirely"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Recreate tears down the old ReplicaSet before bringing up the new one, which can cause a period without any Pods. B: That describes the RollingUpdate strategy. C: maxSurge is a RollingUpdate parameter; Recreate does not use it. D: Recreate still performs an update, just not concurrently.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-140",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation enables automatic sidecar injection for the Istio service mesh?",
+    "options": {
+      "A": "sidecar.istio.io/inject: \"true\"",
+      "B": "istio.io/inject: \"enabled\"",
+      "C": "inject.istio.io/sidecar: \"yes\"",
+      "D": "istio.sidecar/inject: \"true\""
+    },
+    "answer": "A",
+    "explanation": "Answer A: Istio uses the annotation sidecar.istio.io/inject: \"true\" to trigger automatic sidecar injection. B: Incorrect annotation key. C: Wrong format and namespace. D: Invalid annotation.",
+    "doc_link": "https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-141",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of adding the label 'app=frontend' to a pod and creating a Service with selector 'app=frontend'?",
+    "options": {
+      "A": "The Service will route traffic to that pod (and any others with the same label)",
+      "B": "The pod will be deleted automatically",
+      "C": "The Service will expose the pod on an external IP address automatically",
+      "D": "The pod will restart immediately"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Service selectors match pod labels, causing traffic to be forwarded to matching pods. B: Labels do not trigger deletion. C: External exposure depends on Service type (e.g., LoadBalancer), not just the label. D: Adding a label does not restart a pod.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-definition",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-142",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolume definition controls the access mode (e.g., ReadWriteOnce, ReadOnlyMany)?",
+    "options": {
+      "A": "accessModes",
+      "B": "capacity",
+      "C": "storageClassName",
+      "D": "persistentVolumeReclaimPolicy"
+    },
+    "answer": "A",
+    "explanation": "Answer A: 'accessModes' specifies allowed access patterns such as ReadWriteOnce (RWO) or ReadOnlyMany (ROX). B: 'capacity' defines size, not access mode. C: 'storageClassName' links to a StorageClass. D: 'persistentVolumeReclaimPolicy' determines what happens after a PVC is released.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-143",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object provides a stable network identity (DNS name) for each pod in a StatefulSet?",
+    "options": {
+      "A": "Headless Service",
+      "B": "Ingress",
+      "C": "ConfigMap",
+      "D": "DaemonSet"
+    },
+    "answer": "A",
+    "explanation": "Answer A: A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. B: Ingress handles external HTTP routing. C: ConfigMap stores configuration data. D: DaemonSet runs a copy on each node, not perÃ¢â‚¬â€˜pod DNS names.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-144",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.selector' field in a Job definition?",
+    "options": {
+      "A": "Select which Pods the Job should manage",
+      "B": "Define the Service that fronts the Job",
+      "C": "Specify node affinity for Job Pods",
+      "D": "Jobs do not have a selector field"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Correct Ã¢â‚¬â€œ the Job spec has no selector field. A: Jobs create Pods directly; they do not use a selector. B: Jobs are not exposed via Services. C: Node affinity is set inside the pod template, not via a selector.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/#job-spec",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-145",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec defines the security context for the entire pod?",
+    "options": {
+      "A": "securityContext",
+      "B": "podSecurityContext",
+      "C": "runAsUser",
+      "D": "containerSecurityContext"
+    },
+    "answer": "A",
+    "explanation": "Answer A: 'securityContext' at the pod level applies defaults to all containers. B: 'podSecurityContext' is not a Kubernetes field; the correct name is 'securityContext'. C: 'runAsUser' is a subfield of securityContext. D: 'containerSecurityContext' does not exist; each container has its own 'securityContext'.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/security-context/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-146",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does setting 'spec.strategy.type: RollingUpdate' on a StatefulSet control?",
+    "options": {
+      "A": "Enables inÃ¢â‚¬â€˜place updates without pod restarts",
+      "B": "Performs a rolling update with ordered pod termination and creation",
+      "C": "Deletes all pods before creating new ones",
+      "D": "StatefulSets do not support RollingUpdate"
+    },
+    "answer": "B",
+    "explanation": "Answer B: RollingUpdate for StatefulSets updates pods sequentially respecting ordinal ordering. A: StatefulSets always restart pods when the template changes. C: That describes the Recreate strategy, which StatefulSets do not support. D: StatefulSets support RollingUpdate as the only strategy.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-147",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation enables automatic sidecar injection for the Linkerd service mesh?",
+    "options": {
+      "A": "linkerd.io/inject: \"enabled\"",
+      "B": "sidecar.linkerd.io/inject: \"true\"",
+      "C": "linkerd.io/auto-inject: \"yes\"",
+      "D": "linkerd.io/inject: \"true\""
+    },
+    "answer": "A",
+    "explanation": "Linkerd sidecar injection is triggered by the annotation linkerd.io/inject: \"enabled\". The value must be \"enabled\", not \"true\". This can be applied to a namespace or individual pod/deployment. Options B, C, and D use incorrect annotation keys or values not documented by Linkerd.",
+    "doc_link": "https://linkerd.io/2/tasks/adding-your-service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-148",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the effect of adding the label 'env=prod' to a pod and creating a Service with selector 'env=prod'?",
+    "options": {
+      "A": "The Service will route traffic to all pods with that label",
+      "B": "The pod will be terminated automatically",
+      "C": "The Service will obtain an external IP automatically",
+      "D": "The pod will restart immediately"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Service selectors match pods by label, directing traffic accordingly. B: Labels do not cause termination. C: External IP allocation depends on Service type, not label. D: Adding a label does not trigger a restart.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-definition",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-149",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolumeClaim specifies the storage class to use?",
+    "options": {
+      "A": "storageClassName",
+      "B": "class",
+      "C": "volumeMode",
+      "D": "accessModes"
+    },
+    "answer": "A",
+    "explanation": "Answer A: 'storageClassName' links the PVC to a StorageClass, determining provisioner and parameters. B: 'class' is not a PVC field. C: 'volumeMode' defines filesystem vs block, not class. D: 'accessModes' defines RWO/RWX etc., not class.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#storage-classes",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-150",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object provides a stable network identity for each pod in a StatefulSet?",
+    "options": {
+      "A": "Headless Service",
+      "B": "Ingress",
+      "C": "ConfigMap",
+      "D": "DaemonSet"
+    },
+    "answer": "A",
+    "explanation": "Answer A: A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. B: Ingress handles external HTTP routing. C: ConfigMap stores configuration data. D: DaemonSet runs a copy on each node, not perÃ¢â‚¬â€˜pod DNS names.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-151",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'spec.selector' field in a CronJob?",
+    "options": {
+      "A": "Select which Pods the CronJob should manage",
+      "B": "Define the Service that fronts the CronJob",
+      "C": "Specify node affinity for CronJob Pods",
+      "D": "CronJob does not have a selector field"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Correct Ã¢â‚¬â€œ the CronJob spec has no selector field. A: CronJobs create Jobs directly; they do not use a selector. B: CronJobs are not exposed via Services. C: Node affinity is defined inside the pod template.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#cron-job-spec",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-152",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which component is responsible for maintaining the desired state of a Deployment?",
+    "options": {
+      "A": "kubelet",
+      "B": "kube-proxy",
+      "C": "kube-apiserver",
+      "D": "kube-controller-manager"
+    },
+    "answer": "D",
+    "explanation": "The kube-controller-manager runs the Deployment controller that ensures the number of Pods matches the Deployment spec.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-153",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When you create a Service of type `NodePort`, how is the port exposed on each node?",
+    "options": {
+      "A": "Via a randomly allocated port in the 30000-32767 range",
+      "B": "Via port 80 on the node's IP",
+      "C": "Via a fixed port defined by kube-proxy",
+      "D": "Via a load balancer IP"
+    },
+    "answer": "A",
+    "explanation": "NodePort services allocate a port in the 30000-32767 range on every node, forwarding traffic to the service's cluster IP.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-154",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following best describes a `ConfigMap`?",
+    "options": {
+      "A": "Stores sensitive data like passwords",
+      "B": "Stores non-sensitive configuration data that can be consumed by Pods",
+      "C": "Stores container images",
+      "D": "Stores persistent volume claims"
+    },
+    "answer": "B",
+    "explanation": "ConfigMaps hold non-sensitive configuration data as key-value pairs that can be consumed by Pods.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/configmap/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-155",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the `kubectl rollout restart` command do for a Deployment?",
+    "options": {
+      "A": "Deletes the Deployment and recreates it",
+      "B": "Scales the Deployment to zero and back to original replicas",
+      "C": "Triggers a rolling restart of the Pods by updating the pod template's annotation",
+      "D": "Rebuilds the Docker images used by the Pods"
+    },
+    "answer": "C",
+    "explanation": "`kubectl rollout restart` adds an annotation to the pod template, causing the Deployment controller to restart Pods.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-156",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec determines the node selection based on labels?",
+    "options": {
+      "A": "nodeSelector",
+      "B": "affinity",
+      "C": "tolerations",
+      "D": "hostNetwork"
+    },
+    "answer": "A",
+    "explanation": "`nodeSelector` is a simple key-value map that matches node labels.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-157",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of a `ServiceAccount` in Kubernetes?",
+    "options": {
+      "A": "To provide a unique IP address for a Pod",
+      "B": "To grant Pods an identity for API server authentication",
+      "C": "To store configuration files",
+      "D": "To define network policies"
+    },
+    "answer": "B",
+    "explanation": "ServiceAccounts supply Pods with credentials (tokens) to authenticate to the API server.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-158",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following objects can be used to enforce network traffic rules between Pods?",
+    "options": {
+      "A": "Ingress",
+      "B": "Service",
+      "C": "NetworkPolicy",
+      "D": "ConfigMap"
+    },
+    "answer": "C",
+    "explanation": "`NetworkPolicy` resources define how Pods are allowed to communicate with each other.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-159",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In the context of Kubernetes, what does the term *taint* refer to?",
+    "options": {
+      "A": "A label applied to a node that repels Pods without a matching toleration",
+      "B": "A secret stored in etcd",
+      "C": "A deprecated API version",
+      "D": "An error state of a Pod"
+    },
+    "answer": "A",
+    "explanation": "A taint on a node prevents Pods that do not have a matching toleration from being scheduled there.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-160",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command shows the current resource usage (CPU, memory) of a node?",
+    "options": {
+      "A": "kubectl get nodes -o wide",
+      "B": "kubectl top node",
+      "C": "kubectl describe node",
+      "D": "kubectl logs node"
+    },
+    "answer": "B",
+    "explanation": "`kubectl top node` (requires Metrics Server) displays node resource usage.",
+    "doc_link": "https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-161",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the default DNS policy for Pods?",
+    "options": {
+      "A": "ClusterFirst",
+      "B": "Default",
+      "C": "ClusterFirstWithHostNet",
+      "D": "None"
+    },
+    "answer": "A",
+    "explanation": "Pods default to `ClusterFirst`, which prefers the cluster DNS service.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#dns-policy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-162",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which object provides a stable IP address and DNS name for a set of Pods?",
+    "options": {
+      "A": "Ingress",
+      "B": "Service",
+      "C": "ConfigMap",
+      "D": "ReplicaSet"
+    },
+    "answer": "B",
+    "explanation": "A Service abstracts a set of Pods and gives them a stable virtual IP and DNS name.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-163",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field controls the maximum number of Pods that can be created by a Deployment during a rolling update?",
+    "options": {
+      "A": "maxSurge",
+      "B": "maxUnavailable",
+      "C": "revisionHistoryLimit",
+      "D": "strategy"
+    },
+    "answer": "A",
+    "explanation": "`maxSurge` defines how many extra Pods can be created beyond the desired replica count during an update.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-164",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When would you use a `DaemonSet`?",
+    "options": {
+      "A": "To run a single replica of an application",
+      "B": "To ensure a copy of a Pod runs on every node (or selected nodes)",
+      "C": "To expose an external load balancer",
+      "D": "To store configuration data"
+    },
+    "answer": "B",
+    "explanation": "DaemonSets guarantee that a Pod runs on each node (or a subset) for node-level services.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-165",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the `kubectl apply -k <dir>` command do?",
+    "options": {
+      "A": "Applies a raw manifest file",
+      "B": "Applies a Kustomize configuration directory",
+      "C": "Deletes resources defined in the directory",
+      "D": "Generates a Helm chart"
+    },
+    "answer": "B",
+    "explanation": "The `-k` flag tells kubectl to process a Kustomize overlay in the given directory.",
+    "doc_link": "https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-166",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a built-in Kubernetes volume type?",
+    "options": {
+      "A": "emptyDir",
+      "B": "hostPath",
+      "C": "persistentVolumeClaim",
+      "D": "cloudSQL"
+    },
+    "answer": "D",
+    "explanation": "`cloudSQL` is not a native volume type; it is a GCP service that can be accessed via Cloud SQL Proxy.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/volumes/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-167",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service spec defines the ports that the Service forwards to Pods?",
+    "options": {
+      "A": "targetPort",
+      "B": "port",
+      "C": "nodePort",
+      "D": "protocol"
+    },
+    "answer": "B",
+    "explanation": "`port` is the port exposed by the Service; `targetPort` maps to the container port.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-168",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of a `PodDisruptionBudget` (PDB)?",
+    "options": {
+      "A": "To limit the number of Pods that can be created",
+      "B": "To ensure a minimum number of Pods remain available during voluntary disruptions",
+      "C": "To enforce resource quotas",
+      "D": "To set network bandwidth limits"
+    },
+    "answer": "B",
+    "explanation": "PDBs protect against too many Pods being evicted simultaneously (e.g., during node upgrades).",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/disruptions/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-169",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command would you use to retrieve the full manifest of a running Pod?",
+    "options": {
+      "A": "kubectl describe pod <name>",
+      "B": "kubectl get pod <name> -o yaml",
+      "C": "kubectl logs <name>",
+      "D": "kubectl exec <name> -- cat /manifest.yaml"
+    },
+    "answer": "B",
+    "explanation": "`kubectl get pod <name> -o yaml` outputs the full YAML manifest of the Pod.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-170",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is a `StatefulSet` primarily used for?",
+    "options": {
+      "A": "Running stateless web applications",
+      "B": "Running stateful applications requiring stable network IDs and persistent storage",
+      "C": "Exposing services to external traffic",
+      "D": "Scheduling batch jobs"
+    },
+    "answer": "B",
+    "explanation": "StatefulSets provide stable network identifiers and persistent storage for stateful workloads like databases.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-171",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which resource type allows you to run scheduled batch jobs in Kubernetes?",
+    "options": {
+      "A": "Job",
+      "B": "CronJob",
+      "C": "DaemonSet",
+      "D": "ReplicaSet"
+    },
+    "answer": "B",
+    "explanation": "CronJobs schedule Jobs to run at specific times or intervals using a cron expression.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-172",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command scales a Deployment named `web` to 5 replicas?",
+    "options": {
+      "A": "kubectl resize deployment web --replicas=5",
+      "B": "kubectl scale deployment web --replicas=5",
+      "C": "kubectl set replicas deployment/web 5",
+      "D": "kubectl update deployment web replicas=5"
+    },
+    "answer": "B",
+    "explanation": "`kubectl scale` sets the desired replica count for a Deployment.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-173",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does a `Liveness Probe` in a Pod spec do?",
+    "options": {
+      "A": "Checks if the container is ready to receive traffic",
+      "B": "Restarts the container if it determines the container is unhealthy",
+      "C": "Pulls the latest container image",
+      "D": "Monitors memory usage"
+    },
+    "answer": "B",
+    "explanation": "A liveness probe periodically checks container health and restarts it if the probe fails.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-174",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a container spec defines environment variables?",
+    "options": {
+      "A": "args",
+      "B": "command",
+      "C": "env",
+      "D": "envFrom"
+    },
+    "answer": "C",
+    "explanation": "The `env` array in a container spec defines environment variables as key-value pairs.",
+    "doc_link": "https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-175",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does `kubectl drain <node>` do?",
+    "options": {
+      "A": "Deletes all Pods on the node permanently",
+      "B": "Safely evicts Pods from the node and marks it unschedulable",
+      "C": "Removes the node from the cluster",
+      "D": "Restarts all Pods on the node"
+    },
+    "answer": "B",
+    "explanation": "`kubectl drain` evicts Pods from a node and marks it unschedulable, preparing it for maintenance.",
+    "doc_link": "https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-176",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of a `PersistentVolumeClaim` (PVC)?",
+    "options": {
+      "A": "To provision a storage backend",
+      "B": "To request storage from a PersistentVolume",
+      "C": "To define storage class parameters",
+      "D": "To back up Pod data"
+    },
+    "answer": "B",
+    "explanation": "A PVC is a request for storage that gets bound to a matching PersistentVolume.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-177",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is used for Role-Based Access Control (RBAC)?",
+    "options": {
+      "A": "NetworkPolicy",
+      "B": "LimitRange",
+      "C": "ClusterRole",
+      "D": "ResourceQuota"
+    },
+    "answer": "C",
+    "explanation": "ClusterRole (and Role) define sets of permissions used in RBAC.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-178",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does `imagePullPolicy: Always` do?",
+    "options": {
+      "A": "Only pulls the image if it is not already present",
+      "B": "Always pulls the image from the registry before starting the container",
+      "C": "Never pulls the image from a registry",
+      "D": "Pulls the image only during the first deployment"
+    },
+    "answer": "B",
+    "explanation": "`Always` forces the kubelet to contact the registry every time the container starts.",
+    "doc_link": "https://kubernetes.io/docs/concepts/containers/images/#updating-images",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-179",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Deployment spec specifies the update strategy?",
+    "options": {
+      "A": "updatePolicy",
+      "B": "strategy",
+      "C": "rollout",
+      "D": "template"
+    },
+    "answer": "B",
+    "explanation": "The `strategy` field in a Deployment spec defines whether to use RollingUpdate or Recreate.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-180",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the primary role of `etcd` in a Kubernetes cluster?",
+    "options": {
+      "A": "Container runtime management",
+      "B": "Distributed key-value store for all cluster data",
+      "C": "Network proxy for Services",
+      "D": "Scheduling Pods on nodes"
+    },
+    "answer": "B",
+    "explanation": "etcd is the distributed key-value store that persists all cluster state.",
+    "doc_link": "https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-181",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command creates a Pod from an image without writing a YAML manifest?",
+    "options": {
+      "A": "kubectl apply nginx",
+      "B": "kubectl run mypod --image=nginx",
+      "C": "kubectl create nginx --type=pod",
+      "D": "kubectl start --image=nginx"
+    },
+    "answer": "B",
+    "explanation": "`kubectl run` creates a Pod (or Deployment) imperatively from an image.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#run",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-182",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is a Kubernetes `Namespace` used for?",
+    "options": {
+      "A": "Network segmentation between nodes",
+      "B": "Logical isolation of resources within a cluster",
+      "C": "Container image isolation",
+      "D": "Defining CPU quotas"
+    },
+    "answer": "B",
+    "explanation": "Namespaces partition cluster resources, enabling logical isolation and resource quota application.",
+    "doc_link": "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-183",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field specifies the container port to expose in a Pod spec?",
+    "options": {
+      "A": "expose",
+      "B": "service",
+      "C": "containerPort",
+      "D": "hostPort"
+    },
+    "answer": "C",
+    "explanation": "`containerPort` in the container spec documents which port the container listens on.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-184",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of `kubectl port-forward`?",
+    "options": {
+      "A": "Exposes a service externally via a load balancer",
+      "B": "Forwards a local port to a port on a Pod for debugging",
+      "C": "Changes a Service type to NodePort",
+      "D": "Maps a node port to a container port"
+    },
+    "answer": "B",
+    "explanation": "`kubectl port-forward` tunnels a local port to a container port for local access.",
+    "doc_link": "https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-185",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command shows details about a specific Pod including its events?",
+    "options": {
+      "A": "kubectl get pod <name> -o wide",
+      "B": "kubectl describe pod <name>",
+      "C": "kubectl logs <name>",
+      "D": "kubectl explain pod"
+    },
+    "answer": "B",
+    "explanation": "`kubectl describe pod` shows detailed information including conditions, events, and resource usage.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#describe",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-186",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the role of a `ReplicaSet`?",
+    "options": {
+      "A": "Manages rolling updates for Deployments",
+      "B": "Ensures a specified number of Pod replicas are running at any time",
+      "C": "Provides network routing for Pods",
+      "D": "Manages persistent storage"
+    },
+    "answer": "B",
+    "explanation": "A ReplicaSet maintains the desired number of Pod copies by creating or deleting Pods as needed.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-187",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes component runs on every worker node and manages container lifecycle?",
+    "options": {
+      "A": "kube-apiserver",
+      "B": "kube-scheduler",
+      "C": "kubelet",
+      "D": "kube-controller-manager"
+    },
+    "answer": "C",
+    "explanation": "The kubelet runs on each worker node and ensures containers are running as specified by Pod specs.",
+    "doc_link": "https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-188",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "How do you add a label `env=prod` to an existing Pod named `mypod`?",
+    "options": {
+      "A": "kubectl set label pod mypod env=prod",
+      "B": "kubectl label pod mypod env=prod",
+      "C": "kubectl annotate pod mypod env=prod",
+      "D": "kubectl update pod mypod --label env=prod"
+    },
+    "answer": "B",
+    "explanation": "`kubectl label` adds or updates labels on Kubernetes objects.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#label",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-189",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does `kubectl rollout undo deployment/<name>` do?",
+    "options": {
+      "A": "Scales the Deployment to zero",
+      "B": "Reverts the Deployment to the previous revision",
+      "C": "Pauses the ongoing rollout",
+      "D": "Deletes the Deployment history"
+    },
+    "answer": "B",
+    "explanation": "`kubectl rollout undo` rolls back a Deployment to its previous ReplicaSet revision.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-190",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which object in Kubernetes is used to expose HTTP/S routes to Services within a cluster?",
+    "options": {
+      "A": "Service",
+      "B": "Ingress",
+      "C": "EndpointSlice",
+      "D": "NetworkPolicy"
+    },
+    "answer": "B",
+    "explanation": "An Ingress resource routes external HTTP/S traffic to internal Services based on rules.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/ingress/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-191",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec specifies the container's resource requests and limits?",
+    "options": {
+      "A": "quota",
+      "B": "limits",
+      "C": "resources",
+      "D": "capacity"
+    },
+    "answer": "C",
+    "explanation": "The `resources` field in a container spec holds both `requests` and `limits` for CPU and memory.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-192",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Service type exposes a service on a static port on each node's IP?",
+    "options": {
+      "A": "ClusterIP",
+      "B": "NodePort",
+      "C": "LoadBalancer",
+      "D": "ExternalName"
+    },
+    "answer": "B",
+    "explanation": "NodePort allocates a static port in the 30000-32767 range on every node's IP, forwarding to the service's pods.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-193",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which object is used to inject non-sensitive configuration data into Pods?",
+    "options": {
+      "A": "Secret",
+      "B": "ConfigMap",
+      "C": "PersistentVolume",
+      "D": "ServiceAccount"
+    },
+    "answer": "B",
+    "explanation": "ConfigMaps hold non-sensitive key-value pairs that can be mounted as files or exposed as environment variables.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/configmap/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-194",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a container spec sets the hard limit for CPU usage?",
+    "options": {
+      "A": "resources.requests.cpu",
+      "B": "resources.limits.cpu",
+      "C": "resources.requests.memory",
+      "D": "resources.limits.memory"
+    },
+    "answer": "B",
+    "explanation": "resources.limits.cpu defines the maximum CPU a container can consume.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-195",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which controller provides stable network identities and ordered pod startup?",
+    "options": {
+      "A": "StatefulSet",
+      "B": "Deployment",
+      "C": "DaemonSet",
+      "D": "ReplicaSet"
+    },
+    "answer": "A",
+    "explanation": "StatefulSet gives each pod a stable hostname and persistent storage, preserving identity across restarts.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-196",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which flag adds a custom HTTP header to traffic handled by the NGINX Ingress controller?",
+    "options": {
+      "A": "--annotation",
+      "B": "--header",
+      "C": "--add-header",
+      "D": "--ingress-annotation"
+    },
+    "answer": "B",
+    "explanation": "The --header flag lets the NGINX Ingress controller inject custom headers into responses.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/ingress/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-197",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which RBAC object binds a Role or ClusterRole to users, groups, or service accounts?",
+    "options": {
+      "A": "Role",
+      "B": "ClusterRole",
+      "C": "RoleBinding",
+      "D": "ServiceAccount"
+    },
+    "answer": "C",
+    "explanation": "RoleBinding (or ClusterRoleBinding) associates a set of permissions with a subject.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-198",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which volume type is backed by a cloud provider's block storage and can be dynamically provisioned?",
+    "options": {
+      "A": "hostPath",
+      "B": "emptyDir",
+      "C": "persistentVolumeClaim",
+      "D": "awsElasticBlockStore"
+    },
+    "answer": "D",
+    "explanation": "awsElasticBlockStore (or its equivalents) maps a cloud block device to a pod and supports dynamic provisioning via StorageClass.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-199",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In a Service manifest, which field specifies the port on the pod that the Service forwards traffic to?",
+    "options": {
+      "A": "targetPort",
+      "B": "nodePort",
+      "C": "port",
+      "D": "protocol"
+    },
+    "answer": "A",
+    "explanation": "targetPort tells the Service which container port to route traffic to.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-port",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-200",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which API object runs a one-time batch job to completion?",
+    "options": {
+      "A": "CronJob",
+      "B": "Job",
+      "C": "Deployment",
+      "D": "DaemonSet"
+    },
+    "answer": "B",
+    "explanation": "A Job creates one or more pods that run until they finish successfully.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-201",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a valid Kubernetes namespace name?",
+    "options": {
+      "A": "my-namespace",
+      "B": "namespace123",
+      "C": "kube-app",
+      "D": "My_Namespace"
+    },
+    "answer": "D",
+    "explanation": "Kubernetes namespace names must conform to RFC 1123 DNS label rules: lowercase alphanumeric characters or hyphens, must start and end with an alphanumeric character. My_Namespace is invalid because it contains uppercase letters and an underscore. The other options use only lowercase letters, digits, and hyphens.",
+    "doc_link": "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-202",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which admission controller can block pods that request privileged mode?",
+    "options": {
+      "A": "NamespaceLifecycle",
+      "B": "PodSecurityPolicy",
+      "C": "NodeRestriction",
+      "D": "ResourceQuota"
+    },
+    "answer": "B",
+    "explanation": "PodSecurityPolicy (now deprecated) allowed administrators to restrict privileged containers.",
+    "doc_link": "https://kubernetes.io/docs/concepts/security/pod-security-policy/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-203",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field controls the number of replicas in a Deployment?",
+    "options": {
+      "A": "spec.replicas",
+      "B": "spec.template.spec.replicas",
+      "C": "spec.strategy.replicas",
+      "D": "spec.selector.replicas"
+    },
+    "answer": "A",
+    "explanation": "spec.replicas defines the desired number of pod replicas for a Deployment.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-204",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which kubectl command retrieves the logs of a container in a pod?",
+    "options": {
+      "A": "kubectl exec",
+      "B": "kubectl describe",
+      "C": "kubectl logs",
+      "D": "kubectl get"
+    },
+    "answer": "C",
+    "explanation": "kubectl logs streams stdout/stderr from a container.",
+    "doc_link": "https://kubernetes.io/docs/concepts/cluster-administration/logging/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-205",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation disables automatic sidecar injection for Istio?",
+    "options": {
+      "A": "sidecar.istio.io/inject: \"false\"",
+      "B": "istio.io/sidecar-injection: \"disabled\"",
+      "C": "kubernetes.io/disable-sidecar: \"true\"",
+      "D": "proxy.istio.io/disable: \"yes\""
+    },
+    "answer": "A",
+    "explanation": "Setting sidecar.istio.io/inject: \"false\" on a pod prevents Istio from adding its sidecar.",
+    "doc_link": "https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-206",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which ResourceQuota metric limits the total number of Services in a namespace?",
+    "options": {
+      "A": "services",
+      "B": "count/services",
+      "C": "limits.services",
+      "D": "objects.services"
+    },
+    "answer": "B",
+    "explanation": "count/services restricts how many Service objects can be created.",
+    "doc_link": "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-207",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which statement best describes a DaemonSet?",
+    "options": {
+      "A": "Ensures a specified number of pod replicas across the cluster",
+      "B": "Runs a copy of a pod on every node (or a subset)",
+      "C": "Provides a rolling update strategy for stateful workloads",
+      "D": "Manages batch jobs that run to completion"
+    },
+    "answer": "B",
+    "explanation": "A DaemonSet guarantees that a pod runs on each node (or a selected group).",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-208",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Service manifest requests a specific external IP for a LoadBalancer service?",
+    "options": {
+      "A": "externalIPs",
+      "B": "loadBalancerIP",
+      "C": "externalName",
+      "D": "nodePort"
+    },
+    "answer": "B",
+    "explanation": "loadBalancerIP can be set to request a particular external IP from the cloud provider.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-209",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In which Kubernetes version did Deployments move to the stable `apps/v1` API?",
+    "options": {
+      "A": "v1.9",
+      "B": "v1.12",
+      "C": "v1.16",
+      "D": "v1.18"
+    },
+    "answer": "A",
+    "explanation": "The Deployment resource was promoted to the stable apps/v1 API in Kubernetes v1.9. Prior to v1.9 it was in apps/v1beta1 (v1.6) and apps/v1beta2 (v1.8). Starting with v1.9, apps/v1 is the recommended and stable API version for Deployments.",
+    "doc_link": "https://kubernetes.io/docs/reference/using-api/deprecation-guide/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-210",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a Pod spec determines the DNS policy for the pod?",
+    "options": {
+      "A": "dnsPolicy",
+      "B": "dnsConfig",
+      "C": "dnsResolver",
+      "D": "dnsSettings"
+    },
+    "answer": "A",
+    "explanation": "dnsPolicy sets how DNS queries are handled (e.g., ClusterFirst).",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-211",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which controller creates a pod on each node that matches a label selector?",
+    "options": {
+      "A": "ReplicaSet",
+      "B": "Deployment",
+      "C": "DaemonSet",
+      "D": "StatefulSet"
+    },
+    "answer": "C",
+    "explanation": "A DaemonSet ensures a pod runs on every node (or a subset) matching its selector.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-212",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which resource type stores TLS certificates for Ingress resources?",
+    "options": {
+      "A": "ConfigMap",
+      "B": "Secret",
+      "C": "ServiceAccount",
+      "D": "PersistentVolume"
+    },
+    "answer": "B",
+    "explanation": "TLS secrets of type kubernetes.io/tls hold certificate data for Ingress.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/ingress/#tls",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-213",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a HorizontalPodAutoscaler specifies the target CPU utilization percentage?",
+    "options": {
+      "A": "targetCPUUtilizationPercentage",
+      "B": "cpuUtilizationTarget",
+      "C": "metricCPUUtilization",
+      "D": "targetUtilization"
+    },
+    "answer": "A",
+    "explanation": "targetCPUUtilizationPercentage is the correct field for CPU-based scaling.",
+    "doc_link": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-214",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which reason justifies using a NodePort service instead of a LoadBalancer?",
+    "options": {
+      "A": "Need to expose the service only within the cluster",
+      "B": "Cloud provider does not support external load balancers",
+      "C": "Require automatic DNS provisioning",
+      "D": "Want to use a static external IP address"
+    },
+    "answer": "B",
+    "explanation": "NodePort is appropriate when the cloud provider does not support external load balancers, or in bare-metal/on-premises clusters. LoadBalancer services also support static IPs via loadBalancerIP, so D is not a differentiating reason. A describes ClusterIP behavior. C is not a NodePort feature.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-215",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which mechanism selects nodes for pod scheduling based on node labels?",
+    "options": {
+      "A": "ResourceQuota",
+      "B": "LimitRange",
+      "C": "PodAffinity",
+      "D": "nodeSelector"
+    },
+    "answer": "D",
+    "explanation": "nodeSelector (or node affinity) matches pod requirements to node labels.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-216",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which command shows the current kubectl context?",
+    "options": {
+      "A": "kubectl config view",
+      "B": "kubectl get contexts",
+      "C": "kubectl config current-context",
+      "D": "kubectl cluster-info"
+    },
+    "answer": "C",
+    "explanation": "kubectl config current-context prints the active context name.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#configuring-access-to-clusters",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-217",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field controls the maximum number of unavailable pods during a rolling update?",
+    "options": {
+      "A": "maxSurge",
+      "B": "maxUnavailable",
+      "C": "rollingUpdate",
+      "D": "strategy"
+    },
+    "answer": "B",
+    "explanation": "maxUnavailable limits how many pods can be down simultaneously.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-218",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which object grants a set of permissions to users or groups across the entire cluster?",
+    "options": {
+      "A": "Role",
+      "B": "ClusterRole",
+      "C": "RoleBinding",
+      "D": "ServiceAccount"
+    },
+    "answer": "B",
+    "explanation": "ClusterRole defines cluster-wide permissions; it can be bound with a ClusterRoleBinding.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-219",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a PersistentVolumeClaim specifies the requested storage size?",
+    "options": {
+      "A": "storageClassName",
+      "B": "accessModes",
+      "C": "resources.requests.storage",
+      "D": "volumeMode"
+    },
+    "answer": "C",
+    "explanation": "resources.requests.storage defines the amount of storage needed.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-220",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "When is it appropriate to use a ConfigMap instead of a Secret?",
+    "options": {
+      "A": "Storing TLS private keys",
+      "B": "Storing non-sensitive configuration like application settings",
+      "C": "Storing database passwords",
+      "D": "Storing API tokens"
+    },
+    "answer": "B",
+    "explanation": "ConfigMaps are intended for non-sensitive data; Secret should be used for sensitive information.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/secret/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-221",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a ServiceAccount controls automatic mounting of its token secret?",
+    "options": {
+      "A": "secrets",
+      "B": "imagePullSecrets",
+      "C": "automountServiceAccountToken",
+      "D": "tokenSecretName"
+    },
+    "answer": "C",
+    "explanation": "automountServiceAccountToken determines whether the token is automatically mounted.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-222",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does a LimitRange object define?",
+    "options": {
+      "A": "Limits the number of pods per namespace",
+      "B": "Sets default resource requests and limits for containers",
+      "C": "Restricts which nodes a pod can be scheduled on",
+      "D": "Controls network policy egress rules"
+    },
+    "answer": "B",
+    "explanation": "LimitRange can set default requests/limits and enforce min/max resource usage.",
+    "doc_link": "https://kubernetes.io/docs/concepts/policy/limit-range/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-223",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object is configured to automatically scale pods based on custom or external metrics?",
+    "options": {
+      "A": "VerticalPodAutoscaler",
+      "B": "ScalingPolicy",
+      "C": "MetricsController",
+      "D": "HorizontalPodAutoscaler"
+    },
+    "answer": "D",
+    "explanation": "HorizontalPodAutoscaler (HPA) v2 can scale pods based on custom application metrics (type: Pods) or external metrics (type: External), in addition to standard CPU/memory. VerticalPodAutoscaler adjusts resource requests/limits, not replica count. ScalingPolicy and MetricsController are not standard Kubernetes objects.",
+    "doc_link": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-custom-metrics",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-224",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which annotation enables HTTP/2 for a GKE LoadBalancer service?",
+    "options": {
+      "A": "cloud.google.com/load-balancer-type: \"Internal\"",
+      "B": "cloud.google.com/backend-config: \"{\\\"protocol\\\":\\\"HTTP2\\\"}\"",
+      "C": "networking.gke.io/load-balancer-type: \"External\"",
+      "D": "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: \"*\""
+    },
+    "answer": "B",
+    "explanation": "To enable HTTP/2 for a GKE LoadBalancer backend, use the cloud.google.com/backend-config annotation referencing a BackendConfig resource with protocol: HTTP2. The networking.gke.io/load-balancer-type annotation controls whether the load balancer is Internal or External, not HTTP/2 support. A sets the load balancer to Internal mode.",
+    "doc_link": "https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-for-gke",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-225",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field in a container spec defines the command that runs when the container starts?",
+    "options": {
+      "A": "args",
+      "B": "command",
+      "C": "entrypoint",
+      "D": "exec"
+    },
+    "answer": "B",
+    "explanation": "command overrides the container image's default entrypoint.",
+    "doc_link": "https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-226",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which of these namespaces are created by default in a new cluster?",
+    "options": {
+      "A": "default",
+      "B": "kube-system",
+      "C": "kube-public",
+      "D": "all of the above"
+    },
+    "answer": "D",
+    "explanation": "Kubernetes creates default, kube-system, and kube-public namespaces by default.",
+    "doc_link": "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-227",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the purpose of a ServiceAccount token volume mounted into a pod?",
+    "options": {
+      "A": "Provide a static IP address",
+      "B": "Authenticate the pod to the Kubernetes API server",
+      "C": "Store application logs",
+      "D": "Mount a secret containing database credentials"
+    },
+    "answer": "B",
+    "explanation": "The token enables in-cluster authentication for the pod.",
+    "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#serviceaccount-token-volume-mount",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-228",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which field sets the termination grace period for a pod?",
+    "options": {
+      "A": "terminationGracePeriodSeconds",
+      "B": "gracePeriodSeconds",
+      "C": "timeoutSeconds",
+      "D": "shutdownGracePeriod"
+    },
+    "answer": "A",
+    "explanation": "terminationGracePeriodSeconds defines how long the system waits before forcefully killing a pod.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#termination-of-pods",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-229",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which resource type is used to define network traffic rules between pods?",
+    "options": {
+      "A": "NetworkPolicy",
+      "B": "Ingress",
+      "C": "Service",
+      "D": "Endpoint"
+    },
+    "answer": "A",
+    "explanation": "NetworkPolicy objects control allowed inbound/outbound traffic for pods.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-230",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What is the primary responsibility of the kube-scheduler?",
+    "options": {
+      "A": "Store the desired state of the cluster",
+      "B": "Validate API requests",
+      "C": "Assign newly created pods to nodes",
+      "D": "Manage container runtime on nodes"
+    },
+    "answer": "C",
+    "explanation": "The scheduler selects suitable nodes for unscheduled pods based on constraints and resources.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/",
+    "llm_validated": 0
+  }
+]
