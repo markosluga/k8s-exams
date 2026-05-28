@@ -5,6 +5,17 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.2.2] — 2026-05-28
+### Added
+- +60 questions
+- Domains rebalanced to match the KCNA exam
+  - Kubernetes Fundamentals	132 questions 44%
+  - Container Orchestration	84 questions 28%
+  - Cloud Native Application Delivery 48 questions 16%
+  - Cloud Native Architecture 36 questions 12%
+
+---
+
 ## [0.2.1] — 2026-05-28
 ### Added
 - We now have 240 questioons
