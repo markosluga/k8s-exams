@@ -22,46 +22,17 @@
       "Expose a Deployment via a Service. Review Service types: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types",
       "Validate the Service by curling the ClusterIP from another pod. Reference troubleshooting connectivity: https://kubernetes.io/docs/tasks/debug-application-networking/connect-applications-service/"
     ],
-    "solution": "cat <<'EOF' > kcna-001-deploy.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deploy
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-svc
-spec:
-  selector:
-    app: nginx
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-EOF
-kubectl apply -f kcna-001-deploy.yaml",
+    "solution": "cat <<'EOF' > kcna-001-deploy.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deploy\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n      - name: nginx\n        image: nginx:alpine\n        ports:\n        - containerPort: 80\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: nginx-svc\nspec:\n  selector:\n    app: nginx\n  ports:\n  - protocol: TCP\n    port: 80\n    targetPort: 80\nEOF\nkubectl apply -f kcna-001-deploy.yaml",
     "validation_commands": [
       "kubectl get pods -l app=nginx -o jsonpath='{.items[0].status.phase}'",
       "kubectl get svc nginx-svc -o jsonpath='{.spec.clusterIP}'",
       "kubectl run curl-pod --image=curlimages/curl --rm -i --restart=Never -- curl -s http://$(kubectl get svc nginx-svc -o jsonpath='{.spec.clusterIP}')"
     ],
-    "expected_outputs": ["Running", "<cluster-ip>", "<html>"],
+    "expected_outputs": [
+      "Running",
+      "<cluster-ip>",
+      "<html>"
+    ],
     "cleanup": "kubectl delete -f kcna-001-deploy.yaml",
     "key_concepts": [
       "Deployments provide declarative updates and replica management.",
@@ -93,32 +64,15 @@ kubectl apply -f kcna-001-deploy.yaml",
       "Mount a ConfigMap as a volume to expose its data as files. Reference volume mounts: https://kubernetes.io/docs/concepts/storage/volumes/#configmap",
       "Use `kubectl exec` to cat the file inside the running container."
     ],
-    "solution": "echo 'greeting=Hello KCNA' > app.conf
-kubectl create configmap app-config --from-file=app.conf
-cat <<'EOF' > kcna-002-pod.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: configmap-pod
-spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command: [\"sh\", \"-c\", \"sleep 3600\"]
-    volumeMounts:
-    - name: config-volume
-      mountPath: /etc/config
-  volumes:
-  - name: config-volume
-    configMap:
-      name: app-config
-EOF
-kubectl apply -f kcna-002-pod.yaml",
+    "solution": "echo 'greeting=Hello KCNA' > app.conf\nkubectl create configmap app-config --from-file=app.conf\ncat <<'EOF' > kcna-002-pod.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: configmap-pod\nspec:\n  containers:\n  - name: busybox\n    image: busybox\n    command: [\"sh\", \"-c\", \"sleep 3600\"]\n    volumeMounts:\n    - name: config-volume\n      mountPath: /etc/config\n  volumes:\n  - name: config-volume\n    configMap:\n      name: app-config\nEOF\nkubectl apply -f kcna-002-pod.yaml",
     "validation_commands": [
       "kubectl exec configmap-pod -- cat /etc/config/app.conf",
-      "kubectl get configmap app-config -o jsonpath='{.data.app\.conf}'"
+      "kubectl get configmap app-config -o jsonpath='{.data.app\\.conf}'"
     ],
-    "expected_outputs": ["greeting=Hello KCNA", "greeting=Hello KCNA"],
+    "expected_outputs": [
+      "greeting=Hello KCNA",
+      "greeting=Hello KCNA"
+    ],
     "cleanup": "kubectl delete pod configmap-pod && kubectl delete configmap app-config && rm app.conf kcna-002-pod.yaml",
     "key_concepts": [
       "ConfigMaps decouple configuration from container images.",
@@ -149,31 +103,15 @@ kubectl apply -f kcna-002-pod.yaml",
       "Consume a Secret as an environment variable using `envFrom` or `valueFrom`. Reference env var injection: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/",
       "Use `kubectl exec` to print the env var inside the container."
     ],
-    "solution": "echo -n 's3cr3tP@ss' > password.txt
-kubectl create secret generic db-pass --from-file=password=./password.txt
-cat <<'EOF' > kcna-003-pod.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: secret-pod
-spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command: [\"sh\", \"-c\", \"sleep 3600\"]
-    env:
-    - name: DB_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: db-pass
-          key: password
-EOF
-kubectl apply -f kcna-003-pod.yaml",
+    "solution": "echo -n 's3cr3tP@ss' > password.txt\nkubectl create secret generic db-pass --from-file=password=./password.txt\ncat <<'EOF' > kcna-003-pod.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: secret-pod\nspec:\n  containers:\n  - name: busybox\n    image: busybox\n    command: [\"sh\", \"-c\", \"sleep 3600\"]\n    env:\n    - name: DB_PASSWORD\n      valueFrom:\n        secretKeyRef:\n          name: db-pass\n          key: password\nEOF\nkubectl apply -f kcna-003-pod.yaml",
     "validation_commands": [
       "kubectl exec secret-pod -- printenv DB_PASSWORD",
       "kubectl get secret db-pass -o jsonpath='{.data.password}' | base64 -d"
     ],
-    "expected_outputs": ["s3cr3tP@ss", "s3cr3tP@ss"],
+    "expected_outputs": [
+      "s3cr3tP@ss",
+      "s3cr3tP@ss"
+    ],
     "cleanup": "kubectl delete pod secret-pod && kubectl delete secret db-pass && rm password.txt kcna-003-pod.yaml",
     "key_concepts": [
       "Secrets keep sensitive data out of container images.",
@@ -204,46 +142,15 @@ kubectl apply -f kcna-003-pod.yaml",
       "Use `kubectl get svc` to discover the assigned NodePort.",
       "Access the service via `http://$(minikube ip):<nodePort>` from the host."
     ],
-    "solution": "cat <<'EOF' > kcna-004-deploy.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: demo-app
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: demo
-  template:
-    metadata:
-      labels:
-        app: demo
-    spec:
-      containers:
-      - name: httpd
-        image: httpd:alpine
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: demo-nodeport
-spec:
-  type: NodePort
-  selector:
-    app: demo
-  ports:
-  - port: 80
-    targetPort: 80
-    nodePort: 30080
-EOF
-kubectl apply -f kcna-004-deploy.yaml",
+    "solution": "cat <<'EOF' > kcna-004-deploy.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: demo-app\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: demo\n  template:\n    metadata:\n      labels:\n        app: demo\n    spec:\n      containers:\n      - name: httpd\n        image: httpd:alpine\n        ports:\n        - containerPort: 80\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: demo-nodeport\nspec:\n  type: NodePort\n  selector:\n    app: demo\n  ports:\n  - port: 80\n    targetPort: 80\n    nodePort: 30080\nEOF\nkubectl apply -f kcna-004-deploy.yaml",
     "validation_commands": [
       "kubectl get svc demo-nodeport -o jsonpath='{.spec.ports[0].nodePort}'",
       "curl -s http://$(minikube ip):30080 | grep -i 'It works'"
     ],
-    "expected_outputs": ["30080", "It works!"],
+    "expected_outputs": [
+      "30080",
+      "It works!"
+    ],
     "cleanup": "kubectl delete -f kcna-004-deploy.yaml",
     "key_concepts": [
       "NodePort exposes a service on each node's IP at a static port.",
@@ -275,104 +182,18 @@ kubectl apply -f kcna-004-deploy.yaml",
       "Host‑based routing uses the `host` field in the Ingress rule. Review the rule syntax.",
       "After creating the Ingress, the controller creates a LoadBalancer IP (often the minikube IP). Use `kubectl get ingress` to see the address."
     ],
-    "solution": "cat <<'EOF' > kcna-005-manifests.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app-v1
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: v1
-  template:
-    metadata:
-      labels:
-        app: v1
-    spec:
-      containers:
-      - name: httpd
-        image: httpd:alpine
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-v1
-spec:
-  selector:
-    app: v1
-  ports:
-  - port: 80
-    targetPort: 80
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app-v2
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: v2
-  template:
-    metadata:
-      labels:
-        app: v2
-    spec:
-      containers:
-      - name: httpd
-        image: httpd:alpine
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-v2
-spec:
-  selector:
-    app: v2
-  ports:
-  - port: 80
-    targetPort: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: demo-ingress
-spec:
-  rules:
-  - host: v1.example.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: svc-v1
-            port:
-              number: 80
-  - host: v2.example.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: svc-v2
-            port:
-              number: 80
-EOF
-kubectl apply -f kcna-005-manifests.yaml",
+    "solution": "cat <<'EOF' > kcna-005-manifests.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: app-v1\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: v1\n  template:\n    metadata:\n      labels:\n        app: v1\n    spec:\n      containers:\n      - name: httpd\n        image: httpd:alpine\n        ports:\n        - containerPort: 80\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: svc-v1\nspec:\n  selector:\n    app: v1\n  ports:\n  - port: 80\n    targetPort: 80\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: app-v2\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: v2\n  template:\n    metadata:\n      labels:\n        app: v2\n    spec:\n      containers:\n      - name: httpd\n        image: httpd:alpine\n        ports:\n        - containerPort: 80\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: svc-v2\nspec:\n  selector:\n    app: v2\n  ports:\n  - port: 80\n    targetPort: 80\n---\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: demo-ingress\nspec:\n  rules:\n  - host: v1.example.com\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: svc-v1\n            port:\n              number: 80\n  - host: v2.example.com\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: svc-v2\n            port:\n              number: 80\nEOF\nkubectl apply -f kcna-005-manifests.yaml",
     "validation_commands": [
       "kubectl get ingress demo-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'",
       "echo '$(minikube ip) v1.example.com v2.example.com' | sudo tee -a /etc/hosts",
       "curl -s http://v1.example.com | grep -i 'It works'",
       "curl -s http://v2.example.com | grep -i 'It works'"
     ],
-    "expected_outputs": ["<minikube‑ip>", "It works!", "It works!"],
+    "expected_outputs": [
+      "<minikube‑ip>",
+      "It works!",
+      "It works!"
+    ],
     "cleanup": "kubectl delete -f kcna-005-manifests.yaml && sudo sed -i '/v1.example.com/d' /etc/hosts && sudo sed -i '/v2.example.com/d' /etc/hosts",
     "key_concepts": [
       "Ingress abstracts HTTP routing and works with a controller (NGINX, GCE, etc.).",
@@ -405,57 +226,17 @@ kubectl apply -f kcna-005-manifests.yaml",
       "Use `kubectl top pods` to view current CPU usage.",
       "Load can be generated with `stress` or a busybox loop that curls the service repeatedly."
     ],
-    "solution": "cat <<'EOF' > kcna-006-deploy.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: php-apache
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: php-apache
-  template:
-    metadata:
-      labels:
-        app: php-apache
-    spec:
-      containers:
-      - name: php-apache
-        image: php:8.2-apache
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            cpu: "200m"
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: php-apache-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: php-apache
-  minReplicas: 1
-  maxReplicas: 3
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
-EOF
-kubectl apply -f kcna-006-deploy.yaml",
+    "solution": "cat <<'EOF' > kcna-006-deploy.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: php-apache\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: php-apache\n  template:\n    metadata:\n      labels:\n        app: php-apache\n    spec:\n      containers:\n      - name: php-apache\n        image: php:8.2-apache\n        ports:\n        - containerPort: 80\n        resources:\n          requests:\n            cpu: \"200m\"\n---\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: php-apache-hpa\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: php-apache\n  minReplicas: 1\n  maxReplicas: 3\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 50\nEOF\nkubectl apply -f kcna-006-deploy.yaml",
     "validation_commands": [
       "kubectl get hpa php-apache-hpa -o jsonpath='{.status.currentReplicas}'",
       "kubectl run load-generator --image=busybox --restart=Never -- /bin/sh -c 'while true; do wget -qO- http://php-apache; done'",
       "sleep 60 && kubectl get hpa php-apache-hpa -o jsonpath='{.status.currentReplicas}'",
       "kubectl delete pod load-generator"
     ],
-    "expected_outputs": ["1", "3"],
+    "expected_outputs": [
+      "1",
+      "3"
+    ],
     "cleanup": "kubectl delete -f kcna-006-deploy.yaml",
     "key_concepts": [
       "HPA automatically adjusts replica count based on observed metrics.",
@@ -488,54 +269,16 @@ kubectl apply -f kcna-006-deploy.yaml",
       "Mount the PVC via a `volumeMount` in the pod spec.",
       "Use `kubectl exec` to write and read files inside the container."
     ],
-    "solution": "cat <<'EOF' > kcna-007-pv.yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: host-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-  - ReadWriteOnce
-  hostPath:
-    path: /tmp/kcna-data
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: host-pvc
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pvc-pod
-spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command: [\"sh\", \"-c\", \"sleep 3600\"]
-    volumeMounts:
-    - name: data-volume
-      mountPath: /data
-  volumes:
-  - name: data-volume
-    persistentVolumeClaim:
-      claimName: host-pvc
-EOF
-kubectl apply -f kcna-007-pv.yaml",
+    "solution": "cat <<'EOF' > kcna-007-pv.yaml\napiVersion: v1\nkind: PersistentVolume\nmetadata:\n  name: host-pv\nspec:\n  capacity:\n    storage: 1Gi\n  accessModes:\n  - ReadWriteOnce\n  hostPath:\n    path: /tmp/kcna-data\n---\napiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: host-pvc\nspec:\n  accessModes:\n  - ReadWriteOnce\n  resources:\n    requests:\n      storage: 1Gi\n---\napiVersion: v1\nkind: Pod\nmetadata:\n  name: pvc-pod\nspec:\n  containers:\n  - name: busybox\n    image: busybox\n    command: [\"sh\", \"-c\", \"sleep 3600\"]\n    volumeMounts:\n    - name: data-volume\n      mountPath: /data\n  volumes:\n  - name: data-volume\n    persistentVolumeClaim:\n      claimName: host-pvc\nEOF\nkubectl apply -f kcna-007-pv.yaml",
     "validation_commands": [
       "kubectl exec pvc-pod -- sh -c 'echo hello > /data/greeting.txt'",
       "kubectl exec pvc-pod -- cat /data/greeting.txt",
       "kubectl delete pod pvc-pod && kubectl run pvc-pod --image=busybox --restart=Never --command -- sh -c 'cat /data/greeting.txt'"
     ],
-    "expected_outputs": ["hello", "hello"],
+    "expected_outputs": [
+      "hello",
+      "hello"
+    ],
     "cleanup": "kubectl delete -f kcna-007-pv.yaml && rm -rf /tmp/kcna-data",
     "key_concepts": [
       "PersistentVolumes provide cluster‑wide storage resources.",
@@ -568,48 +311,15 @@ kubectl apply -f kcna-007-pv.yaml",
       "RoleBinding links a Role to a subject (user, group, or ServiceAccount).",
       "Use `kubectl auth can-i` with the `--as` flag to test permissions for the ServiceAccount."
     ],
-    "solution": "cat <<'EOF' > kcna-008-rbac.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: dev
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: dev-reader
-  namespace: dev
-rules:
-- apiGroups: [""]
-  resources: ["*"]
-  verbs: ["get","list","watch"]
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: reader-sa
-  namespace: dev
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: dev-reader-binding
-  namespace: dev
-subjects:
-- kind: ServiceAccount
-  name: reader-sa
-  namespace: dev
-roleRef:
-  kind: Role
-  name: dev-reader
-  apiGroup: rbac.authorization.k8s.io
-EOF
-kubectl apply -f kcna-008-rbac.yaml",
+    "solution": "cat <<'EOF' > kcna-008-rbac.yaml\napiVersion: v1\nkind: Namespace\nmetadata:\n  name: dev\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: Role\nmetadata:\n  name: dev-reader\n  namespace: dev\nrules:\n- apiGroups: [\"\"]\n  resources: [\"*\"]\n  verbs: [\"get\",\"list\",\"watch\"]\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: reader-sa\n  namespace: dev\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  name: dev-reader-binding\n  namespace: dev\nsubjects:\n- kind: ServiceAccount\n  name: reader-sa\n  namespace: dev\nroleRef:\n  kind: Role\n  name: dev-reader\n  apiGroup: rbac.authorization.k8s.io\nEOF\nkubectl apply -f kcna-008-rbac.yaml",
     "validation_commands": [
       "kubectl auth can-i list pods --as=system:serviceaccount:dev:reader-sa -n dev",
       "kubectl auth can-i create pods --as=system:serviceaccount:dev:reader-sa -n dev"
     ],
-    "expected_outputs": ["yes", "no"],
+    "expected_outputs": [
+      "yes",
+      "no"
+    ],
     "cleanup": "kubectl delete -f kcna-008-rbac.yaml",
     "key_concepts": [
       "RBAC controls who can do what in the cluster.",
@@ -641,44 +351,16 @@ kubectl apply -f kcna-008-rbac.yaml",
       "`minAvailable` can be an absolute number or a percentage.",
       "Use `kubectl drain <node>` to trigger evictions; the PDB will block excess evictions."
     ],
-    "solution": "cat <<'EOF' > kcna-009-pdb.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: web-app
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: web
-  template:
-    metadata:
-      labels:
-        app: web
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: web-pdb
-spec:
-  minAvailable: 2
-  selector:
-    matchLabels:
-      app: web
-EOF
-kubectl apply -f kcna-009-pdb.yaml",
+    "solution": "cat <<'EOF' > kcna-009-pdb.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n      - name: nginx\n        image: nginx:alpine\n        ports:\n        - containerPort: 80\n---\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: web-pdb\nspec:\n  minAvailable: 2\n  selector:\n    matchLabels:\n      app: web\nEOF\nkubectl apply -f kcna-009-pdb.yaml",
     "validation_commands": [
       "kubectl get pdb web-pdb -o jsonpath='{.status.allowedDisruptions}'",
       "kubectl get nodes -o name | head -1 | xargs -I{} kubectl drain {} --ignore-daemonsets --delete-emptydir-data --force",
       "kubectl get pods -l app=web -o jsonpath='{range .items[*]}{.metadata.name}:{.status.phase} '"
     ],
-    "expected_outputs": ["1", "Running Running Running"],
+    "expected_outputs": [
+      "1",
+      "Running Running Running"
+    ],
     "cleanup": "kubectl delete -f kcna-009-pdb.yaml && kubectl uncordon $(kubectl get nodes -o name | head -1)",
     "key_concepts": [
       "PDBs limit the number of pods that can be voluntarily evicted.",
@@ -710,38 +392,21 @@ kubectl apply -f kcna-009-pdb.yaml",
       "`kubectl logs` fetches the container’s stdout/stderr from the last attempt.",
       "To fix, you can delete and recreate the pod with the corrected command or use `kubectl patch`."
     ],
-    "solution": "cat <<'EOF' > kcna-010-faulty.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: faulty-pod
-spec:
-  containers:
-  - name: nginx
-    image: nginx:alpine
-    command: [\"nginx\", \"-g\", \"daemon off\"] # missing trailing semicolon causes syntax error
-EOF
-kubectl apply -f kcna-010-faulty.yaml",
+    "solution": "cat <<'EOF' > kcna-010-faulty.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: faulty-pod\nspec:\n  containers:\n  - name: nginx\n    image: nginx:alpine\n    command: [\"nginx\", \"-g\", \"daemon off\"] # missing trailing semicolon causes syntax error\nEOF\nkubectl apply -f kcna-010-faulty.yaml",
     "validation_commands": [
       "kubectl get pod faulty-pod -o jsonpath='{.status.phase}'",
       "kubectl describe pod faulty-pod | grep -i 'Reason'",
       "kubectl logs faulty-pod --previous | grep -i 'error'",
       "kubectl delete pod faulty-pod",
-      "cat <<'EOF2' > kcna-010-fixed.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: fixed-pod
-spec:
-  containers:
-  - name: nginx
-    image: nginx:alpine
-    command: [\"nginx\", \"-g\", \"daemon off;\"]
-EOF
-kubectl apply -f kcna-010-fixed.yaml",
+      "cat <<'EOF2' > kcna-010-fixed.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: fixed-pod\nspec:\n  containers:\n  - name: nginx\n    image: nginx:alpine\n    command: [\"nginx\", \"-g\", \"daemon off;\"]\nEOF\nkubectl apply -f kcna-010-fixed.yaml",
       "kubectl get pod fixed-pod -o jsonpath='{.status.phase}'"
     ],
-    "expected_outputs": ["CrashLoopBackOff", "Error", "daemon off;", "Running"],
+    "expected_outputs": [
+      "CrashLoopBackOff",
+      "Error",
+      "daemon off;",
+      "Running"
+    ],
     "cleanup": "kubectl delete pod fixed-pod",
     "key_concepts": [
       "CrashLoopBackOff indicates a container repeatedly fails to start.",
