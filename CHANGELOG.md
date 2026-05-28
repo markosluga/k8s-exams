@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
+v0.2.1 - 
+---
+
+## [0.2.1] — 2026-05-28
+### Added
+- We now have 240 questioons
+- Domain reasignment for all the questions
+- Added 10 KCNA labs
+
+### TBD
+- Rebalancing the distribution of all questions is still needed - adding +60 questions to addrerss the gaps in 0.2.2
+
+---
 
 ---
 

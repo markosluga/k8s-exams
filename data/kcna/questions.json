@@ -17,7 +17,7 @@
   },
   {
     "id": "kcna-002",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the primary purpose of a Kubernetes Service of type LoadBalancer?",
     "options": {
@@ -129,7 +129,7 @@
   },
   {
     "id": "kcna-009",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "In a Pod spec, which field determines the DNS policy applied to the Pod?",
     "options": {
@@ -177,7 +177,7 @@
   },
   {
     "id": "kcna-012",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What annotation can be added to a Service to enable the AWS Load Balancer Controller to provision an NLB?",
     "options": {
@@ -209,7 +209,7 @@
   },
   {
     "id": "kcna-014",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Kubernetes object is used to grant a set of permissions to a group of users or service accounts?",
     "options": {
@@ -257,7 +257,7 @@
   },
   {
     "id": "kcna-017",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "When defining a Service of type 'ExternalName', which field must be provided?",
     "options": {
@@ -337,7 +337,7 @@
   },
   {
     "id": "kcna-022",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the purpose of the 'serviceAccountName' field in a pod spec?",
     "options": {
@@ -369,7 +369,7 @@
   },
   {
     "id": "kcna-024",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "In a Service manifest, which field determines whether the Service gets a stable virtual IP?",
     "options": {
@@ -449,7 +449,7 @@
   },
   {
     "id": "kcna-029",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the default service discovery method for Pods in a Kubernetes cluster?",
     "options": {
@@ -481,7 +481,7 @@
   },
   {
     "id": "kcna-031",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What Kubernetes object is used to enforce network traffic rules between pods?",
     "options": {
@@ -529,7 +529,7 @@
   },
   {
     "id": "kcna-034",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Kubernetes API object represents a set of rules that control which pods can be accessed via a Service?",
     "options": {
@@ -545,7 +545,7 @@
   },
   {
     "id": "kcna-035",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl port-forward' command enable?",
     "options": {
@@ -561,7 +561,7 @@
   },
   {
     "id": "kcna-036",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec defines the port that the Service proxies to on the target Pods?",
     "options": {
@@ -625,7 +625,7 @@
   },
   {
     "id": "kcna-040",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which of the following is a valid way to expose a pod directly without a Service?",
     "options": {
@@ -673,7 +673,7 @@
   },
   {
     "id": "kcna-043",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec controls whether the Service allocates a node port?",
     "options": {
@@ -721,7 +721,7 @@
   },
   {
     "id": "kcna-046",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Kubernetes object is used to provide a stable DNS name for an external service not running inside the cluster?",
     "options": {
@@ -753,7 +753,7 @@
   },
   {
     "id": "kcna-048",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolumeClaim spec defines the desired storage size?",
     "options": {
@@ -817,7 +817,7 @@
   },
   {
     "id": "kcna-052",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl cp' command do?",
     "options": {
@@ -833,7 +833,7 @@
   },
   {
     "id": "kcna-053",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which admission controller enforces that containers must run as nonÃ¢â‚¬â€˜root users?",
     "options": {
@@ -865,7 +865,7 @@
   },
   {
     "id": "kcna-055",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Deployment's pod template can be used to set environment variables from a Secret?",
     "options": {
@@ -897,7 +897,7 @@
   },
   {
     "id": "kcna-057",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which of the following is a valid way to configure a pod to use a specific ServiceAccount?",
     "options": {
@@ -945,7 +945,7 @@
   },
   {
     "id": "kcna-060",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl top nodes' command display?",
     "options": {
@@ -961,7 +961,7 @@
   },
   {
     "id": "kcna-061",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec defines the protocol used for the service port?",
     "options": {
@@ -993,7 +993,7 @@
   },
   {
     "id": "kcna-063",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which Kubernetes object can be used to inject a sidecar container into an existing pod without modifying the pod's manifest?",
     "options": {
@@ -1041,7 +1041,7 @@
   },
   {
     "id": "kcna-066",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl rollout status' command show for a Deployment?",
     "options": {
@@ -1057,7 +1057,7 @@
   },
   {
     "id": "kcna-067",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which of the following is NOT a builtÃ¢â‚¬â€˜in volume type in Kubernetes?",
     "options": {
@@ -1105,7 +1105,7 @@
   },
   {
     "id": "kcna-070",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What does the 'spec.selector' field in a Service definition do?",
     "options": {
@@ -1169,7 +1169,7 @@
   },
   {
     "id": "kcna-074",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "In a Service definition, what does the 'externalTrafficPolicy: Local' setting achieve?",
     "options": {
@@ -1201,7 +1201,7 @@
   },
   {
     "id": "kcna-076",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolume definition determines the storage class to use?",
     "options": {
@@ -1217,7 +1217,7 @@
   },
   {
     "id": "kcna-077",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl get pods -o wide' command add to the standard pod listing?",
     "options": {
@@ -1281,7 +1281,7 @@
   },
   {
     "id": "kcna-081",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service definition controls whether the Service assigns a clusterÃ¢â‚¬â€˜internal IP?",
     "options": {
@@ -1297,7 +1297,7 @@
   },
   {
     "id": "kcna-082",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl rollout restart deployment/<name>' command do?",
     "options": {
@@ -1361,7 +1361,7 @@
   },
   {
     "id": "kcna-086",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'spec.strategy.type: Recreate' option do for a Deployment?",
     "options": {
@@ -1377,7 +1377,7 @@
   },
   {
     "id": "kcna-087",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Kubernetes object can be used to expose a set of Pods on a specific port using Layer 4 (TCP/UDP) load balancing without a cloud provider?",
     "options": {
@@ -1409,7 +1409,7 @@
   },
   {
     "id": "kcna-089",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec enables TCP keepÃ¢â‚¬â€˜alive probes for the Service's endpoints?",
     "options": {
@@ -1441,7 +1441,7 @@
   },
   {
     "id": "kcna-091",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Pod spec specifies the DNS policy used by the pod?",
     "options": {
@@ -1473,7 +1473,7 @@
   },
   {
     "id": "kcna-093",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation can be used to enable sidecar injection by Istio?",
     "options": {
@@ -1505,7 +1505,7 @@
   },
   {
     "id": "kcna-095",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service definition determines whether the Service is headless?",
     "options": {
@@ -1521,7 +1521,7 @@
   },
   {
     "id": "kcna-096",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl get nodes -o jsonpath=\"{.items[*].status.capacity.cpu}\"' command output?",
     "options": {
@@ -1537,7 +1537,7 @@
   },
   {
     "id": "kcna-097",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Kubernetes object is used to define a set of rules that restrict which pods can communicate with each other?",
     "options": {
@@ -1569,7 +1569,7 @@
   },
   {
     "id": "kcna-099",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What does setting 'spec.type: LoadBalancer' on a Service do in a cloudÃ¢â‚¬â€˜native environment?",
     "options": {
@@ -1585,7 +1585,7 @@
   },
   {
     "id": "kcna-100",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec determines whether the Service will preserve the client source IP address?",
     "options": {
@@ -1601,7 +1601,7 @@
   },
   {
     "id": "kcna-101",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl describe pod <name>' command display that 'kubectl get pod' does not?",
     "options": {
@@ -1633,7 +1633,7 @@
   },
   {
     "id": "kcna-103",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the purpose of the 'spec.selector' field in a Service?",
     "options": {
@@ -1649,7 +1649,7 @@
   },
   {
     "id": "kcna-104",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation can be used to enable automatic sidecar injection for Linkerd?",
     "options": {
@@ -1665,7 +1665,7 @@
   },
   {
     "id": "kcna-105",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does setting 'spec.strategy.rollingUpdate.maxSurge: 0' achieve during a Deployment rollout?",
     "options": {
@@ -1681,7 +1681,7 @@
   },
   {
     "id": "kcna-106",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolumeClaim determines the size of the requested volume?",
     "options": {
@@ -1697,7 +1697,7 @@
   },
   {
     "id": "kcna-107",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl exec -it <pod> -- /bin/sh' command allow you to do?",
     "options": {
@@ -1729,7 +1729,7 @@
   },
   {
     "id": "kcna-109",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the effect of adding the label 'app=frontend' to a pod and then creating a Service with selector 'app=frontend'?",
     "options": {
@@ -1777,7 +1777,7 @@
   },
   {
     "id": "kcna-112",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation enables automatic injection of the Linkerd data plane proxy into a pod?",
     "options": {
@@ -1809,7 +1809,7 @@
   },
   {
     "id": "kcna-114",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec determines whether the Service will allocate a stable virtual IP inside the cluster?",
     "options": {
@@ -1857,7 +1857,7 @@
   },
   {
     "id": "kcna-117",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service definition controls whether the Service forwards traffic to pods on the same node only?",
     "options": {
@@ -1873,7 +1873,7 @@
   },
   {
     "id": "kcna-118",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl apply -k <directory>' command do?",
     "options": {
@@ -1889,7 +1889,7 @@
   },
   {
     "id": "kcna-119",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What Kubernetes object is used to define a set of network policies that control inbound and outbound traffic for pods?",
     "options": {
@@ -1921,7 +1921,7 @@
   },
   {
     "id": "kcna-121",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "When configuring a Service of type LoadBalancer on a cloud provider, which annotation would you add to request an internal load balancer on AWS?",
     "options": {
@@ -1937,7 +1937,7 @@
   },
   {
     "id": "kcna-122",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which command would you use to view the YAML definition of a specific Pod named 'frontend' in the 'default' namespace?",
     "options": {
@@ -1969,7 +1969,7 @@
   },
   {
     "id": "kcna-124",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which of the following best describes a 'CustomResourceDefinition' (CRD) in Kubernetes?",
     "options": {
@@ -1985,7 +1985,7 @@
   },
   {
     "id": "kcna-125",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "When using a Service of type 'ExternalName', what DNS record type does Kubernetes create internally?",
     "options": {
@@ -2001,7 +2001,7 @@
   },
   {
     "id": "kcna-126",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolumeClaim controls whether the volume can be mounted as readÃ¢â‚¬â€˜only?",
     "options": {
@@ -2033,7 +2033,7 @@
   },
   {
     "id": "kcna-128",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service definition specifies the protocol used for the Service port?",
     "options": {
@@ -2049,7 +2049,7 @@
   },
   {
     "id": "kcna-129",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does setting 'spec.strategy.type: RollingUpdate' on a Deployment control?",
     "options": {
@@ -2065,7 +2065,7 @@
   },
   {
     "id": "kcna-130",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation enables automatic sidecar injection for the Consul service mesh?",
     "options": {
@@ -2076,12 +2076,12 @@
     },
     "answer": "A",
     "explanation": "consul.hashicorp.com/connect-inject: \"true\" is the correct annotation to enable Consul Connect sidecar injection. The annotation namespace is consul.hashicorp.com. Options B, C, and D use incorrect annotation keys not found in HashiCorp documentation.",
-    "doc_link": "https://developer.hashicorp.com/consul/docs/k8s/connect",
+    "doc_link": "https://developer.hashicorp.com/consul/docs/k8s",
     "llm_validated": 0
   },
   {
     "id": "kcna-131",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the effect of adding the label 'tier=backend' to a pod and creating a Service with selector 'tier=backend'?",
     "options": {
@@ -2097,7 +2097,7 @@
   },
   {
     "id": "kcna-132",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolume definition determines whether the volume can be mounted as readÃ¢â‚¬â€˜only?",
     "options": {
@@ -2113,7 +2113,7 @@
   },
   {
     "id": "kcna-133",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'spec.minReadySeconds' field in a Deployment control?",
     "options": {
@@ -2161,7 +2161,7 @@
   },
   {
     "id": "kcna-136",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service definition enables session affinity based on client IP?",
     "options": {
@@ -2177,7 +2177,7 @@
   },
   {
     "id": "kcna-137",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the 'kubectl get svc -o wide' command display that the plain 'kubectl get svc' does not?",
     "options": {
@@ -2193,7 +2193,7 @@
   },
   {
     "id": "kcna-138",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec determines whether the Service will allocate a virtual IP inside the cluster?",
     "options": {
@@ -2209,7 +2209,7 @@
   },
   {
     "id": "kcna-139",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does setting 'spec.strategy.type: Recreate' on a Deployment do?",
     "options": {
@@ -2225,7 +2225,7 @@
   },
   {
     "id": "kcna-140",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation enables automatic sidecar injection for the Istio service mesh?",
     "options": {
@@ -2241,7 +2241,7 @@
   },
   {
     "id": "kcna-141",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the effect of adding the label 'app=frontend' to a pod and creating a Service with selector 'app=frontend'?",
     "options": {
@@ -2257,7 +2257,7 @@
   },
   {
     "id": "kcna-142",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolume definition controls the access mode (e.g., ReadWriteOnce, ReadOnlyMany)?",
     "options": {
@@ -2305,7 +2305,7 @@
   },
   {
     "id": "kcna-145",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Pod spec defines the security context for the entire pod?",
     "options": {
@@ -2321,7 +2321,7 @@
   },
   {
     "id": "kcna-146",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does setting 'spec.strategy.type: RollingUpdate' on a StatefulSet control?",
     "options": {
@@ -2337,7 +2337,7 @@
   },
   {
     "id": "kcna-147",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation enables automatic sidecar injection for the Linkerd service mesh?",
     "options": {
@@ -2353,7 +2353,7 @@
   },
   {
     "id": "kcna-148",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the effect of adding the label 'env=prod' to a pod and creating a Service with selector 'env=prod'?",
     "options": {
@@ -2369,7 +2369,7 @@
   },
   {
     "id": "kcna-149",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolumeClaim specifies the storage class to use?",
     "options": {
@@ -2433,7 +2433,7 @@
   },
   {
     "id": "kcna-153",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "When you create a Service of type `NodePort`, how is the port exposed on each node?",
     "options": {
@@ -2465,7 +2465,7 @@
   },
   {
     "id": "kcna-155",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the `kubectl rollout restart` command do for a Deployment?",
     "options": {
@@ -2497,7 +2497,7 @@
   },
   {
     "id": "kcna-157",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the purpose of a `ServiceAccount` in Kubernetes?",
     "options": {
@@ -2513,7 +2513,7 @@
   },
   {
     "id": "kcna-158",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which of the following objects can be used to enforce network traffic rules between Pods?",
     "options": {
@@ -2545,7 +2545,7 @@
   },
   {
     "id": "kcna-160",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which command shows the current resource usage (CPU, memory) of a node?",
     "options": {
@@ -2561,7 +2561,7 @@
   },
   {
     "id": "kcna-161",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the default DNS policy for Pods?",
     "options": {
@@ -2577,7 +2577,7 @@
   },
   {
     "id": "kcna-162",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which object provides a stable IP address and DNS name for a set of Pods?",
     "options": {
@@ -2625,7 +2625,7 @@
   },
   {
     "id": "kcna-165",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does the `kubectl apply -k <dir>` command do?",
     "options": {
@@ -2641,7 +2641,7 @@
   },
   {
     "id": "kcna-166",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which of the following is NOT a built-in Kubernetes volume type?",
     "options": {
@@ -2657,7 +2657,7 @@
   },
   {
     "id": "kcna-167",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service spec defines the ports that the Service forwards to Pods?",
     "options": {
@@ -2689,7 +2689,7 @@
   },
   {
     "id": "kcna-169",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which command would you use to retrieve the full manifest of a running Pod?",
     "options": {
@@ -2737,7 +2737,7 @@
   },
   {
     "id": "kcna-172",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which command scales a Deployment named `web` to 5 replicas?",
     "options": {
@@ -2801,7 +2801,7 @@
   },
   {
     "id": "kcna-176",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the purpose of a `PersistentVolumeClaim` (PVC)?",
     "options": {
@@ -2817,7 +2817,7 @@
   },
   {
     "id": "kcna-177",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Kubernetes object is used for Role-Based Access Control (RBAC)?",
     "options": {
@@ -2849,7 +2849,7 @@
   },
   {
     "id": "kcna-179",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which field in a Deployment spec specifies the update strategy?",
     "options": {
@@ -2929,7 +2929,7 @@
   },
   {
     "id": "kcna-184",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What is the purpose of `kubectl port-forward`?",
     "options": {
@@ -2945,7 +2945,7 @@
   },
   {
     "id": "kcna-185",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which command shows details about a specific Pod including its events?",
     "options": {
@@ -3009,7 +3009,7 @@
   },
   {
     "id": "kcna-189",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "What does `kubectl rollout undo deployment/<name>` do?",
     "options": {
@@ -3025,7 +3025,7 @@
   },
   {
     "id": "kcna-190",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which object in Kubernetes is used to expose HTTP/S routes to Services within a cluster?",
     "options": {
@@ -3057,7 +3057,7 @@
   },
   {
     "id": "kcna-192",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which Service type exposes a service on a static port on each node's IP?",
     "options": {
@@ -3121,7 +3121,7 @@
   },
   {
     "id": "kcna-196",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which flag adds a custom HTTP header to traffic handled by the NGINX Ingress controller?",
     "options": {
@@ -3137,7 +3137,7 @@
   },
   {
     "id": "kcna-197",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which RBAC object binds a Role or ClusterRole to users, groups, or service accounts?",
     "options": {
@@ -3153,7 +3153,7 @@
   },
   {
     "id": "kcna-198",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which volume type is backed by a cloud provider's block storage and can be dynamically provisioned?",
     "options": {
@@ -3169,7 +3169,7 @@
   },
   {
     "id": "kcna-199",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "In a Service manifest, which field specifies the port on the pod that the Service forwards traffic to?",
     "options": {
@@ -3217,7 +3217,7 @@
   },
   {
     "id": "kcna-202",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which admission controller can block pods that request privileged mode?",
     "options": {
@@ -3249,7 +3249,7 @@
   },
   {
     "id": "kcna-204",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which kubectl command retrieves the logs of a container in a pod?",
     "options": {
@@ -3265,7 +3265,7 @@
   },
   {
     "id": "kcna-205",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "Which annotation disables automatic sidecar injection for Istio?",
     "options": {
@@ -3313,7 +3313,7 @@
   },
   {
     "id": "kcna-208",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Service manifest requests a specific external IP for a LoadBalancer service?",
     "options": {
@@ -3329,7 +3329,7 @@
   },
   {
     "id": "kcna-209",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Architecture",
     "difficulty": "medium",
     "question": "In which Kubernetes version did Deployments move to the stable `apps/v1` API?",
     "options": {
@@ -3345,7 +3345,7 @@
   },
   {
     "id": "kcna-210",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a Pod spec determines the DNS policy for the pod?",
     "options": {
@@ -3377,7 +3377,7 @@
   },
   {
     "id": "kcna-212",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which resource type stores TLS certificates for Ingress resources?",
     "options": {
@@ -3409,7 +3409,7 @@
   },
   {
     "id": "kcna-214",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which reason justifies using a NodePort service instead of a LoadBalancer?",
     "options": {
@@ -3473,7 +3473,7 @@
   },
   {
     "id": "kcna-218",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which object grants a set of permissions to users or groups across the entire cluster?",
     "options": {
@@ -3489,7 +3489,7 @@
   },
   {
     "id": "kcna-219",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a PersistentVolumeClaim specifies the requested storage size?",
     "options": {
@@ -3505,7 +3505,7 @@
   },
   {
     "id": "kcna-220",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "When is it appropriate to use a ConfigMap instead of a Secret?",
     "options": {
@@ -3521,7 +3521,7 @@
   },
   {
     "id": "kcna-221",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which field in a ServiceAccount controls automatic mounting of its token secret?",
     "options": {
@@ -3553,7 +3553,7 @@
   },
   {
     "id": "kcna-223",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Cloud Native Application Delivery",
     "difficulty": "medium",
     "question": "Which Kubernetes object is configured to automatically scale pods based on custom or external metrics?",
     "options": {
@@ -3569,7 +3569,7 @@
   },
   {
     "id": "kcna-224",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which annotation enables HTTP/2 for a GKE LoadBalancer service?",
     "options": {
@@ -3580,7 +3580,7 @@
     },
     "answer": "B",
     "explanation": "To enable HTTP/2 for a GKE LoadBalancer backend, use the cloud.google.com/backend-config annotation referencing a BackendConfig resource with protocol: HTTP2. The networking.gke.io/load-balancer-type annotation controls whether the load balancer is Internal or External, not HTTP/2 support. A sets the load balancer to Internal mode.",
-    "doc_link": "https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-for-gke",
+    "doc_link": "https://docs.cloud.google.com/kubernetes-engine/docs/concepts/ingress",
     "llm_validated": 0
   },
   {
@@ -3617,7 +3617,7 @@
   },
   {
     "id": "kcna-227",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "What is the purpose of a ServiceAccount token volume mounted into a pod?",
     "options": {
@@ -3649,7 +3649,7 @@
   },
   {
     "id": "kcna-229",
-    "domain": "Kubernetes Fundamentals",
+    "domain": "Container Orchestration",
     "difficulty": "medium",
     "question": "Which resource type is used to define network traffic rules between pods?",
     "options": {
@@ -3677,6 +3677,166 @@
     "answer": "C",
     "explanation": "The scheduler selects suitable nodes for unscheduled pods based on constraints and resources.",
     "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-231",
+    "domain": "Container Orchestration",
+    "difficulty": "medium",
+    "question": "A NetworkPolicy is created with an empty podSelector (`{}`) in the `spec.podSelector` field. Which Pods does this policy apply to?",
+    "options": {
+      "A": "All Pods in the namespace where the NetworkPolicy is defined",
+      "B": "All Pods across every namespace in the cluster",
+      "C": "Only Pods that have no labels assigned",
+      "D": "Only Pods in the default namespace"
+    },
+    "answer": "A",
+    "explanation": "Answer A: An empty podSelector matches all Pods in the same namespace as the NetworkPolicy. B: NetworkPolicies are namespace-scoped and cannot target other namespaces. C: Empty selector means all Pods, not unlabeled ones. D: The policy applies to its own namespace regardless of name.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-232",
+    "domain": "Container Orchestration",
+    "difficulty": "easy",
+    "question": "Which PersistentVolume access mode allows the volume to be mounted as read-write by many nodes simultaneously?",
+    "options": {
+      "A": "ReadWriteOnce",
+      "B": "ReadWriteMany",
+      "C": "ReadOnlyMany",
+      "D": "ReadWriteOncePod"
+    },
+    "answer": "B",
+    "explanation": "Answer B: ReadWriteMany (RWX) permits mounting on multiple nodes with read-write access simultaneously. A: ReadWriteOnce limits read-write to a single node. C: ReadOnlyMany allows many nodes but only read access. D: ReadWriteOncePod restricts access to a single Pod.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-233",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "A node has the taint `env=prod:NoSchedule`. A Pod without a matching toleration is already running on that node. What happens to the running Pod?",
+    "options": {
+      "A": "It is immediately evicted from the node",
+      "B": "It is restarted and rescheduled on a node without the taint",
+      "C": "It continues running and is not affected",
+      "D": "It is suspended until a matching toleration is added"
+    },
+    "answer": "C",
+    "explanation": "Answer C: NoSchedule prevents new Pods from being placed on the node but does not affect Pods already running there. A and B: Only the NoExecute taint effect causes eviction of existing Pods. D: Pods are not suspended by taints; only NoExecute causes removal.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-234",
+    "domain": "Container Orchestration",
+    "difficulty": "medium",
+    "question": "Which resource grants a ClusterRole's permissions to a subject but scoped to a specific namespace only?",
+    "options": {
+      "A": "ClusterRoleBinding",
+      "B": "ServiceAccount",
+      "C": "Role",
+      "D": "RoleBinding"
+    },
+    "answer": "D",
+    "explanation": "Answer D: A RoleBinding can reference a ClusterRole and restricts its permissions to the namespace where the RoleBinding exists. A: ClusterRoleBinding grants the permissions cluster-wide. B: ServiceAccount is an identity, not an authorization binding. C: Role defines permissions within a namespace but cannot reference cluster-scoped resources.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-235",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "In OpenTelemetry, what is the building block that represents a single named, timed operation within a distributed trace?",
+    "options": {
+      "A": "Span",
+      "B": "Metric",
+      "C": "Event",
+      "D": "Signal"
+    },
+    "answer": "A",
+    "explanation": "Answer A: A Span is the fundamental unit of a trace, recording a named timed operation with attributes and events. B: Metrics are numeric measurements over time, not trace units. C: An Event is a timestamped annotation attached to a Span, not the Span itself. D: Signal is the umbrella term covering traces, metrics, and logs.",
+    "doc_link": "https://opentelemetry.io/docs/concepts/signals/traces/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-236",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "What does \"shift left\" mean in the context of cloud-native security?",
+    "options": {
+      "A": "Moving security ownership from developers to a dedicated security operations team",
+      "B": "Integrating security testing and controls earlier in the software development lifecycle",
+      "C": "Relocating security tooling from worker nodes to the control plane",
+      "D": "Shifting enforcement from application-layer to network-layer controls"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Shift left means addressing security earlier in the pipeline - during development and CI rather than post-deployment. A: It does the opposite, giving developers more security responsibility. C and D: These describe infrastructure changes unrelated to the lifecycle concept.",
+    "doc_link": "https://kubernetes.io/docs/concepts/security/overview/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-237",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which Kubernetes object specifies the minimum number of Pods from a Deployment that must remain available during a voluntary disruption such as a node drain?",
+    "options": {
+      "A": "ResourceQuota",
+      "B": "LimitRange",
+      "C": "PodDisruptionBudget",
+      "D": "HorizontalPodAutoscaler"
+    },
+    "answer": "C",
+    "explanation": "Answer C: A PodDisruptionBudget (PDB) sets minAvailable or maxUnavailable constraints that must be respected during voluntary disruptions. A: ResourceQuota limits total namespace resource consumption. B: LimitRange sets per-container request/limit defaults. D: HPA scales pod count based on load metrics.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/disruptions/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-238",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "hard",
+    "question": "In the following Dockerfile snippet, why is `COPY package*.json ./` placed before `COPY . .`?\n```\nFROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\n```",
+    "options": {
+      "A": "Docker requires dependency manifest files to precede all other COPY instructions",
+      "B": "npm ci will fail if any non-manifest files exist in the working directory",
+      "C": "WORKDIR cannot be used until at least one COPY instruction has executed",
+      "D": "So that the npm ci layer is cached and only re-runs when package.json changes"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Docker caches each layer; copying only package files before RUN npm ci means that layer reuses the cache on subsequent builds unless dependencies change. A: This is a best practice, not a Docker requirement. B: npm ci does not fail due to extra files. C: WORKDIR is independent of COPY instructions.",
+    "doc_link": "https://docs.docker.com/build/cache/optimize/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-239",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "easy",
+    "question": "In GitOps, what term describes the situation where the live state of a system no longer matches the desired state stored in Git?",
+    "options": {
+      "A": "Configuration drift",
+      "B": "State divergence alert",
+      "C": "Reconciliation failure",
+      "D": "Deployment skew"
+    },
+    "answer": "A",
+    "explanation": "Answer A: Configuration drift is when the actual running state diverges from the declared desired state in Git. GitOps tools detect and reconcile this continuously. B and D: These are not standard GitOps terms. C: Reconciliation failure describes a tool inability to correct drift, not the drift condition itself.",
+    "doc_link": "https://opengitops.dev/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-240",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "easy",
+    "question": "Which Kubernetes resource sets aggregate limits on total CPU, memory, and object count that can be consumed within a namespace?",
+    "options": {
+      "A": "LimitRange",
+      "B": "ResourceQuota",
+      "C": "PodDisruptionBudget",
+      "D": "PriorityClass"
+    },
+    "answer": "B",
+    "explanation": "Answer B: ResourceQuota enforces total consumption limits across all workloads in a namespace. A: LimitRange sets default and maximum requests/limits per individual container or Pod. C: PodDisruptionBudget controls voluntary disruptions, not resource consumption. D: PriorityClass assigns scheduling priority to Pods.",
+    "doc_link": "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
     "llm_validated": 0
   }
 ]
