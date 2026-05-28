@@ -16,6 +16,7 @@ v0.2.1 -
 
 ---
 
+<<<<<<< HEAD
 ---
 
 ## [0.2.0] — 2026-05-28
@@ -25,6 +26,8 @@ v0.2.1 -
 
 ---
 
+=======
+>>>>>>> 40f3fcc7bfc10d020c20312b64ac287a33011ec0
 ## [0.1.7] — 2026-05-25 
 ### Fixed
 - Woorked to fix teaching in responses where terminology that we are testing for is being explained. Fixed a
