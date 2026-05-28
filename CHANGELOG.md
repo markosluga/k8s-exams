@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
-v0.2.1 - 
+
 ---
 
 ## [0.2.1] — 2026-05-28
