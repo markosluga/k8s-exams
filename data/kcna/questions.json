@@ -11,7 +11,7 @@
       "D": "StatefulSet"
     },
     "answer": "C",
-    "explanation": "Answer C: PodAffinity allows scheduling pods on the same node based on label selectors. A: DaemonSet ensures a copy runs on every node, not for grouping pods together. B: ReplicaSet manages replica counts but does not influence node placement. D: StatefulSet provides stable identities, not node coÃ¢â‚¬â€˜location guarantees.",
+    "explanation": "Answer C: PodAffinity allows scheduling pods on the same node based on label selectors. A: DaemonSet ensures a copy runs on every node, not for grouping pods together. B: ReplicaSet manages replica counts but does not influence node placement. D: StatefulSet provides stable identities, not node co-location guarantees.",
     "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/",
     "llm_validated": 0
   },
@@ -22,9 +22,9 @@
     "question": "What is the primary purpose of a Kubernetes Service of type LoadBalancer?",
     "options": {
       "A": "Expose a Service externally using a cloud provider's load balancer",
-      "B": "Provide an internal DNS name for Pods",
-      "C": "Persist data across Pod restarts",
-      "D": "Run a single replica of a Pod"
+      "B": "Provide an internal DNS name for Pods so that other workloads in the same namespace can resolve them by a predictable hostname",
+      "C": "Persist data across Pod restarts by dynamically provisioning a PersistentVolume and binding it to the requesting Pod automatically",
+      "D": "Run a single replica of a Pod and automatically reschedule it onto a healthy node if the original node becomes unavailable"
     },
     "answer": "A",
     "explanation": "Answer A: LoadBalancer creates an external load balancer that routes traffic to the Service. B: Internal DNS is provided by ClusterIP Services. C: Persistence is handled by PersistentVolumes, not Services. D: Running a single replica is managed by Deployments, not Service types.",
@@ -37,10 +37,10 @@
     "difficulty": "medium",
     "question": "In a Kubernetes manifest, which field specifies the container image to use?",
     "options": {
-      "A": "imagePullPolicy",
-      "B": "command",
-      "C": "image",
-      "D": "resources"
+      "A": "imagePullPolicy (controls when the image is pulled: Always, Never, IfNotPresent)",
+      "B": "command (overrides the container entrypoint defined in the image)",
+      "C": "image (the registry path, image name, and optional tag or digest)",
+      "D": "resources (defines CPU and memory requests and limits for the container)"
     },
     "answer": "C",
     "explanation": "Answer C: The image field contains the container image name and tag. A: imagePullPolicy defines when the image is pulled, not the image name. B: command overrides the container's entrypoint, not the image reference. D: resources define CPU/memory limits, unrelated to image selection.",
@@ -51,15 +51,15 @@
     "id": "kcna-004",
     "domain": "Kubernetes Fundamentals",
     "difficulty": "medium",
-    "question": "Which component watches the health of the controlÃ¢â‚¬â€˜plane nodes and updates their Ready status?",
+    "question": "Which component watches the health of the control-plane nodes and updates their Ready status?",
     "options": {
-      "A": "kubeÃ¢â‚¬â€˜scheduler",
-      "B": "nodeÃ¢â‚¬â€˜controller",
-      "C": "kubeÃ¢â‚¬â€˜proxy",
+      "A": "kube-scheduler",
+      "B": "node-controller",
+      "C": "kube-proxy",
       "D": "etcd"
     },
     "answer": "B",
-    "explanation": "Answer B: Node controller marks nodes NotReady when they miss heartbeats. A: Scheduler assigns Pods; it does not monitor node health. C: kubeÃ¢â‚¬â€˜proxy handles network rules, not node status. D: etcd stores cluster data; it does not evaluate node health.",
+    "explanation": "Answer B: Node controller marks nodes NotReady when they miss heartbeats. A: Scheduler assigns Pods; it does not monitor node health. C: kube-proxy handles network rules, not node status. D: etcd stores cluster data; it does not evaluate node health.",
     "doc_link": "https://kubernetes.io/docs/concepts/architecture/",
     "llm_validated": 0
   },
@@ -69,13 +69,13 @@
     "difficulty": "medium",
     "question": "When using a ConfigMap as environment variables, which key in the pod spec is used?",
     "options": {
-      "A": "envFrom",
-      "B": "configMapKeyRef",
-      "C": "volumeMounts",
-      "D": "args"
+      "A": "envFrom (loads all keys from a ConfigMap directly as environment variables)",
+      "B": "configMapKeyRef (references a single key from a ConfigMap in an env entry)",
+      "C": "volumeMounts (attaches a volume to a path inside the container filesystem)",
+      "D": "args (passes command-line arguments to the container, not ConfigMap data)"
     },
     "answer": "A",
-    "explanation": "Answer A: envFrom imports all keyÃ¢â‚¬â€˜value pairs from a ConfigMap as env vars. B: configMapKeyRef references a single key, not the whole map. C: volumeMounts mount ConfigMaps as files, not env vars. D: args provide commandÃ¢â‚¬â€˜line arguments, unrelated to ConfigMaps.",
+    "explanation": "Answer A: envFrom imports all key-value pairs from a ConfigMap as env vars. B: configMapKeyRef references a single key, not the whole map. C: volumeMounts mount ConfigMaps as files, not env vars. D: args provide command-line arguments, unrelated to ConfigMaps.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/",
     "llm_validated": 0
   },
@@ -99,15 +99,15 @@
     "id": "kcna-007",
     "domain": "Kubernetes Fundamentals",
     "difficulty": "medium",
-    "question": "Which Kubernetes object can be used to run a oneÃ¢â‚¬â€˜off task that executes a container and then exits?",
+    "question": "Which Kubernetes object can be used to run a one-off task that executes a container and then exits?",
     "options": {
-      "A": "Job",
-      "B": "CronJob",
-      "C": "DaemonSet",
-      "D": "ReplicaSet"
+      "A": "Job (runs a Pod to completion and records success or failure)",
+      "B": "CronJob (runs Jobs on a recurring schedule defined by a cron expression)",
+      "C": "DaemonSet (ensures one Pod runs on every node matching a selector)",
+      "D": "ReplicaSet (maintains a stable number of identical Pods at all times)"
     },
     "answer": "A",
-    "explanation": "Answer A: Job creates Pods that run to completion and then terminate. B: CronJob schedules Jobs periodically, not a single execution. C: DaemonSet runs a copy on every node continuously. D: ReplicaSet maintains a set number of Pods, not oneÃ¢â‚¬â€˜off tasks.",
+    "explanation": "Answer A: Job creates Pods that run to completion and then terminate. B: CronJob schedules Jobs periodically, not a single execution. C: DaemonSet runs a copy on every node continuously. D: ReplicaSet maintains a set number of Pods, not one-off tasks.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/",
     "llm_validated": 0
   },
@@ -115,15 +115,15 @@
     "id": "kcna-008",
     "domain": "Kubernetes Fundamentals",
     "difficulty": "medium",
-    "question": "What flag is used with 'kubectl apply' to perform a serverÃ¢â‚¬â€˜side dryÃ¢â‚¬â€˜run?",
+    "question": "What flag is used with 'kubectl apply' to perform a server-side dry-run?",
     "options": {
       "A": "--dry-run=client",
-      "B": "--dry-run=server",
-      "C": "--validate=false",
+      "B": "--validate=false",
+      "C": "--dry-run=server",
       "D": "--force"
     },
-    "answer": "B",
-    "explanation": "Answer B: --dry-run=server sends the request to the API server for validation only. A: client dryÃ¢â‚¬â€˜run validates locally without contacting the API server. C: --validate controls schema validation, not dryÃ¢â‚¬â€˜run behavior. D: --force is used with delete/replace, not for dryÃ¢â‚¬â€˜run.",
+    "answer": "C",
+    "explanation": "Answer C: --dry-run=server sends the request to the API server for validation only. A: client dry-run validates locally without contacting the API server. B: --validate controls schema validation, not dry-run behavior. D: --force is used with delete/replace, not for dry-run.",
     "doc_link": "https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply",
     "llm_validated": 0
   },
@@ -152,7 +152,7 @@
       "A": "Prevent Pods from being scheduled unless they tolerate the taint",
       "B": "Automatically delete Pods when the node is under memory pressure",
       "C": "Mark a node as deprecated for future upgrades",
-      "D": "Enable nodeÃ¢â‚¬â€˜level logging of container output"
+      "D": "Enable node-level logging of container output"
     },
     "answer": "A",
     "explanation": "Answer A: Taints repel Pods that do not have matching tolerations. B: Memory pressure eviction is handled by the kubelet, not taints. C: Deprecation is a policy decision, not enforced by taints. D: Logging is configured via logging drivers, not node taints.",
@@ -163,15 +163,15 @@
     "id": "kcna-011",
     "domain": "Kubernetes Fundamentals",
     "difficulty": "medium",
-    "question": "Which field in a Pod spec controls how many times a container is restarted after it exits with a nonÃ¢â‚¬â€˜zero status?",
+    "question": "Which field in a Pod spec controls how many times a container is restarted after it exits with a non-zero status?",
     "options": {
-      "A": "restartPolicy",
+      "A": "backoffLimit",
       "B": "terminationGracePeriodSeconds",
-      "C": "backoffLimit",
+      "C": "restartPolicy",
       "D": "livenessProbe"
     },
-    "answer": "A",
-    "explanation": "Answer A: restartPolicy defines the Pod restart behavior (Always, OnFailure, Never). B: terminationGracePeriodSeconds sets the time to wait before forceÃ¢â‚¬â€˜killing a Pod. C: backoffLimit applies to Jobs, not plain Pods. D: livenessProbe determines health checks, not restart count.",
+    "answer": "C",
+    "explanation": "Answer C: restartPolicy defines the Pod restart behavior (Always, OnFailure, Never). B: terminationGracePeriodSeconds sets the time to wait before force-killing a Pod. A: backoffLimit applies to Jobs, not plain Pods. D: livenessProbe determines health checks, not restart count.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
     "llm_validated": 0
   },
@@ -198,12 +198,12 @@
     "question": "In a Deployment manifest, which field determines the maximum number of Pods that can be unavailable during a rolling update?",
     "options": {
       "A": "maxSurge",
-      "B": "maxUnavailable",
+      "B": "progressDeadlineSeconds",
       "C": "revisionHistoryLimit",
-      "D": "progressDeadlineSeconds"
+      "D": "maxUnavailable"
     },
-    "answer": "B",
-    "explanation": "Answer B: maxUnavailable sets how many Pods can be down during the rollout. A: maxSurge controls the number of extra Pods created during update, not unavailable ones. C: revisionHistoryLimit defines how many old ReplicaSets to retain. D: progressDeadlineSeconds is the timeout for a rollout to be considered stalled.",
+    "answer": "D",
+    "explanation": "Answer D: maxUnavailable sets how many Pods can be down during the rollout. A: maxSurge controls the number of extra Pods created during update, not unavailable ones. C: revisionHistoryLimit defines how many old ReplicaSets to retain. B: progressDeadlineSeconds is the timeout for a rollout to be considered stalled.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
     "llm_validated": 0
   },
@@ -219,7 +219,7 @@
       "D": "NetworkPolicy"
     },
     "answer": "B",
-    "explanation": "Answer B: ClusterRole can be used across the whole cluster and can be bound via ClusterRoleBinding. A: Role is namespaceÃ¢â‚¬â€˜scoped; it does not grant clusterÃ¢â‚¬â€˜wide permissions. C: RoleBinding ties a Role to subjects; it does not define permissions itself. D: NetworkPolicy controls network traffic, not RBAC permissions.",
+    "explanation": "Answer B: ClusterRole can be used across the whole cluster and can be bound via ClusterRoleBinding. A: Role is namespace-scoped; it does not grant cluster-wide permissions. C: RoleBinding ties a Role to subjects; it does not define permissions itself. D: NetworkPolicy controls network traffic, not RBAC permissions.",
     "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole",
     "llm_validated": 0
   },
@@ -230,12 +230,12 @@
     "question": "What is the purpose of the 'imagePullSecrets' field in a Pod spec?",
     "options": {
       "A": "Specify a list of Docker image tags to pull",
-      "B": "Provide credentials for pulling images from a private registry",
+      "B": "Encrypt the image layers before runtime",
       "C": "Define the order in which images are pulled",
-      "D": "Encrypt the image layers before runtime"
+      "D": "Provide credentials for pulling images from a private registry"
     },
-    "answer": "B",
-    "explanation": "Answer B: imagePullSecrets references Secret objects that contain registry credentials. A: imagePullSecrets does not list tags; it references Secret objects. C: Pull order is not controlled by this field. D: Encryption of image layers is handled by the container runtime, not by this field.",
+    "answer": "D",
+    "explanation": "Answer D: imagePullSecrets references Secret objects that contain registry credentials. A: imagePullSecrets does not list tags; it references Secret objects. C: Pull order is not controlled by this field. B: Encryption of image layers is handled by the container runtime, not by this field.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
     "llm_validated": 0
   },
@@ -251,7 +251,7 @@
       "D": "OnExit"
     },
     "answer": "D",
-    "explanation": "Answer D: OnExit is not a supported restart policy. A: Always is a standard restart policy. B: OnFailure restarts the container only when it exits with nonÃ¢â‚¬â€˜zero code. C: Never disables automatic restarts.",
+    "explanation": "Answer D: OnExit is not a supported restart policy. A: Always is a standard restart policy. B: OnFailure restarts the container only when it exits with non-zero code. C: Never disables automatic restarts.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
     "llm_validated": 0
   },
@@ -293,10 +293,10 @@
     "difficulty": "medium",
     "question": "In a HorizontalPodAutoscaler (HPA) spec, which metric type can be used to scale based on custom application metrics?",
     "options": {
-      "A": "Resource",
-      "B": "Object",
-      "C": "External",
-      "D": "Pods"
+      "A": "Resource (scales based on CPU or memory consumption of the containers)",
+      "B": "Object (scales based on a metric attached to a specific Kubernetes object)",
+      "C": "External (scales based on a metric originating outside the cluster)",
+      "D": "Pods (scales based on a custom per-pod application metric, e.g., requests/sec)"
     },
     "answer": "D",
     "explanation": "The Pods metric type in HPA v2 is designed for custom per-pod application metrics (e.g., requests per second per pod). External is for metrics sourced from outside the cluster. A (Object) applies to specific objects like Ingress. C (Resource) covers standard CPU/memory usage.",
@@ -312,10 +312,10 @@
       "A": "Metrics Server",
       "B": "Heapster",
       "C": "Prometheus Adapter",
-      "D": "KubeÃ¢â‚¬â€˜stateÃ¢â‚¬â€˜metrics"
+      "D": "Kube-state-metrics"
     },
     "answer": "A",
-    "explanation": "Answer A: Metrics Server provides resource usage metrics for the top command. B: Heapster is deprecated in favor of Metrics Server. C: Prometheus Adapter is for custom metrics, not the basic top command. D: kubeÃ¢â‚¬â€˜stateÃ¢â‚¬â€˜metrics exposes object state, not resource usage.",
+    "explanation": "Answer A: Metrics Server provides resource usage metrics for the top command. B: Heapster is deprecated in favor of Metrics Server. C: Prometheus Adapter is for custom metrics, not the basic top command. D: kube-state-metrics exposes object state, not resource usage.",
     "doc_link": "https://github.com/kubernetes-sigs/metrics-server",
     "llm_validated": 0
   },
@@ -325,13 +325,13 @@
     "difficulty": "medium",
     "question": "Which field in a Deployment's pod template specifies the container's listening port?",
     "options": {
-      "A": "containerPort",
+      "A": "targetPort",
       "B": "servicePort",
-      "C": "targetPort",
+      "C": "containerPort",
       "D": "hostPort"
     },
-    "answer": "A",
-    "explanation": "Answer A: containerPort defines the port exposed by the container. B: servicePort belongs to Service objects, not pod specs. C: targetPort is a Service field mapping to containerPort. D: hostPort binds the container port to the node, not the definition of the listening port.",
+    "answer": "C",
+    "explanation": "Answer C: containerPort defines the port exposed by the container. B: servicePort belongs to Service objects, not pod specs. A: targetPort is a Service field mapping to containerPort. D: hostPort binds the container port to the node, not the definition of the listening port.",
     "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core",
     "llm_validated": 0
   },
@@ -341,10 +341,10 @@
     "difficulty": "medium",
     "question": "What is the purpose of the 'serviceAccountName' field in a pod spec?",
     "options": {
-      "A": "Assign a static IP to the pod",
+      "A": "Assign a static IP address to the pod by referencing a named network attachment definition",
       "B": "Mount a secret volume automatically",
       "C": "Specify the service account whose credentials the pod uses",
-      "D": "Set the DNS name for the pod"
+      "D": "Set the fully qualified DNS name used to reach the pod from other namespaces in the cluster"
     },
     "answer": "C",
     "explanation": "Answer C: serviceAccountName links the pod to a ServiceAccount for API access. A: Static IPs are set via hostNetwork or specific Service types. B: Secrets are mounted via volumes, not via serviceAccountName. D: Pod DNS is derived from its name and namespace.",
@@ -373,12 +373,12 @@
     "difficulty": "medium",
     "question": "In a Service manifest, which field determines whether the Service gets a stable virtual IP?",
     "options": {
-      "A": "type: ClusterIP",
+      "A": "sessionAffinity",
       "B": "externalIPs",
       "C": "loadBalancerIP",
-      "D": "sessionAffinity"
+      "D": "type: ClusterIP"
     },
-    "answer": "A",
+    "answer": "D",
     "explanation": "Setting type: ClusterIP (the default) causes Kubernetes to allocate a stable virtual IP for the Service. sessionAffinity controls client-IP routing stickiness but has no effect on IP allocation. externalIPs expose the Service externally. B (type) is the parent field but ClusterIP is the specific value that drives allocation.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies",
     "llm_validated": 0
@@ -406,12 +406,12 @@
     "question": "Which object type is used to define a set of node-level labels and taints that should be applied to a group of nodes?",
     "options": {
       "A": "Node",
-      "B": "NodePool",
+      "B": "NodeGroup",
       "C": "MachineSet",
-      "D": "NodeGroup"
+      "D": "NodePool"
     },
-    "answer": "B",
-    "explanation": "Answer B: NodePool (in many managed services) groups nodes and can set labels/taints. A: Node objects represent individual nodes, not groups. C: MachineSet is a Cluster API concept, not core Kubernetes. D: NodeGroup is a cloud provider term, not a native Kubernetes object.",
+    "answer": "D",
+    "explanation": "Answer D: NodePool (in many managed services) groups nodes and can set labels/taints. A: Node objects represent individual nodes, not groups. C: MachineSet is a Cluster API concept, not core Kubernetes. B: NodeGroup is a cloud provider term, not a native Kubernetes object.",
     "doc_link": "https://kubernetes.io/docs/home/",
     "llm_validated": 0
   },
@@ -435,7 +435,7 @@
     "id": "kcna-028",
     "domain": "Kubernetes Fundamentals",
     "difficulty": "medium",
-    "question": "Which of the following is NOT a builtÃ¢â‚¬â€˜in admission controller in Kubernetes?",
+    "question": "Which of the following is NOT a built-in admission controller in Kubernetes?",
     "options": {
       "A": "NamespaceLifecycle",
       "B": "NodeRestriction",
@@ -486,12 +486,12 @@
     "question": "What Kubernetes object is used to enforce network traffic rules between pods?",
     "options": {
       "A": "Ingress",
-      "B": "NetworkPolicy",
-      "C": "Service",
+      "B": "Service",
+      "C": "NetworkPolicy",
       "D": "ConfigMap"
     },
-    "answer": "B",
-    "explanation": "Answer B: NetworkPolicy specifies how pods are allowed to communicate. A: Ingress defines external HTTP(S) routing, not intraÃ¢â‚¬â€˜cluster traffic control. C: Service provides stable networking endpoints, not policy enforcement. D: ConfigMap stores configuration data, not network rules.",
+    "answer": "C",
+    "explanation": "Answer C: NetworkPolicy specifies how pods are allowed to communicate. A: Ingress defines external HTTP(S) routing, not intra-cluster traffic control. B: Service provides stable networking endpoints, not policy enforcement. D: ConfigMap stores configuration data, not network rules.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
     "llm_validated": 0
   },
@@ -501,10 +501,10 @@
     "difficulty": "medium",
     "question": "Which field in a pod spec allows you to mount a ConfigMap as a volume?",
     "options": {
-      "A": "envFrom",
-      "B": "configMapKeyRef",
-      "C": "volumes",
-      "D": "imagePullSecrets"
+      "A": "envFrom (injects ConfigMap keys as env vars, not as a volume mount)",
+      "B": "configMapKeyRef (references a single ConfigMap key in an env var definition)",
+      "C": "volumes (declares volumes for the Pod, including ConfigMap volume sources)",
+      "D": "imagePullSecrets (provides registry credentials, unrelated to ConfigMap mounts)"
     },
     "answer": "C",
     "explanation": "Answer C: volumes can reference a ConfigMap to expose its contents as files. A: envFrom imports ConfigMap data as environment variables, not as a volume. B: configMapKeyRef references a single key, not a whole volume. D: imagePullSecrets is for private registry credentials.",
@@ -523,7 +523,7 @@
       "D": "Canary"
     },
     "answer": "B",
-    "explanation": "Answer B: RollingUpdate gradually replaces pods and is the default strategy. A: Recreate replaces all pods at once, not default. C: BlueGreen is a deployment pattern, not a builtÃ¢â‚¬â€˜in strategy. D: Canary is a rollout pattern, not a native strategy type.",
+    "explanation": "Answer B: RollingUpdate gradually replaces pods and is the default strategy. A: Recreate replaces all pods at once, not default. C: BlueGreen is a deployment pattern, not a built-in strategy. D: Canary is a rollout pattern, not a native strategy type.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
     "llm_validated": 0
   },
@@ -555,7 +555,7 @@
       "D": "Scale a deployment to zero"
     },
     "answer": "B",
-    "explanation": "Answer B: portÃ¢â‚¬â€˜forward proxies traffic from a local port to a pod, useful for debugging. A: LoadBalancer services are created via Service spec, not portÃ¢â‚¬â€˜forward. C: NodePort is a Service type, unrelated to portÃ¢â‚¬â€˜forward. D: Scaling is done with 'kubectl scale'.",
+    "explanation": "Answer B: port-forward proxies traffic from a local port to a pod, useful for debugging. A: LoadBalancer services are created via Service spec, not port-forward. C: NodePort is a Service type, unrelated to port-forward. D: Scaling is done with 'kubectl scale'.",
     "doc_link": "https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/",
     "llm_validated": 0
   },
@@ -581,9 +581,9 @@
     "difficulty": "medium",
     "question": "What is the purpose of the 'metadata.ownerReferences' field in a Kubernetes object?",
     "options": {
-      "A": "Define which ServiceAccount owns the object",
+      "A": "Define which ServiceAccount owns and has RBAC permission to manage the Kubernetes object at runtime",
       "B": "Link the object to its managing controller for garbage collection",
-      "C": "Specify the user who created the object",
+      "C": "Specify the username or service account identity of the principal who originally created the object in the cluster",
       "D": "Set the node on which the pod must run"
     },
     "answer": "B",
@@ -597,13 +597,13 @@
     "difficulty": "medium",
     "question": "Which component of the control plane stores the desired state of the cluster?",
     "options": {
-      "A": "kube-scheduler",
-      "B": "etcd",
-      "C": "kube-controller-manager",
-      "D": "kube-proxy"
+      "A": "kube-scheduler (decides which node each new Pod is placed on)",
+      "B": "kube-proxy (maintains iptables/IPVS rules for Service routing on each node)",
+      "C": "kube-controller-manager (runs built-in reconciliation control loops)",
+      "D": "etcd (distributed key-value store that holds all cluster state)"
     },
-    "answer": "B",
-    "explanation": "Answer B: etcd is the distributed keyÃ¢â‚¬â€˜value store holding all cluster configuration. A: Scheduler assigns pods; it does not store state. C: Controller manager runs controllers that act on state, but state lives in etcd. D: kube-proxy handles network rules on nodes.",
+    "answer": "D",
+    "explanation": "Answer D: etcd is the distributed key-value store holding all cluster configuration. A: Scheduler assigns pods; it does not store state. C: Controller manager runs controllers that act on state, but state lives in etcd. B: kube-proxy handles network rules on nodes.",
     "doc_link": "https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/",
     "llm_validated": 0
   },
@@ -611,7 +611,7 @@
     "id": "kcna-039",
     "domain": "Kubernetes Fundamentals",
     "difficulty": "medium",
-    "question": "When a pod is created with 'restartPolicy: Never', what happens if the container exits with a nonÃ¢â‚¬â€˜zero code?",
+    "question": "When a pod is created with 'restartPolicy: Never', what happens if the container exits with a non-zero code?",
     "options": {
       "A": "The pod is deleted automatically",
       "B": "The container is restarted once",
@@ -619,7 +619,7 @@
       "D": "The node is marked NotReady"
     },
     "answer": "C",
-    "explanation": "Answer C: The pod enters Failed phase and stays until manually removed. A: Pods are not autoÃ¢â‚¬â€˜deleted; they stay for inspection. B: Never policy disables restarts entirely. D: Node readiness is unrelated to pod restart policy.",
+    "explanation": "Answer C: The pod enters Failed phase and stays until manually removed. A: Pods are not auto-deleted; they stay for inspection. B: Never policy disables restarts entirely. D: Node readiness is unrelated to pod restart policy.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy",
     "llm_validated": 0
   },
@@ -645,9 +645,9 @@
     "difficulty": "medium",
     "question": "Which annotation can be added to a Pod to ensure it is scheduled on a node with a specific label?",
     "options": {
-      "A": "scheduler.kubernetes.io/affinity: \"key=value\"",
+      "A": "scheduler.kubernetes.io/affinity: required-key=value annotation to hard-pin pods to matching labeled nodes",
       "B": "nodeSelector: {\"key\": \"value\"}",
-      "C": "node.kubernetes.io/required-labels: \"key=value\"",
+      "C": "node.kubernetes.io/required-labels: key=value annotation placed on the pod spec to constrain scheduling",
       "D": "affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution"
     },
     "answer": "D",
@@ -709,13 +709,13 @@
     "difficulty": "medium",
     "question": "What does the 'kubectl get all' command list by default?",
     "options": {
-      "A": "All resources in the cluster",
-      "B": "Pods, Services, Deployments, ReplicaSets, and StatefulSets in the current namespace",
-      "C": "Only Pods and Services",
-      "D": "Nodes and PersistentVolumes"
+      "A": "All resources in all namespaces, including cluster-scoped objects",
+      "B": "Only Pods and Services, regardless of the current namespace",
+      "C": "Pods, Services, Deployments, ReplicaSets, and StatefulSets in the current namespace",
+      "D": "Nodes, PersistentVolumes, and other cluster-scoped resources only"
     },
-    "answer": "B",
-    "explanation": "Answer B: It shows the common workload resources in the namespace. A: It does not list every resource type. C: It includes more than just Pods and Services. D: Nodes and PVs are not part of 'all' output.",
+    "answer": "C",
+    "explanation": "Answer C: It shows the common workload resources in the namespace. A: It does not list every resource type. B: It includes more than just Pods and Services. D: Nodes and PVs are not part of 'all' output.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#resource-types",
     "llm_validated": 0
   },
@@ -741,13 +741,13 @@
     "difficulty": "medium",
     "question": "What is the purpose of the 'kubectl apply --prune' flag?",
     "options": {
-      "A": "Delete resources not defined in the applied manifest",
-      "B": "Force a serverÃ¢â‚¬â€˜side apply",
+      "A": "Show a diff before applying",
+      "B": "Force a server-side apply",
       "C": "Validate the manifest without making changes",
-      "D": "Show a diff before applying"
+      "D": "Delete resources not defined in the applied manifest"
     },
-    "answer": "A",
-    "explanation": "Answer A: --prune removes objects previously applied that are no longer present. B: ServerÃ¢â‚¬â€˜side apply uses --dry-run=server. C: --dry-run validates without changes. D: --diff shows differences.",
+    "answer": "D",
+    "explanation": "Answer D: --prune removes objects previously applied that are no longer present. B: Server-side apply uses --dry-run=server. C: --dry-run validates without changes. A: --diff shows differences.",
     "doc_link": "https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#apply",
     "llm_validated": 0
   },
@@ -757,13 +757,13 @@
     "difficulty": "medium",
     "question": "Which field in a PersistentVolumeClaim spec defines the desired storage size?",
     "options": {
-      "A": "capacity",
-      "B": "resources.requests.storage",
-      "C": "volumeMode",
-      "D": "accessModes"
+      "A": "resources.limits.storage",
+      "B": "spec.storageClassName",
+      "C": "spec.selector.matchLabels",
+      "D": "resources.requests.storage"
     },
-    "answer": "B",
-    "explanation": "Answer B: resources.requests.storage requests the size. A: capacity is part of PersistentVolume, not PVC. C: volumeMode defines filesystem or block. D: accessModes define read/write permissions.",
+    "answer": "D",
+    "explanation": "Answer D: resources.requests.storage requests the size. A: capacity is part of PersistentVolume, not PVC. C: volumeMode defines filesystem or block. B: accessModes define read/write permissions.",
     "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims",
     "llm_validated": 0
   },
@@ -790,12 +790,12 @@
     "question": "Which of the following best describes a DaemonSet?",
     "options": {
       "A": "Runs exactly one replica of a pod across the cluster",
-      "B": "Ensures a copy of a pod runs on every node (or a subset)",
-      "C": "Provides horizontal scaling based on CPU usage",
+      "B": "Provides horizontal scaling based on CPU usage",
+      "C": "Ensures a copy of a pod runs on every node (or a subset)",
       "D": "Creates a new namespace for each pod"
     },
-    "answer": "B",
-    "explanation": "Answer B: DaemonSet maintains a pod on each node (or selected nodes). A: That describes a Job with parallelism=1. C: Horizontal scaling is done by HPA. D: Namespaces are separate resources.",
+    "answer": "C",
+    "explanation": "Answer C: DaemonSet maintains a pod on each node (or selected nodes). A: That describes a Job with parallelism=1. B: Horizontal scaling is done by HPA. D: Namespaces are separate resources.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/",
     "llm_validated": 0
   },
@@ -821,13 +821,13 @@
     "difficulty": "medium",
     "question": "What does the 'kubectl cp' command do?",
     "options": {
-      "A": "Copies files between a local machine and a container in a pod",
-      "B": "Creates a snapshot of a PersistentVolume",
-      "C": "Copies a pod definition to another namespace",
-      "D": "Exports a ConfigMap to a file"
+      "A": "Exports a ConfigMap to a local YAML file using the kubectl get command with output flag",
+      "B": "Creates a snapshot of a PersistentVolume and stores it as a VolumeSnapshot object",
+      "C": "Copies an existing pod definition to another namespace by recreating the pod spec",
+      "D": "Copies files between a local machine and a container in a pod"
     },
-    "answer": "A",
-    "explanation": "Answer A: kubectl cp copies files to/from containers. B: Snapshotting PVs is done via storage provider tools. C: Copying pod definitions uses 'kubectl get' and 'apply'. D: Exporting ConfigMaps uses 'kubectl get configmap -o yaml'.",
+    "answer": "D",
+    "explanation": "Answer D: kubectl cp copies files to/from containers. B: Snapshotting PVs is done via storage provider tools. C: Copying pod definitions uses 'kubectl get' and 'apply'. A: Exporting ConfigMaps uses 'kubectl get configmap -o yaml'.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#copying-files-to-and-from-containers",
     "llm_validated": 0
   },
@@ -835,7 +835,7 @@
     "id": "kcna-053",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "Which admission controller enforces that containers must run as nonÃ¢â‚¬â€˜root users?",
+    "question": "Which admission controller enforces that containers must run as non-root users?",
     "options": {
       "A": "NamespaceLifecycle",
       "B": "PodSecurityPolicy",
@@ -854,12 +854,12 @@
     "question": "What is the purpose of the 'nodeSelector' field in a pod spec?",
     "options": {
       "A": "Specify a node's hostname for scheduling",
-      "B": "Define required node labels for pod placement",
-      "C": "Select a node based on its IP address",
+      "B": "Select a node based on its IP address",
+      "C": "Define required node labels for pod placement",
       "D": "Force the pod to run on the master node"
     },
-    "answer": "B",
-    "explanation": "Answer B: nodeSelector matches node labels to schedule pods. A: Hostname selection uses nodeName, not nodeSelector. C: IP-based selection is not supported directly. D: Running on master requires taints/tolerations, not nodeSelector.",
+    "answer": "C",
+    "explanation": "Answer C: nodeSelector matches node labels to schedule pods. A: Hostname selection uses nodeName, not nodeSelector. B: IP-based selection is not supported directly. D: Running on master requires taints/tolerations, not nodeSelector.",
     "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector",
     "llm_validated": 0
   },
@@ -869,13 +869,13 @@
     "difficulty": "medium",
     "question": "Which field in a Deployment's pod template can be used to set environment variables from a Secret?",
     "options": {
-      "A": "envFrom",
-      "B": "volumeMounts",
-      "C": "command",
-      "D": "imagePullSecrets"
+      "A": "envFrom (loads all keys from a ConfigMap or Secret as environment variables)",
+      "B": "volumeMounts (mounts a volume into the container at a specified path)",
+      "C": "command (overrides the container entrypoint, not used for env injection)",
+      "D": "imagePullSecrets (provides registry credentials, not environment variables)"
     },
     "answer": "A",
-    "explanation": "Answer A: envFrom can import all keyÃ¢â‚¬â€˜value pairs from a Secret as env vars. B: volumeMounts mount files, not env vars. C: command overrides entrypoint. D: imagePullSecrets are for registry credentials.",
+    "explanation": "Answer A: envFrom can import all key-value pairs from a Secret as env vars. B: volumeMounts mount files, not env vars. C: command overrides entrypoint. D: imagePullSecrets are for registry credentials.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information/#use-secret-as-environment-variables",
     "llm_validated": 0
   },
@@ -918,12 +918,12 @@
     "question": "What is the effect of setting 'spec.replicas: 0' in a Deployment?",
     "options": {
       "A": "Deletes the Deployment entirely",
-      "B": "Scales the Deployment down to zero Pods, keeping the definition",
-      "C": "Prevents any new Pods from being scheduled, but existing Pods stay running",
+      "B": "Prevents any new Pods from being scheduled, but existing Pods stay running",
+      "C": "Scales the Deployment down to zero Pods, keeping the definition",
       "D": "Triggers a rolling update without changing Pods"
     },
-    "answer": "B",
-    "explanation": "Answer B: replicas: 0 scales down all Pods while retaining the Deployment spec. A: Deployment object remains; only replicas are zero. C: Existing Pods are terminated when replicas go to zero. D: Rolling update requires change in pod template.",
+    "answer": "C",
+    "explanation": "Answer C: replicas: 0 scales down all Pods while retaining the Deployment spec. A: Deployment object remains; only replicas are zero. B: Existing Pods are terminated when replicas go to zero. D: Rolling update requires change in pod template.",
     "doc_link": "https://kubernetes.io/docs/home/",
     "llm_validated": 0
   },
@@ -933,13 +933,13 @@
     "difficulty": "medium",
     "question": "Which component watches for changes to ConfigMaps and updates mounted volumes in running pods?",
     "options": {
-      "A": "kube-scheduler",
-      "B": "kube-controller-manager",
-      "C": "kubelet",
-      "D": "etcd"
+      "A": "kube-scheduler (assigns Pods to nodes but does not manage volumes)",
+      "B": "kube-controller-manager (reconciles desired state for built-in resources)",
+      "C": "kubelet (syncs the running pod spec with the node, including ConfigMap volumes)",
+      "D": "etcd (stores cluster state but does not watch or react to object changes)"
     },
     "answer": "C",
-    "explanation": "Answer C: kubelet monitors ConfigMap volume updates and refreshes them. A: Scheduler only assigns pods. B: Controller manager runs higherÃ¢â‚¬â€˜level controllers, not volume updates. D: etcd stores data but does not push updates.",
+    "explanation": "Answer C: kubelet monitors ConfigMap volume updates and refreshes them. A: Scheduler only assigns pods. B: Controller manager runs higher-level controllers, not volume updates. D: etcd stores data but does not push updates.",
     "doc_link": "https://kubernetes.io/docs/concepts/configuration/configmap/#mounted-configmaps-are-updated-automatically",
     "llm_validated": 0
   },
@@ -949,13 +949,13 @@
     "difficulty": "medium",
     "question": "What does the 'kubectl top nodes' command display?",
     "options": {
-      "A": "CPU and memory usage metrics for each node",
+      "A": "Disk usage statistics for each node",
       "B": "List of all node IP addresses",
       "C": "Current pod count per node",
-      "D": "Disk usage statistics for each node"
+      "D": "CPU and memory usage metrics for each node"
     },
-    "answer": "A",
-    "explanation": "Answer A: top nodes shows resource usage per node via Metrics Server. B: Node IPs are shown with 'kubectl get nodes -o wide'. C: Pod counts require custom queries or 'kubectl get pods -o wide'. D: Disk usage is not provided by top; requires monitoring tools.",
+    "answer": "D",
+    "explanation": "Answer D: top nodes shows resource usage per node via Metrics Server. B: Node IPs are shown with 'kubectl get nodes -o wide'. C: Pod counts require custom queries or 'kubectl get pods -o wide'. A: Disk usage is not provided by top; requires monitoring tools.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#resource-usage",
     "llm_validated": 0
   },
@@ -1013,10 +1013,10 @@
     "difficulty": "medium",
     "question": "What is the purpose of the 'spec.tolerations' field in a pod spec?",
     "options": {
-      "A": "Define which node labels the pod prefers",
+      "A": "Define which node labels the pod prefers when the scheduler selects a node for placement",
       "B": "Allow the pod to be scheduled onto nodes with matching taints",
       "C": "Specify resource limits for the pod",
-      "D": "Set the pod's DNS policy"
+      "D": "Set the pod DNS policy that controls how hostname resolution is performed inside the pod containers"
     },
     "answer": "B",
     "explanation": "Answer B: Tolerations let pods tolerate node taints, enabling scheduling onto those nodes. A: Preferences are expressed via nodeAffinity. C: Resource limits are in resources.requests/limits. D: DNS policy is set via dnsPolicy field.",
@@ -1029,13 +1029,13 @@
     "difficulty": "medium",
     "question": "Which field in a Deployment's pod template controls the image pull policy for a container?",
     "options": {
-      "A": "imagePullPolicy",
+      "A": "restartPolicy",
       "B": "pullPolicy",
       "C": "imagePolicy",
-      "D": "restartPolicy"
+      "D": "imagePullPolicy"
     },
-    "answer": "A",
-    "explanation": "Answer A: imagePullPolicy determines when the image is pulled (Always, IfNotPresent, Never). B: pullPolicy is not a valid field. C: imagePolicy does not exist. D: restartPolicy controls container restarts, not image pulling.",
+    "answer": "D",
+    "explanation": "Answer D: imagePullPolicy determines when the image is pulled (Always, IfNotPresent, Never). B: pullPolicy is not a valid field. C: imagePolicy does not exist. A: restartPolicy controls container restarts, not image pulling.",
     "doc_link": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#container-v1-core",
     "llm_validated": 0
   },
@@ -1059,7 +1059,7 @@
     "id": "kcna-067",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "Which of the following is NOT a builtÃ¢â‚¬â€˜in volume type in Kubernetes?",
+    "question": "Which of the following is NOT a built-in volume type in Kubernetes?",
     "options": {
       "A": "emptyDir",
       "B": "hostPath",
@@ -1109,13 +1109,13 @@
     "difficulty": "medium",
     "question": "What does the 'spec.selector' field in a Service definition do?",
     "options": {
-      "A": "Selects which pods the Service routes traffic to based on label matching",
-      "B": "Specifies the DNS name for the Service",
+      "A": "Sets the Service's external IP address",
+      "B": "Specifies the fully qualified DNS name for the Service, used by external DNS controllers to create DNS records",
       "C": "Defines the load balancer type",
-      "D": "Sets the Service's external IP address"
+      "D": "Selects which pods the Service routes traffic to based on label matching"
     },
-    "answer": "A",
-    "explanation": "Answer A: selector matches pod labels to bind the Service to those pods. B: DNS name is derived from Service name. C: Load balancer type is set via 'type' field. D: External IPs are set via 'externalIPs' field.",
+    "answer": "D",
+    "explanation": "Answer D: selector matches pod labels to bind the Service to those pods. B: DNS name is derived from Service name. C: Load balancer type is set via 'type' field. A: External IPs are set via 'externalIPs' field.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-types",
     "llm_validated": 0
   },
@@ -1141,10 +1141,10 @@
     "difficulty": "medium",
     "question": "What does setting 'spec.restartPolicy: Never' in a Job do?",
     "options": {
-      "A": "Prevents the Job controller from creating any Pods",
-      "B": "Ensures the Pod will not be restarted on failure, causing the Job to fail after the first attempt",
-      "C": "Makes the Job run indefinitely",
-      "D": "Allows the Job to retry indefinitely"
+      "A": "Prevents the Job controller from creating any Pods until the policy is changed",
+      "B": "Ensures failed Pods are not restarted, so the Job records a failure after each Pod exit",
+      "C": "Makes the Job run indefinitely, ignoring the completions and backoffLimit fields",
+      "D": "Allows the Job to retry each failed Pod indefinitely without decrementing backoffLimit"
     },
     "answer": "B",
     "explanation": "Answer B: Never disables retries; a failed Pod marks the Job as failed. A: Jobs still create Pods; restartPolicy controls Pod restart behavior. C: Jobs have finite duration; Never does not make them run forever. D: Infinite retries require restartPolicy: OnFailure with backoffLimit.",
@@ -1173,10 +1173,10 @@
     "difficulty": "medium",
     "question": "In a Service definition, what does the 'externalTrafficPolicy: Local' setting achieve?",
     "options": {
-      "A": "Routes external traffic to any node in the cluster",
+      "A": "Routes external traffic to any available node in the cluster, then performs a second hop to reach the correct backend Pod",
       "B": "Preserves the client source IP by routing only to nodes with endpoints for the Service",
-      "C": "Disables external traffic to the Service",
-      "D": "Enables TLS termination on the Service"
+      "C": "Disables all external traffic to the Service and restricts access to internal cluster clients via ClusterIP only",
+      "D": "Enables TLS termination on the Service by injecting a sidecar proxy that handles certificate rotation automatically"
     },
     "answer": "B",
     "explanation": "Answer B: 'Local' routes traffic only to nodes that have endpoint pods, preserving the original client IP. A: That describes the default 'Cluster' policy. C: Service remains reachable; policy does not disable it. D: TLS termination is a feature of Ingress or Service with specific annotations, not this field.",
@@ -1189,13 +1189,13 @@
     "difficulty": "medium",
     "question": "What is the purpose of the 'spec.selector' field in a Deployment?",
     "options": {
-      "A": "Selects which Pods the Deployment should manage based on label matching",
+      "A": "Sets the image pull policy that controls when and how container images are pulled from the remote registry",
       "B": "Specifies the Service selector for the Deployment",
-      "C": "Defines node affinity rules for the Pods",
-      "D": "Sets the image pull policy for containers"
+      "C": "Defines node affinity rules that influence and constrain where the scheduler is allowed to place the Deployment Pods",
+      "D": "Selects which Pods the Deployment should manage based on label matching"
     },
-    "answer": "A",
-    "explanation": "Answer A: Deployment.selector matches pod labels to identify Pods it owns. B: Service selectors are separate resources. C: Node affinity is defined under pod.affinity. D: Image pull policy is a container field.",
+    "answer": "D",
+    "explanation": "Answer D: Deployment.selector matches pod labels to identify Pods it owns. B: Service selectors are separate resources. C: Node affinity is defined under pod.affinity. A: Image pull policy is a container field.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector",
     "llm_validated": 0
   },
@@ -1283,7 +1283,7 @@
     "id": "kcna-081",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "Which field in a Service definition controls whether the Service assigns a clusterÃ¢â‚¬â€˜internal IP?",
+    "question": "Which field in a Service definition controls whether the Service assigns a cluster-internal IP?",
     "options": {
       "A": "clusterIP",
       "B": "type",
@@ -1301,10 +1301,10 @@
     "difficulty": "medium",
     "question": "What does the 'kubectl rollout restart deployment/<name>' command do?",
     "options": {
-      "A": "Deletes the Deployment and recreates it from scratch",
+      "A": "Deletes the Deployment and recreates it from scratch, causing brief downtime while new Pods are scheduled and become ready",
       "B": "Updates the Deployment's pod template annotation to trigger a rolling restart of its Pods",
-      "C": "Scales the Deployment down to zero and back up",
-      "D": "ForceÃ¢â‚¬â€˜applies a new replica count of zero"
+      "C": "Scales the Deployment down to zero replicas and then back up, effectively replacing all Pods with a fresh rollout",
+      "D": "Force-applies a new replica count of zero"
     },
     "answer": "B",
     "explanation": "Answer B: rollout restart adds a temporary annotation causing the controller to recreate Pods. A: The object remains; only Pods are restarted. C: Scaling is not performed automatically. D: It does not change replica count.",
@@ -1403,7 +1403,7 @@
       "D": "Defines the number of times the Deployment controller retries a failed rollout"
     },
     "answer": "A",
-    "explanation": "Answer A: revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. B: Replica count is set by spec.replicas. C: No such rateÃ¢â‚¬â€˜limit exists. D: Retry behavior is governed by backoff settings, not this field.",
+    "explanation": "Answer A: revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. B: Replica count is set by spec.replicas. C: No such rate-limit exists. D: Retry behavior is governed by backoff settings, not this field.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit",
     "llm_validated": 0
   },
@@ -1411,15 +1411,15 @@
     "id": "kcna-089",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "Which field in a Service spec enables TCP keepÃ¢â‚¬â€˜alive probes for the Service's endpoints?",
+    "question": "Which field in a Service spec enables TCP keep-alive probes for the Service's endpoints?",
     "options": {
-      "A": "keepAliveTime",
-      "B": "sessionAffinityConfig",
-      "C": "externalTrafficPolicy",
-      "D": "none Ã¢â‚¬â€œ keepÃ¢â‚¬â€˜alive is handled by the underlying socket implementation"
+      "A": "keepAliveTime, a port-level field that sets the socket timeout interval",
+      "B": "sessionAffinityConfig, which controls how long client IP affinity is maintained",
+      "C": "externalTrafficPolicy, which determines how traffic is routed to node endpoints",
+      "D": "No such field exists; keep-alive is handled by the underlying OS TCP stack"
     },
     "answer": "D",
-    "explanation": "Answer D: Kubernetes does not expose a keepÃ¢â‚¬â€˜alive setting; it relies on the OS/TCP stack. A: No such field exists. B: sessionAffinityConfig relates to client IP affinity, not keepÃ¢â‚¬â€˜alive. C: externalTrafficPolicy controls source IP handling.",
+    "explanation": "Answer D: Kubernetes does not expose a keep-alive setting; it relies on the OS/TCP stack. A: No such field exists. B: sessionAffinityConfig relates to client IP affinity, not keep-alive. C: externalTrafficPolicy controls source IP handling.",
     "doc_link": "https://kubernetes.io/docs/home/",
     "llm_validated": 0
   },
@@ -1429,13 +1429,13 @@
     "difficulty": "medium",
     "question": "When defining a Deployment, which field determines the maximum number of Pods that can be unavailable during a rolling update?",
     "options": {
-      "A": "spec.strategy.rollingUpdate.maxUnavailable",
+      "A": "spec.minReadySeconds",
       "B": "spec.strategy.rollingUpdate.maxSurge",
       "C": "spec.replicas",
-      "D": "spec.minReadySeconds"
+      "D": "spec.strategy.rollingUpdate.maxUnavailable"
     },
-    "answer": "A",
-    "explanation": "Answer A: maxUnavailable limits how many Pods may be down during the rollout. B: maxSurge controls extra Pods, not unavailable ones. C: replicas sets desired count, not rollout behavior. D: minReadySeconds defines readiness delay after pod start.",
+    "answer": "D",
+    "explanation": "Answer D: maxUnavailable limits how many Pods may be down during the rollout. B: maxSurge controls extra Pods, not unavailable ones. C: replicas sets desired count, not rollout behavior. A: minReadySeconds defines readiness delay after pod start.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
     "llm_validated": 0
   },
@@ -1461,13 +1461,13 @@
     "difficulty": "medium",
     "question": "What does setting 'spec.restartPolicy: OnFailure' in a Job do?",
     "options": {
-      "A": "Restarts the pod indefinitely regardless of exit code",
-      "B": "Restarts the pod only when it exits with a nonÃ¢â‚¬â€˜zero status, up to backoffLimit times",
-      "C": "Prevents any restarts, causing the job to fail on first error",
-      "D": "Makes the job run continuously like a Deployment"
+      "A": "Restarts the pod indefinitely on any exit code, ignoring backoffLimit and treating every failure as transient",
+      "B": "Makes the job run continuously like a Deployment",
+      "C": "Prevents any restarts entirely, causing the job to fail immediately on the first container error without retrying",
+      "D": "Restarts the pod only when it exits with a non-zero status, up to backoffLimit times"
     },
-    "answer": "B",
-    "explanation": "Answer B: OnFailure restarts failed pods, respecting backoffLimit. A: OnFailure restarts only on failure, not indefinitely. C: Never would prevent restarts. D: Jobs are finite; this describes a Deployment.",
+    "answer": "D",
+    "explanation": "Answer D: OnFailure restarts failed pods, respecting backoffLimit. A: OnFailure restarts only on failure, not indefinitely. C: Never would prevent restarts. B: Jobs are finite; this describes a Deployment.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/#restart-policy",
     "llm_validated": 0
   },
@@ -1494,12 +1494,12 @@
     "question": "What is the effect of setting 'spec.podManagementPolicy: Parallel' in a StatefulSet?",
     "options": {
       "A": "Pods are created sequentially, one after another",
-      "B": "All Pods are created simultaneously, speeding up startup",
-      "C": "Pods are never deleted automatically",
+      "B": "Pods are never deleted automatically",
+      "C": "All Pods are created simultaneously, speeding up startup",
       "D": "The StatefulSet behaves like a Deployment"
     },
-    "answer": "B",
-    "explanation": "Answer B: Parallel creates all replicas at once. A: Parallel does the opposite of OrderedReady. C: Deletion behavior is unchanged. D: StatefulSet semantics remain.",
+    "answer": "C",
+    "explanation": "Answer C: Parallel creates all replicas at once. A: Parallel does the opposite of OrderedReady. B: Deletion behavior is unchanged. D: StatefulSet semantics remain.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies",
     "llm_validated": 0
   },
@@ -1526,12 +1526,12 @@
     "question": "What does the 'kubectl get nodes -o jsonpath=\"{.items[*].status.capacity.cpu}\"' command output?",
     "options": {
       "A": "A list of node names",
-      "B": "The total CPU capacity of each node in cores",
+      "B": "The pod count per node",
       "C": "The current CPU usage of each node",
-      "D": "The pod count per node"
+      "D": "The total CPU capacity of each node in cores"
     },
-    "answer": "B",
-    "explanation": "Answer B: The jsonpath extracts the CPU capacity field. A: Node names are under .metadata.name. C: Usage requires Metrics Server. D: Pod count is not part of capacity.",
+    "answer": "D",
+    "explanation": "Answer D: The jsonpath extracts the CPU capacity field. A: Node names are under .metadata.name. C: Usage requires Metrics Server. B: Pod count is not part of capacity.",
     "doc_link": "https://kubernetes.io/docs/home/",
     "llm_validated": 0
   },
@@ -1541,13 +1541,13 @@
     "difficulty": "medium",
     "question": "Which Kubernetes object is used to define a set of rules that restrict which pods can communicate with each other?",
     "options": {
-      "A": "NetworkPolicy",
+      "A": "ResourceQuota",
       "B": "PodSecurityPolicy",
-      "C": "ResourceQuota",
+      "C": "NetworkPolicy",
       "D": "Ingress"
     },
-    "answer": "A",
-    "explanation": "Answer A: NetworkPolicy defines allowed ingress/egress traffic between pods. B: PodSecurityPolicy deals with security contexts. C: ResourceQuota limits resource consumption. D: Ingress manages external HTTP traffic.",
+    "answer": "C",
+    "explanation": "Answer C: NetworkPolicy defines allowed ingress/egress traffic between pods. B: PodSecurityPolicy deals with security contexts. A: ResourceQuota limits resource consumption. D: Ingress manages external HTTP traffic.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
     "llm_validated": 0
   },
@@ -1563,7 +1563,7 @@
       "D": "volumeMounts"
     },
     "answer": "A",
-    "explanation": "Answer A: envFrom imports all keyÃ¢â‚¬â€˜value pairs from a ConfigMap as env vars. B: env can reference individual keys but not bulk import. C: configMapRef is not a topÃ¢â‚¬â€˜level field. D: volumeMounts mount files, not env vars.",
+    "explanation": "Answer A: envFrom imports all key-value pairs from a ConfigMap as env vars. B: env can reference individual keys but not bulk import. C: configMapRef is not a top-level field. D: volumeMounts mount files, not env vars.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/environment-variable-expose-pod-information/#use-configmap-as-environment-variables",
     "llm_validated": 0
   },
@@ -1571,12 +1571,12 @@
     "id": "kcna-099",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "What does setting 'spec.type: LoadBalancer' on a Service do in a cloudÃ¢â‚¬â€˜native environment?",
+    "question": "What does setting 'spec.type: LoadBalancer' on a Service do in a cloud-native environment?",
     "options": {
-      "A": "Creates a NodePort on each node",
-      "B": "Allocates an external IP via the cloud provider's loadÃ¢â‚¬â€˜balancer service",
-      "C": "Exposes the Service only within the cluster",
-      "D": "Disables all traffic to the Service"
+      "A": "Creates a NodePort on each node and also registers a DNS CNAME entry pointing to the node addresses in the cluster DNS",
+      "B": "Allocates an external IP via the cloud provider's load-balancer service",
+      "C": "Exposes the Service only within the cluster by assigning a stable virtual ClusterIP that is reachable solely from inside the cluster",
+      "D": "Disables all ingress and egress traffic to the Service by setting an empty selector and removing all endpoint slice entries"
     },
     "answer": "B",
     "explanation": "Answer B: LoadBalancer triggers cloud provider provisioning of an external LB. A: NodePort is a different type. C: ClusterIP would keep it internal. D: LoadBalancer exposes, not disables.",
@@ -1606,12 +1606,12 @@
     "question": "What does the 'kubectl describe pod <name>' command display that 'kubectl get pod' does not?",
     "options": {
       "A": "The pod's resource usage (CPU/memory)",
-      "B": "Detailed events, conditions, and container statuses",
+      "B": "A list of all pods in the namespace",
       "C": "The pod's JSON representation",
-      "D": "A list of all pods in the namespace"
+      "D": "Detailed events, conditions, and container statuses"
     },
-    "answer": "B",
-    "explanation": "Answer B: 'describe' shows events, conditions, and detailed status. A: Resource usage requires 'kubectl top'. C: JSON output uses '-o json'. D: 'get' lists pods, not describe.",
+    "answer": "D",
+    "explanation": "Answer D: 'describe' shows events, conditions, and detailed status. A: Resource usage requires 'kubectl top'. C: JSON output uses '-o json'. B: 'get' lists pods, not describe.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#describe",
     "llm_validated": 0
   },
@@ -1637,13 +1637,13 @@
     "difficulty": "medium",
     "question": "What is the purpose of the 'spec.selector' field in a Service?",
     "options": {
-      "A": "Selects the pods that the Service routes traffic to based on label matching",
-      "B": "Specifies the DNS name for the Service",
+      "A": "Sets the Service's external IP address and overrides the cloud load-balancer assignment for NodePort services",
+      "B": "Specifies the DNS hostname for the Service and registers it automatically in the cluster's CoreDNS configuration",
       "C": "Defines the Service type (ClusterIP, NodePort, etc.)",
-      "D": "Sets the Service's external IP address"
+      "D": "Selects the pods that the Service routes traffic to based on label matching"
     },
-    "answer": "A",
-    "explanation": "Answer A: selector matches pod labels to bind the Service to those pods. B: DNS name is derived from Service name. C: Service type is defined by the 'type' field. D: External IPs are set via 'externalIPs'.",
+    "answer": "D",
+    "explanation": "Answer D: selector matches pod labels to bind the Service to those pods. B: DNS name is derived from Service name. C: Service type is defined by the 'type' field. A: External IPs are set via 'externalIPs'.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-definition",
     "llm_validated": 0
   },
@@ -1669,13 +1669,13 @@
     "difficulty": "medium",
     "question": "What does setting 'spec.strategy.rollingUpdate.maxSurge: 0' achieve during a Deployment rollout?",
     "options": {
-      "A": "Prevents any new Pods from being created until old ones terminate",
-      "B": "Allows unlimited extra Pods during the update",
+      "A": "Disables rolling updates entirely and falls back to recreate strategy for the Deployment",
+      "B": "Allows an unlimited number of extra Pods to be created simultaneously during the rolling update process",
       "C": "Limits the number of unavailable Pods to zero",
-      "D": "Disables rolling updates entirely"
+      "D": "Prevents any new Pods from being created until old ones terminate"
     },
-    "answer": "A",
-    "explanation": "Answer A: maxSurge 0 means no extra Pods; new Pods are created only after old ones are terminated, causing possible downtime. B: Unlimited extra Pods would be maxSurge set to a high value. C: maxUnavailable controls unavailable Pods. D: RollingUpdate remains active; maxSurge just restricts surge.",
+    "answer": "D",
+    "explanation": "Answer D: maxSurge 0 means no extra Pods; new Pods are created only after old ones are terminated, causing possible downtime. B: Unlimited extra Pods would be maxSurge set to a high value. C: maxUnavailable controls unavailable Pods. A: RollingUpdate remains active; maxSurge just restricts surge.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
     "llm_validated": 0
   },
@@ -1733,13 +1733,13 @@
     "difficulty": "medium",
     "question": "What is the effect of adding the label 'app=frontend' to a pod and then creating a Service with selector 'app=frontend'?",
     "options": {
-      "A": "The Service will route traffic to that pod (and any others with the same label)",
-      "B": "The pod will be deleted automatically",
-      "C": "The Service will expose the pod on a random external IP",
+      "A": "The Service will expose the pod on a randomly assigned external IP address provided by the cloud load-balancer controller",
+      "B": "The pod will be deleted automatically by the garbage collector once its labels no longer match any active ReplicaSet selector",
+      "C": "The Service will route traffic to that pod (and any others with the same label)",
       "D": "The pod will be restarted"
     },
-    "answer": "A",
-    "explanation": "Answer A: Service selectors match pods with the label, directing traffic to them. B: Labels do not trigger deletion. C: External IP depends on Service type, not label. D: Labels do not cause restarts.",
+    "answer": "C",
+    "explanation": "Answer C: Service selectors match pods with the label, directing traffic to them. B: Labels do not trigger deletion. A: External IP depends on Service type, not label. D: Labels do not cause restarts.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#service-definition",
     "llm_validated": 0
   },
@@ -1750,11 +1750,11 @@
     "question": "Which field in a Pod spec defines a lifecycle hook that runs just BEFORE the container is terminated?",
     "options": {
       "A": "postStart",
-      "B": "preStop",
+      "B": "preStart",
       "C": "postStop",
-      "D": "preStart"
+      "D": "preStop"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "preStop is executed just before the container receives a termination signal, allowing graceful shutdown. postStart runs immediately after the container starts. Kubernetes does not have a postStop or preStart lifecycle hook.",
     "doc_link": "https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks",
     "llm_validated": 0
@@ -1798,12 +1798,12 @@
     "question": "What is the effect of setting 'spec.tolerations' with 'operator: Exists' and 'effect: NoExecute' on a pod?",
     "options": {
       "A": "The pod can be scheduled on nodes with matching NoExecute taints and will not be evicted when the taint is added",
-      "B": "The pod can be scheduled on nodes with matching NoExecute taints but will be evicted after the tolerationSeconds expire",
-      "C": "The pod ignores all taints on nodes",
-      "D": "The pod will never be scheduled on tainted nodes"
+      "B": "The pod will never be scheduled on tainted nodes, even if it has no matching toleration explicitly defined within its pod specification",
+      "C": "The pod ignores all taints on nodes regardless of taint effect, allowing it to be scheduled on any node without requiring any toleration",
+      "D": "The pod can be scheduled on nodes with matching NoExecute taints but will be evicted after the tolerationSeconds expire"
     },
-    "answer": "B",
-    "explanation": "Answer B: Operator Exists matches any key; with NoExecute the pod is evicted after the specified tolerationSeconds (or immediately if omitted). A: NoExecute tolerations allow scheduling but cause eviction after tolerationSeconds. C: Only NoSchedule or PreferNoSchedule can be ignored; NoExecute still triggers eviction. D: It permits scheduling, not prohibits it.",
+    "answer": "D",
+    "explanation": "Answer D: Operator Exists matches any key; with NoExecute the pod is evicted after the specified tolerationSeconds (or immediately if omitted). A: NoExecute tolerations allow scheduling but cause eviction after tolerationSeconds. C: Only NoSchedule or PreferNoSchedule can be ignored; NoExecute still triggers eviction. B: It permits scheduling, not prohibits it.",
     "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-based-evictions",
     "llm_validated": 0
   },
@@ -1814,12 +1814,12 @@
     "question": "Which field in a Service spec determines whether the Service will allocate a stable virtual IP inside the cluster?",
     "options": {
       "A": "type",
-      "B": "clusterIP",
+      "B": "sessionAffinity",
       "C": "externalIPs",
-      "D": "sessionAffinity"
+      "D": "clusterIP"
     },
-    "answer": "B",
-    "explanation": "Answer B: clusterIP set to a nonÃ¢â‚¬â€˜None value allocates a stable ClusterIP. Setting it to \"None\" makes the Service headless. A: type defines how the Service is exposed (ClusterIP, NodePort, etc.). C: externalIPs expose the Service outside the cluster. D: sessionAffinity affects routing, not IP allocation.",
+    "answer": "D",
+    "explanation": "Answer D: clusterIP set to a non-None value allocates a stable ClusterIP. Setting it to \"None\" makes the Service headless. A: type defines how the Service is exposed (ClusterIP, NodePort, etc.). C: externalIPs expose the Service outside the cluster. B: sessionAffinity affects routing, not IP allocation.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
     "llm_validated": 0
   },
@@ -1851,7 +1851,7 @@
       "D": "Define the number of times a failed rollout is retried"
     },
     "answer": "A",
-    "explanation": "Answer A: revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. B: Replica count is controlled by spec.replicas. C: No rateÃ¢â‚¬â€˜limit exists. D: Retry behavior is governed by backoff settings, not this field.",
+    "explanation": "Answer A: revisionHistoryLimit caps stored old ReplicaSets, affecting rollback availability. B: Replica count is controlled by spec.replicas. C: No rate-limit exists. D: Retry behavior is governed by backoff settings, not this field.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit",
     "llm_validated": 0
   },
@@ -1867,7 +1867,7 @@
       "D": "loadBalancerSourceRanges"
     },
     "answer": "C",
-    "explanation": "Answer C: internalTrafficPolicy: Local ensures traffic stays on the same node when possible. A: externalTrafficPolicy affects traffic coming from outside the cluster. B: sessionAffinity controls clientÃ¢â‚¬â€˜IP stickiness, not node locality. D: loadBalancerSourceRanges restrict external IP ranges for LoadBalancer services.",
+    "explanation": "Answer C: internalTrafficPolicy: Local ensures traffic stays on the same node when possible. A: externalTrafficPolicy affects traffic coming from outside the cluster. B: sessionAffinity controls client-IP stickiness, not node locality. D: loadBalancerSourceRanges restrict external IP ranges for LoadBalancer services.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#internaltrafficpolicy",
     "llm_validated": 0
   },
@@ -1878,12 +1878,12 @@
     "question": "What does the 'kubectl apply -k <directory>' command do?",
     "options": {
       "A": "Applies a single YAML file in the directory",
-      "B": "Recursively processes Kustomize bases and overlays to generate a final manifest before applying",
-      "C": "Deletes all resources defined in the directory",
-      "D": "Creates a new namespace named after the directory"
+      "B": "Creates a new namespace named after the directory and applies all contained manifests into that namespace as a single atomic operation",
+      "C": "Deletes all resources defined in the directory by performing a server-side dry-run and then issuing delete requests for each resource",
+      "D": "Recursively processes Kustomize bases and overlays to generate a final manifest before applying"
     },
-    "answer": "B",
-    "explanation": "Answer B: -k tells kubectl to run Kustomize on the directory, producing a combined manifest that is then applied. A: -k triggers Kustomize, not a raw file apply. C: Deletion requires 'kubectl delete'. D: Namespace creation is explicit with a manifest.",
+    "answer": "D",
+    "explanation": "Answer D: -k tells kubectl to run Kustomize on the directory, producing a combined manifest that is then applied. A: -k triggers Kustomize, not a raw file apply. C: Deletion requires 'kubectl delete'. B: Namespace creation is explicit with a manifest.",
     "doc_link": "https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/",
     "llm_validated": 0
   },
@@ -1894,12 +1894,12 @@
     "question": "What Kubernetes object is used to define a set of network policies that control inbound and outbound traffic for pods?",
     "options": {
       "A": "Ingress",
-      "B": "NetworkPolicy",
+      "B": "PodSecurityPolicy",
       "C": "Service",
-      "D": "PodSecurityPolicy"
+      "D": "NetworkPolicy"
     },
-    "answer": "B",
-    "explanation": "Answer B: NetworkPolicy specifies how groups of pods are allowed to communicate with each other and other network endpoints. A: Ingress is a resource that manages external HTTP/HTTPS traffic into a cluster, not podÃ¢â‚¬â€˜toÃ¢â‚¬â€˜pod network rules. C: Service provides stable networking endpoints but does not enforce traffic rules. D: PodSecurityPolicy governs security contexts, not network traffic.",
+    "answer": "D",
+    "explanation": "Answer D: NetworkPolicy specifies how groups of pods are allowed to communicate with each other and other network endpoints. A: Ingress is a resource that manages external HTTP/HTTPS traffic into a cluster, not pod-to-pod network rules. C: Service provides stable networking endpoints but does not enforce traffic rules. B: PodSecurityPolicy governs security contexts, not network traffic.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
     "llm_validated": 0
   },
@@ -1910,12 +1910,12 @@
     "question": "Which field in a Deployment spec controls the maximum number of Pods that can be unavailable during a rolling update?",
     "options": {
       "A": "maxSurge",
-      "B": "maxUnavailable",
+      "B": "progressDeadlineSeconds",
       "C": "revisionHistoryLimit",
-      "D": "progressDeadlineSeconds"
+      "D": "maxUnavailable"
     },
-    "answer": "B",
-    "explanation": "Answer B: maxUnavailable sets the number of Pods that may be down during the update. A: maxSurge defines how many extra Pods can be created above the desired number, not the unavailable count. C: revisionHistoryLimit controls how many old ReplicaSets are retained. D: progressDeadlineSeconds is the timeout for a rollout to be considered stalled.",
+    "answer": "D",
+    "explanation": "Answer D: maxUnavailable sets the number of Pods that may be down during the update. A: maxSurge defines how many extra Pods can be created above the desired number, not the unavailable count. C: revisionHistoryLimit controls how many old ReplicaSets are retained. B: progressDeadlineSeconds is the timeout for a rollout to be considered stalled.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
     "llm_validated": 0
   },
@@ -1947,7 +1947,7 @@
       "D": "kubectl show pod frontend"
     },
     "answer": "A",
-    "explanation": "Answer A: 'kubectl get pod <name> -o yaml' prints the full manifest in YAML. B: 'describe' shows a humanÃ¢â‚¬â€˜readable summary, not the raw YAML. C: 'edit' opens an editor for live changes; it does not simply display the YAML. D: 'show' is not a kubectl subcommand.",
+    "explanation": "Answer A: 'kubectl get pod <name> -o yaml' prints the full manifest in YAML. B: 'describe' shows a human-readable summary, not the raw YAML. C: 'edit' opens an editor for live changes; it does not simply display the YAML. D: 'show' is not a kubectl subcommand.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#custom-columns",
     "llm_validated": 0
   },
@@ -1973,13 +1973,13 @@
     "difficulty": "medium",
     "question": "Which of the following best describes a 'CustomResourceDefinition' (CRD) in Kubernetes?",
     "options": {
-      "A": "A builtÃ¢â‚¬â€˜in object that extends the API server with new builtÃ¢â‚¬â€˜in types",
-      "B": "A userÃ¢â‚¬â€˜defined API object that allows you to create your own resource types",
-      "C": "A configuration file for the kubeÃ¢â‚¬â€˜controllerÃ¢â‚¬â€˜manager",
+      "A": "A built-in object that extends the API server with new built-in types",
+      "B": "A user-defined API object that allows you to create your own resource types",
+      "C": "A configuration file for the kube-controller-manager",
       "D": "A manifest that defines a new namespace"
     },
     "answer": "B",
-    "explanation": "Answer B: CRDs let you define new API objects that behave like native resources. A: CRDs are not builtÃ¢â‚¬â€˜in; they are userÃ¢â‚¬â€˜defined extensions. C: The controller manager uses other config files, not CRDs. D: Namespaces are a core API object, not defined via CRD.",
+    "explanation": "Answer B: CRDs let you define new API objects that behave like native resources. A: CRDs are not built-in; they are user-defined extensions. C: The controller manager uses other config files, not CRDs. D: Namespaces are a core API object, not defined via CRD.",
     "doc_link": "https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/",
     "llm_validated": 0
   },
@@ -2003,7 +2003,7 @@
     "id": "kcna-126",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "Which field in a PersistentVolumeClaim controls whether the volume can be mounted as readÃ¢â‚¬â€˜only?",
+    "question": "Which field in a PersistentVolumeClaim controls whether the volume can be mounted as read-only?",
     "options": {
       "A": "accessModes",
       "B": "volumeMode",
@@ -2011,7 +2011,7 @@
       "D": "storageClassName"
     },
     "answer": "A",
-    "explanation": "Answer A: 'accessModes' includes values like ReadWriteOnce, ReadOnlyMany, etc., which dictate readÃ¢â‚¬â€˜only capabilities. B: volumeMode selects Filesystem vs Block, not readÃ¢â‚¬â€˜only semantics. C: There is no 'readOnly' field on a PVC spec. D: storageClassName selects the provisioner, not access mode.",
+    "explanation": "Answer A: 'accessModes' includes values like ReadWriteOnce, ReadOnlyMany, etc., which dictate read-only capabilities. B: volumeMode selects Filesystem vs Block, not read-only semantics. C: There is no 'readOnly' field on a PVC spec. D: storageClassName selects the provisioner, not access mode.",
     "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes",
     "llm_validated": 0
   },
@@ -2023,8 +2023,8 @@
     "options": {
       "A": "It records the command in the object's annotation 'kubectl.kubernetes.io/last-applied-configuration'",
       "B": "It stores the full command line in the object's annotation 'kubectl.kubernetes.io/last-applied-configuration'",
-      "C": "It creates an audit log entry for the apply operation",
-      "D": "It prints the serverÃ¢â‚¬â€˜side applied configuration to stdout"
+      "C": "It creates an audit log entry for the apply operation stored in the Kubernetes audit trail for cluster administrators to review",
+      "D": "It prints the server-side applied configuration to stdout so operators can verify field manager ownership before it is persisted"
     },
     "answer": "B",
     "explanation": "The (deprecated) --record flag annotates the object with kubernetes.io/change-cause containing the exact kubectl command. This annotation is visible in kubectl rollout history. Note: --record is deprecated since v1.22. The annotation name is kubernetes.io/change-cause, not last-applied-configuration which is used by kubectl apply.",
@@ -2055,8 +2055,8 @@
     "options": {
       "A": "Disables updates entirely",
       "B": "Enables incremental rollout of new ReplicaSet while keeping the old one running",
-      "C": "Deletes the old ReplicaSet before creating the new one",
-      "D": "Creates a new namespace for the rollout"
+      "C": "Deletes the old ReplicaSet entirely before creating the new one, resulting in a brief period of zero running pods during the update",
+      "D": "Creates a brand-new namespace for every rollout so the old and new versions are completely isolated from each other at all times"
     },
     "answer": "B",
     "explanation": "Answer B: RollingUpdate performs a gradual replacement of Pods, maintaining availability. A: RollingUpdate does not disable updates. C: Deletion after readiness is part of the strategy, not immediate. D: Namespaces are unrelated to Deployment strategies.",
@@ -2099,7 +2099,7 @@
     "id": "kcna-132",
     "domain": "Container Orchestration",
     "difficulty": "medium",
-    "question": "Which field in a PersistentVolume definition determines whether the volume can be mounted as readÃ¢â‚¬â€˜only?",
+    "question": "Which field in a PersistentVolume definition determines whether the volume can be mounted as read-only?",
     "options": {
       "A": "readOnly",
       "B": "accessModes",
@@ -2165,12 +2165,12 @@
     "difficulty": "medium",
     "question": "Which field in a Service definition enables session affinity based on client IP?",
     "options": {
-      "A": "sessionAffinity: ClientIP",
+      "A": "loadBalancerSourceRanges",
       "B": "affinity: clientIP",
       "C": "stickySessions: true",
-      "D": "loadBalancerSourceRanges"
+      "D": "sessionAffinity: ClientIP"
     },
-    "answer": "A",
+    "answer": "D",
     "explanation": "sessionAffinity: ClientIP in a Service spec routes requests from the same client IP to the same backend pod. loadBalancerSourceRanges restricts which external IPs can access a LoadBalancer Service. externalTrafficPolicy and internalTrafficPolicy control traffic locality, not session stickiness.",
     "doc_link": "https://kubernetes.io/docs/home/",
     "llm_validated": 0
@@ -2181,12 +2181,12 @@
     "difficulty": "medium",
     "question": "What does the 'kubectl get svc -o wide' command display that the plain 'kubectl get svc' does not?",
     "options": {
-      "A": "The Service's cluster IP, external IPs, and ports",
+      "A": "The resource usage metrics of each Service",
       "B": "The full YAML manifest of each Service",
       "C": "The list of endpoints backing the Service",
-      "D": "The resource usage metrics of each Service"
+      "D": "The Service's cluster IP, external IPs, and ports"
     },
-    "answer": "A",
+    "answer": "D",
     "explanation": "kubectl get svc -o wide appends extra columns such as SELECTOR compared to plain kubectl get svc. It does NOT print the full YAML manifest (that requires -o yaml). C is not what -o wide does. D describes kubectl get endpoints, a separate command.",
     "doc_link": "https://kubernetes.io/docs/home/",
     "llm_validated": 0
@@ -2203,7 +2203,7 @@
       "D": "sessionAffinity"
     },
     "answer": "A",
-    "explanation": "Answer A: The 'clusterIP' field holds the internal virtual IP; setting it to 'None' creates a headless Service. B: 'type' defines how the Service is exposed (ClusterIP, NodePort, LoadBalancer, etc.) but does not allocate the IP itself. C: 'externalIPs' expose the Service on existing node IPs, not internal virtual IPs. D: 'sessionAffinity' controls clientÃ¢â‚¬â€˜IP stickiness, not IP allocation.",
+    "explanation": "Answer A: The 'clusterIP' field holds the internal virtual IP; setting it to 'None' creates a headless Service. B: 'type' defines how the Service is exposed (ClusterIP, NodePort, LoadBalancer, etc.) but does not allocate the IP itself. C: 'externalIPs' expose the Service on existing node IPs, not internal virtual IPs. D: 'sessionAffinity' controls client-IP stickiness, not IP allocation.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#headless-services",
     "llm_validated": 0
   },
@@ -2229,13 +2229,13 @@
     "difficulty": "medium",
     "question": "Which annotation enables automatic sidecar injection for the Istio service mesh?",
     "options": {
-      "A": "sidecar.istio.io/inject: \"true\"",
+      "A": "inject.istio.io/sidecar: \"yes\"",
       "B": "istio.io/inject: \"enabled\"",
-      "C": "inject.istio.io/sidecar: \"yes\"",
+      "C": "sidecar.istio.io/inject: \"true\"",
       "D": "istio.sidecar/inject: \"true\""
     },
-    "answer": "A",
-    "explanation": "Answer A: Istio uses the annotation sidecar.istio.io/inject: \"true\" to trigger automatic sidecar injection. B: Incorrect annotation key. C: Wrong format and namespace. D: Invalid annotation.",
+    "answer": "C",
+    "explanation": "Answer C: Istio uses the annotation sidecar.istio.io/inject: \"true\" to trigger automatic sidecar injection. B: Incorrect annotation key. A: Wrong format and namespace. D: Invalid annotation.",
     "doc_link": "https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection",
     "llm_validated": 0
   },
@@ -2261,10 +2261,10 @@
     "difficulty": "medium",
     "question": "Which field in a PersistentVolume definition controls the access mode (e.g., ReadWriteOnce, ReadOnlyMany)?",
     "options": {
-      "A": "accessModes",
-      "B": "capacity",
-      "C": "storageClassName",
-      "D": "persistentVolumeReclaimPolicy"
+      "A": "accessModes (defines how the volume may be mounted: ReadWriteOnce, etc.)",
+      "B": "capacity (specifies the storage size of the PersistentVolume)",
+      "C": "storageClassName (links the PV to a specific StorageClass for binding)",
+      "D": "persistentVolumeReclaimPolicy (what happens to the volume after it is released)"
     },
     "answer": "A",
     "explanation": "Answer A: 'accessModes' specifies allowed access patterns such as ReadWriteOnce (RWO) or ReadOnlyMany (ROX). B: 'capacity' defines size, not access mode. C: 'storageClassName' links to a StorageClass. D: 'persistentVolumeReclaimPolicy' determines what happens after a PVC is released.",
@@ -2283,7 +2283,7 @@
       "D": "DaemonSet"
     },
     "answer": "A",
-    "explanation": "Answer A: A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. B: Ingress handles external HTTP routing. C: ConfigMap stores configuration data. D: DaemonSet runs a copy on each node, not perÃ¢â‚¬â€˜pod DNS names.",
+    "explanation": "Answer A: A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. B: Ingress handles external HTTP routing. C: ConfigMap stores configuration data. D: DaemonSet runs a copy on each node, not per-pod DNS names.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id",
     "llm_validated": 0
   },
@@ -2299,7 +2299,7 @@
       "D": "Jobs do not have a selector field"
     },
     "answer": "D",
-    "explanation": "Answer D: Correct Ã¢â‚¬â€œ the Job spec has no selector field. A: Jobs create Pods directly; they do not use a selector. B: Jobs are not exposed via Services. C: Node affinity is set inside the pod template, not via a selector.",
+    "explanation": "Answer D: The Job spec has no selector field. A: Jobs create Pods directly; they do not use a selector. B: Jobs are not exposed via Services. C: Node affinity is set inside the pod template, not via a selector.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/job/#job-spec",
     "llm_validated": 0
   },
@@ -2309,13 +2309,13 @@
     "difficulty": "medium",
     "question": "Which field in a Pod spec defines the security context for the entire pod?",
     "options": {
-      "A": "securityContext",
+      "A": "runAsUser",
       "B": "podSecurityContext",
-      "C": "runAsUser",
+      "C": "securityContext",
       "D": "containerSecurityContext"
     },
-    "answer": "A",
-    "explanation": "Answer A: 'securityContext' at the pod level applies defaults to all containers. B: 'podSecurityContext' is not a Kubernetes field; the correct name is 'securityContext'. C: 'runAsUser' is a subfield of securityContext. D: 'containerSecurityContext' does not exist; each container has its own 'securityContext'.",
+    "answer": "C",
+    "explanation": "Answer C: 'securityContext' at the pod level applies defaults to all containers. B: 'podSecurityContext' is not a Kubernetes field; the correct name is 'securityContext'. A: 'runAsUser' is a subfield of securityContext. D: 'containerSecurityContext' does not exist; each container has its own 'securityContext'.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/security-context/",
     "llm_validated": 0
   },
@@ -2325,9 +2325,9 @@
     "difficulty": "medium",
     "question": "What does setting 'spec.strategy.type: RollingUpdate' on a StatefulSet control?",
     "options": {
-      "A": "Enables inÃ¢â‚¬â€˜place updates without pod restarts",
+      "A": "Enables fully in-place updates to StatefulSet Pods without requiring any pod restarts or service disruption at all",
       "B": "Performs a rolling update with ordered pod termination and creation",
-      "C": "Deletes all pods before creating new ones",
+      "C": "Deletes all existing pods at the same time before creating the updated versions, causing a complete service outage",
       "D": "StatefulSets do not support RollingUpdate"
     },
     "answer": "B",
@@ -2395,7 +2395,7 @@
       "D": "DaemonSet"
     },
     "answer": "A",
-    "explanation": "Answer A: A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. B: Ingress handles external HTTP routing. C: ConfigMap stores configuration data. D: DaemonSet runs a copy on each node, not perÃ¢â‚¬â€˜pod DNS names.",
+    "explanation": "Answer A: A Headless Service combined with a StatefulSet gives each pod a DNS name like pod-0.service-name. B: Ingress handles external HTTP routing. C: ConfigMap stores configuration data. D: DaemonSet runs a copy on each node, not per-pod DNS names.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id",
     "llm_validated": 0
   },
@@ -2411,7 +2411,7 @@
       "D": "CronJob does not have a selector field"
     },
     "answer": "D",
-    "explanation": "Answer D: Correct Ã¢â‚¬â€œ the CronJob spec has no selector field. A: CronJobs create Jobs directly; they do not use a selector. B: CronJobs are not exposed via Services. C: Node affinity is defined inside the pod template.",
+    "explanation": "Answer D: The CronJob spec has no selector field. A: CronJobs create Jobs directly; they do not use a selector. B: CronJobs are not exposed via Services. C: Node affinity is defined inside the pod template.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#cron-job-spec",
     "llm_validated": 0
   },
@@ -2438,8 +2438,8 @@
     "question": "When you create a Service of type `NodePort`, how is the port exposed on each node?",
     "options": {
       "A": "Via a randomly allocated port in the 30000-32767 range",
-      "B": "Via port 80 on the node's IP",
-      "C": "Via a fixed port defined by kube-proxy",
+      "B": "Via port 80 on the node IP address, forwarded by kube-proxy to the backend Service",
+      "C": "Via a fixed port defined in the kube-proxy configuration for each individual Service",
       "D": "Via a load balancer IP"
     },
     "answer": "A",
@@ -2453,12 +2453,12 @@
     "difficulty": "medium",
     "question": "Which of the following best describes a `ConfigMap`?",
     "options": {
-      "A": "Stores sensitive data like passwords",
-      "B": "Stores non-sensitive configuration data that can be consumed by Pods",
+      "A": "Stores sensitive data like passwords and tokens, encrypted at rest in etcd by default",
+      "B": "Stores persistent volume claims",
       "C": "Stores container images",
-      "D": "Stores persistent volume claims"
+      "D": "Stores non-sensitive configuration data that can be consumed by Pods"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "ConfigMaps hold non-sensitive configuration data as key-value pairs that can be consumed by Pods.",
     "doc_link": "https://kubernetes.io/docs/concepts/configuration/configmap/",
     "llm_validated": 0
@@ -2469,10 +2469,10 @@
     "difficulty": "medium",
     "question": "What does the `kubectl rollout restart` command do for a Deployment?",
     "options": {
-      "A": "Deletes the Deployment and recreates it",
+      "A": "Deletes the Deployment resource entirely and then recreates it fresh from the original manifest file on disk",
       "B": "Scales the Deployment to zero and back to original replicas",
       "C": "Triggers a rolling restart of the Pods by updating the pod template's annotation",
-      "D": "Rebuilds the Docker images used by the Pods"
+      "D": "Rebuilds and repushes the Docker container images used by the Pods to the remote container image registry"
     },
     "answer": "C",
     "explanation": "`kubectl rollout restart` adds an annotation to the pod template, causing the Deployment controller to restart Pods.",
@@ -2502,11 +2502,11 @@
     "question": "What is the purpose of a `ServiceAccount` in Kubernetes?",
     "options": {
       "A": "To provide a unique IP address for a Pod",
-      "B": "To grant Pods an identity for API server authentication",
-      "C": "To store configuration files",
+      "B": "To store configuration files",
+      "C": "To grant Pods an identity for API server authentication",
       "D": "To define network policies"
     },
-    "answer": "B",
+    "answer": "C",
     "explanation": "ServiceAccounts supply Pods with credentials (tokens) to authenticate to the API server.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
     "llm_validated": 0
@@ -2533,12 +2533,12 @@
     "difficulty": "medium",
     "question": "In the context of Kubernetes, what does the term *taint* refer to?",
     "options": {
-      "A": "A label applied to a node that repels Pods without a matching toleration",
-      "B": "A secret stored in etcd",
-      "C": "A deprecated API version",
-      "D": "An error state of a Pod"
+      "A": "An API version that has been flagged as deprecated and scheduled for removal",
+      "B": "A sensitive value stored in etcd and surfaced as a Kubernetes Secret",
+      "C": "A property applied to a node that repels Pods without a matching toleration",
+      "D": "An error condition indicating that a Pod has failed its readiness check"
     },
-    "answer": "A",
+    "answer": "C",
     "explanation": "A taint on a node prevents Pods that do not have a matching toleration from being scheduled there.",
     "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
     "llm_validated": 0
@@ -2550,11 +2550,11 @@
     "question": "Which command shows the current resource usage (CPU, memory) of a node?",
     "options": {
       "A": "kubectl get nodes -o wide",
-      "B": "kubectl top node",
+      "B": "kubectl logs node",
       "C": "kubectl describe node",
-      "D": "kubectl logs node"
+      "D": "kubectl top node"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "`kubectl top node` (requires Metrics Server) displays node resource usage.",
     "doc_link": "https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/",
     "llm_validated": 0
@@ -2582,11 +2582,11 @@
     "question": "Which object provides a stable IP address and DNS name for a set of Pods?",
     "options": {
       "A": "Ingress",
-      "B": "Service",
+      "B": "ReplicaSet",
       "C": "ConfigMap",
-      "D": "ReplicaSet"
+      "D": "Service"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "A Service abstracts a set of Pods and gives them a stable virtual IP and DNS name.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/",
     "llm_validated": 0
@@ -2597,10 +2597,10 @@
     "difficulty": "medium",
     "question": "Which field controls the maximum number of Pods that can be created by a Deployment during a rolling update?",
     "options": {
-      "A": "maxSurge",
-      "B": "maxUnavailable",
-      "C": "revisionHistoryLimit",
-      "D": "strategy"
+      "A": "maxSurge (maximum Pods above desired count allowed during a rolling update)",
+      "B": "maxUnavailable (maximum Pods below desired count allowed during an update)",
+      "C": "revisionHistoryLimit (how many old ReplicaSets to keep for rollback purposes)",
+      "D": "strategy (the update strategy type: RollingUpdate or Recreate)"
     },
     "answer": "A",
     "explanation": "`maxSurge` defines how many extra Pods can be created beyond the desired replica count during an update.",
@@ -2613,10 +2613,10 @@
     "difficulty": "medium",
     "question": "When would you use a `DaemonSet`?",
     "options": {
-      "A": "To run a single replica of an application",
+      "A": "To run a single replica of an application and restart it automatically whenever the container exits unexpectedly",
       "B": "To ensure a copy of a Pod runs on every node (or selected nodes)",
-      "C": "To expose an external load balancer",
-      "D": "To store configuration data"
+      "C": "To expose an external load balancer endpoint that distributes traffic across all nodes in the cluster uniformly",
+      "D": "To store environment-specific configuration data as key-value pairs accessible by pods in the same namespace"
     },
     "answer": "B",
     "explanation": "DaemonSets guarantee that a Pod runs on each node (or a subset) for node-level services.",
@@ -2661,12 +2661,12 @@
     "difficulty": "medium",
     "question": "Which field in a Service spec defines the ports that the Service forwards to Pods?",
     "options": {
-      "A": "targetPort",
-      "B": "port",
-      "C": "nodePort",
-      "D": "protocol"
+      "A": "targetPort (the port on the Pod that the Service forwards traffic to)",
+      "B": "protocol (the transport protocol such as TCP or UDP for the service port)",
+      "C": "nodePort (the static port exposed on each node for NodePort Services)",
+      "D": "port (the port that clients use to reach the Service)"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "`port` is the port exposed by the Service; `targetPort` maps to the container port.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service",
     "llm_validated": 0
@@ -2677,12 +2677,12 @@
     "difficulty": "medium",
     "question": "What is the purpose of a `PodDisruptionBudget` (PDB)?",
     "options": {
-      "A": "To limit the number of Pods that can be created",
-      "B": "To ensure a minimum number of Pods remain available during voluntary disruptions",
+      "A": "To limit the number of Pods that can be created in a namespace by enforcing a hard cap on running replicas",
+      "B": "To set network bandwidth limits",
       "C": "To enforce resource quotas",
-      "D": "To set network bandwidth limits"
+      "D": "To ensure a minimum number of Pods remain available during voluntary disruptions"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "PDBs protect against too many Pods being evicted simultaneously (e.g., during node upgrades).",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/disruptions/",
     "llm_validated": 0
@@ -2709,10 +2709,10 @@
     "difficulty": "medium",
     "question": "What is a `StatefulSet` primarily used for?",
     "options": {
-      "A": "Running stateless web applications",
-      "B": "Running stateful applications requiring stable network IDs and persistent storage",
-      "C": "Exposing services to external traffic",
-      "D": "Scheduling batch jobs"
+      "A": "Running stateless web applications that can be scaled horizontally without state",
+      "B": "Running stateful applications requiring stable network identities and persistent storage",
+      "C": "Exposing services to external traffic through a stable load-balanced endpoint",
+      "D": "Scheduling one-off or recurring batch jobs that run to completion"
     },
     "answer": "B",
     "explanation": "StatefulSets provide stable network identifiers and persistent storage for stateful workloads like databases.",
@@ -2726,11 +2726,11 @@
     "question": "Which resource type allows you to run scheduled batch jobs in Kubernetes?",
     "options": {
       "A": "Job",
-      "B": "CronJob",
+      "B": "ReplicaSet",
       "C": "DaemonSet",
-      "D": "ReplicaSet"
+      "D": "CronJob"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "CronJobs schedule Jobs to run at specific times or intervals using a cron expression.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/",
     "llm_validated": 0
@@ -2742,11 +2742,11 @@
     "question": "Which command scales a Deployment named `web` to 5 replicas?",
     "options": {
       "A": "kubectl resize deployment web --replicas=5",
-      "B": "kubectl scale deployment web --replicas=5",
+      "B": "kubectl update deployment web replicas=5",
       "C": "kubectl set replicas deployment/web 5",
-      "D": "kubectl update deployment web replicas=5"
+      "D": "kubectl scale deployment web --replicas=5"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "`kubectl scale` sets the desired replica count for a Deployment.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment",
     "llm_validated": 0
@@ -2758,11 +2758,11 @@
     "question": "What does a `Liveness Probe` in a Pod spec do?",
     "options": {
       "A": "Checks if the container is ready to receive traffic",
-      "B": "Restarts the container if it determines the container is unhealthy",
+      "B": "Monitors memory usage",
       "C": "Pulls the latest container image",
-      "D": "Monitors memory usage"
+      "D": "Restarts the container if it determines the container is unhealthy"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "A liveness probe periodically checks container health and restarts it if the probe fails.",
     "doc_link": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
     "llm_validated": 0
@@ -2789,9 +2789,9 @@
     "difficulty": "medium",
     "question": "What does `kubectl drain <node>` do?",
     "options": {
-      "A": "Deletes all Pods on the node permanently",
+      "A": "Deletes all Pods on the node permanently, including DaemonSet-managed Pods without respecting PodDisruptionBudgets",
       "B": "Safely evicts Pods from the node and marks it unschedulable",
-      "C": "Removes the node from the cluster",
+      "C": "Removes the node from the cluster and deletes its entry from the API server registry",
       "D": "Restarts all Pods on the node"
     },
     "answer": "B",
@@ -2806,11 +2806,11 @@
     "question": "What is the purpose of a `PersistentVolumeClaim` (PVC)?",
     "options": {
       "A": "To provision a storage backend",
-      "B": "To request storage from a PersistentVolume",
-      "C": "To define storage class parameters",
+      "B": "To define storage class parameters",
+      "C": "To request storage from a PersistentVolume",
       "D": "To back up Pod data"
     },
-    "answer": "B",
+    "answer": "C",
     "explanation": "A PVC is a request for storage that gets bound to a matching PersistentVolume.",
     "doc_link": "https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims",
     "llm_validated": 0
@@ -2837,9 +2837,9 @@
     "difficulty": "medium",
     "question": "What does `imagePullPolicy: Always` do?",
     "options": {
-      "A": "Only pulls the image if it is not already present",
+      "A": "Only pulls the image if it is not already present in the local image cache on the node running the pod",
       "B": "Always pulls the image from the registry before starting the container",
-      "C": "Never pulls the image from a registry",
+      "C": "Never pulls the image from any remote registry and exclusively uses the locally cached version on the node",
       "D": "Pulls the image only during the first deployment"
     },
     "answer": "B",
@@ -2854,11 +2854,11 @@
     "question": "Which field in a Deployment spec specifies the update strategy?",
     "options": {
       "A": "updatePolicy",
-      "B": "strategy",
+      "B": "template",
       "C": "rollout",
-      "D": "template"
+      "D": "strategy"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "The `strategy` field in a Deployment spec defines whether to use RollingUpdate or Recreate.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy",
     "llm_validated": 0
@@ -2870,11 +2870,11 @@
     "question": "What is the primary role of `etcd` in a Kubernetes cluster?",
     "options": {
       "A": "Container runtime management",
-      "B": "Distributed key-value store for all cluster data",
-      "C": "Network proxy for Services",
+      "B": "Network proxy for Services",
+      "C": "Distributed key-value store for all cluster data",
       "D": "Scheduling Pods on nodes"
     },
-    "answer": "B",
+    "answer": "C",
     "explanation": "etcd is the distributed key-value store that persists all cluster state.",
     "doc_link": "https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/",
     "llm_validated": 0
@@ -2886,11 +2886,11 @@
     "question": "Which command creates a Pod from an image without writing a YAML manifest?",
     "options": {
       "A": "kubectl apply nginx",
-      "B": "kubectl run mypod --image=nginx",
+      "B": "kubectl start --image=nginx",
       "C": "kubectl create nginx --type=pod",
-      "D": "kubectl start --image=nginx"
+      "D": "kubectl run mypod --image=nginx"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "`kubectl run` creates a Pod (or Deployment) imperatively from an image.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#run",
     "llm_validated": 0
@@ -2965,10 +2965,10 @@
     "difficulty": "medium",
     "question": "What is the role of a `ReplicaSet`?",
     "options": {
-      "A": "Manages rolling updates for Deployments",
+      "A": "Manages rolling updates for Deployments by gradually scaling up the new ReplicaSet while scaling down the old one concurrently",
       "B": "Ensures a specified number of Pod replicas are running at any time",
-      "C": "Provides network routing for Pods",
-      "D": "Manages persistent storage"
+      "C": "Provides network routing for Pods by watching Service objects and programming iptables or IPVS rules on every cluster node",
+      "D": "Manages persistent storage lifecycle by provisioning and attaching PersistentVolumes to Pods that request them via PVCs"
     },
     "answer": "B",
     "explanation": "A ReplicaSet maintains the desired number of Pod copies by creating or deleting Pods as needed.",
@@ -2981,10 +2981,10 @@
     "difficulty": "medium",
     "question": "Which Kubernetes component runs on every worker node and manages container lifecycle?",
     "options": {
-      "A": "kube-apiserver",
-      "B": "kube-scheduler",
-      "C": "kubelet",
-      "D": "kube-controller-manager"
+      "A": "kube-apiserver (the REST frontend that validates and persists all API objects)",
+      "B": "kube-scheduler (watches for unscheduled Pods and assigns them to nodes)",
+      "C": "kubelet (agent on each node that starts, stops, and monitors containers)",
+      "D": "kube-controller-manager (runs reconciliation loops for built-in controllers)"
     },
     "answer": "C",
     "explanation": "The kubelet runs on each worker node and ensures containers are running as specified by Pod specs.",
@@ -2998,11 +2998,11 @@
     "question": "How do you add a label `env=prod` to an existing Pod named `mypod`?",
     "options": {
       "A": "kubectl set label pod mypod env=prod",
-      "B": "kubectl label pod mypod env=prod",
+      "B": "kubectl update pod mypod --label env=prod",
       "C": "kubectl annotate pod mypod env=prod",
-      "D": "kubectl update pod mypod --label env=prod"
+      "D": "kubectl label pod mypod env=prod"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "`kubectl label` adds or updates labels on Kubernetes objects.",
     "doc_link": "https://kubernetes.io/docs/reference/kubectl/overview/#label",
     "llm_validated": 0
@@ -3030,11 +3030,11 @@
     "question": "Which object in Kubernetes is used to expose HTTP/S routes to Services within a cluster?",
     "options": {
       "A": "Service",
-      "B": "Ingress",
-      "C": "EndpointSlice",
+      "B": "EndpointSlice",
+      "C": "Ingress",
       "D": "NetworkPolicy"
     },
-    "answer": "B",
+    "answer": "C",
     "explanation": "An Ingress resource routes external HTTP/S traffic to internal Services based on rules.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/ingress/",
     "llm_validated": 0
@@ -3078,11 +3078,11 @@
     "question": "Which object is used to inject non-sensitive configuration data into Pods?",
     "options": {
       "A": "Secret",
-      "B": "ConfigMap",
+      "B": "ServiceAccount",
       "C": "PersistentVolume",
-      "D": "ServiceAccount"
+      "D": "ConfigMap"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "ConfigMaps hold non-sensitive key-value pairs that can be mounted as files or exposed as environment variables.",
     "doc_link": "https://kubernetes.io/docs/concepts/configuration/configmap/",
     "llm_validated": 0
@@ -3109,12 +3109,12 @@
     "difficulty": "medium",
     "question": "Which controller provides stable network identities and ordered pod startup?",
     "options": {
-      "A": "StatefulSet",
+      "A": "DaemonSet",
       "B": "Deployment",
-      "C": "DaemonSet",
+      "C": "StatefulSet",
       "D": "ReplicaSet"
     },
-    "answer": "A",
+    "answer": "C",
     "explanation": "StatefulSet gives each pod a stable hostname and persistent storage, preserving identity across restarts.",
     "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/",
     "llm_validated": 0
@@ -3125,10 +3125,10 @@
     "difficulty": "medium",
     "question": "Which flag adds a custom HTTP header to traffic handled by the NGINX Ingress controller?",
     "options": {
-      "A": "--annotation",
-      "B": "--header",
-      "C": "--add-header",
-      "D": "--ingress-annotation"
+      "A": "--annotation (applies a Kubernetes annotation to a resource, not an HTTP header)",
+      "B": "--header (passes a custom HTTP header into the proxied request)",
+      "C": "--add-header (not a valid flag for the NGINX Ingress controller CLI)",
+      "D": "--ingress-annotation (not a valid flag for the NGINX Ingress controller CLI)"
     },
     "answer": "B",
     "explanation": "The --header flag lets the NGINX Ingress controller inject custom headers into responses.",
@@ -3189,10 +3189,10 @@
     "difficulty": "medium",
     "question": "Which API object runs a one-time batch job to completion?",
     "options": {
-      "A": "CronJob",
-      "B": "Job",
-      "C": "Deployment",
-      "D": "DaemonSet"
+      "A": "CronJob (creates Jobs on a time-based schedule, not a one-time run)",
+      "B": "Job (creates one or more Pods and tracks successful completion)",
+      "C": "Deployment (manages long-running stateless Pods with rolling updates)",
+      "D": "DaemonSet (runs exactly one Pod per node, not a one-time task)"
     },
     "answer": "B",
     "explanation": "A Job creates one or more pods that run until they finish successfully.",
@@ -3238,9 +3238,9 @@
     "question": "Which field controls the number of replicas in a Deployment?",
     "options": {
       "A": "spec.replicas",
-      "B": "spec.template.spec.replicas",
-      "C": "spec.strategy.replicas",
-      "D": "spec.selector.replicas"
+      "B": "spec.podCount",
+      "C": "spec.instances",
+      "D": "spec.minReplicas"
     },
     "answer": "A",
     "explanation": "spec.replicas defines the desired number of pod replicas for a Deployment.",
@@ -3286,11 +3286,11 @@
     "question": "Which ResourceQuota metric limits the total number of Services in a namespace?",
     "options": {
       "A": "services",
-      "B": "count/services",
+      "B": "objects.services",
       "C": "limits.services",
-      "D": "objects.services"
+      "D": "count/services"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "count/services restricts how many Service objects can be created.",
     "doc_link": "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
     "llm_validated": 0
@@ -3349,12 +3349,12 @@
     "difficulty": "medium",
     "question": "Which field in a Pod spec determines the DNS policy for the pod?",
     "options": {
-      "A": "dnsPolicy",
+      "A": "dnsSettings",
       "B": "dnsConfig",
       "C": "dnsResolver",
-      "D": "dnsSettings"
+      "D": "dnsPolicy"
     },
-    "answer": "A",
+    "answer": "D",
     "explanation": "dnsPolicy sets how DNS queries are handled (e.g., ClusterFirst).",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/",
     "llm_validated": 0
@@ -3381,12 +3381,12 @@
     "difficulty": "medium",
     "question": "Which resource type stores TLS certificates for Ingress resources?",
     "options": {
-      "A": "ConfigMap",
-      "B": "Secret",
-      "C": "ServiceAccount",
-      "D": "PersistentVolume"
+      "A": "ConfigMap (stores non-sensitive configuration data as key-value pairs)",
+      "B": "PersistentVolume (represents a piece of storage provisioned in the cluster)",
+      "C": "ServiceAccount (provides an identity for processes running inside a Pod)",
+      "D": "Secret (stores sensitive data such as TLS certificates and private keys)"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "TLS secrets of type kubernetes.io/tls hold certificate data for Ingress.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/ingress/#tls",
     "llm_validated": 0
@@ -3414,11 +3414,11 @@
     "question": "Which reason justifies using a NodePort service instead of a LoadBalancer?",
     "options": {
       "A": "Need to expose the service only within the cluster",
-      "B": "Cloud provider does not support external load balancers",
-      "C": "Require automatic DNS provisioning",
+      "B": "Require automatic DNS provisioning",
+      "C": "Cloud provider does not support external load balancers",
       "D": "Want to use a static external IP address"
     },
-    "answer": "B",
+    "answer": "C",
     "explanation": "NodePort is appropriate when the cloud provider does not support external load balancers, or in bare-metal/on-premises clusters. LoadBalancer services also support static IPs via loadBalancerIP, so D is not a differentiating reason. A describes ClusterIP behavior. C is not a NodePort feature.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types",
     "llm_validated": 0
@@ -3509,12 +3509,12 @@
     "difficulty": "medium",
     "question": "When is it appropriate to use a ConfigMap instead of a Secret?",
     "options": {
-      "A": "Storing TLS private keys",
-      "B": "Storing non-sensitive configuration like application settings",
-      "C": "Storing database passwords",
-      "D": "Storing API tokens"
+      "A": "Storing TLS private keys that require base64 encoding and strict RBAC",
+      "B": "Storing API tokens that need scoped permissions and audit logging",
+      "C": "Storing database passwords that must be rotated and kept confidential",
+      "D": "Storing non-sensitive configuration such as application settings or feature flags"
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "ConfigMaps are intended for non-sensitive data; Secret should be used for sensitive information.",
     "doc_link": "https://kubernetes.io/docs/concepts/configuration/secret/",
     "llm_validated": 0
@@ -3574,11 +3574,11 @@
     "question": "Which annotation enables HTTP/2 for a GKE LoadBalancer service?",
     "options": {
       "A": "cloud.google.com/load-balancer-type: \"Internal\"",
-      "B": "cloud.google.com/backend-config: \"{\\\"protocol\\\":\\\"HTTP2\\\"}\"",
+      "B": "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: \"*\"",
       "C": "networking.gke.io/load-balancer-type: \"External\"",
-      "D": "service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: \"*\""
+      "D": "cloud.google.com/backend-config: \"{\\\"protocol\\\":\\\"HTTP2\\\"}\""
     },
-    "answer": "B",
+    "answer": "D",
     "explanation": "To enable HTTP/2 for a GKE LoadBalancer backend, use the cloud.google.com/backend-config annotation referencing a BackendConfig resource with protocol: HTTP2. The networking.gke.io/load-balancer-type annotation controls whether the load balancer is Internal or External, not HTTP/2 support. A sets the load balancer to Internal mode.",
     "doc_link": "https://docs.cloud.google.com/kubernetes-engine/docs/concepts/ingress",
     "llm_validated": 0
@@ -3685,13 +3685,13 @@
     "difficulty": "medium",
     "question": "A NetworkPolicy is created with an empty podSelector (`{}`) in the `spec.podSelector` field. Which Pods does this policy apply to?",
     "options": {
-      "A": "All Pods in the namespace where the NetworkPolicy is defined",
+      "A": "Only Pods in the default namespace",
       "B": "All Pods across every namespace in the cluster",
       "C": "Only Pods that have no labels assigned",
-      "D": "Only Pods in the default namespace"
+      "D": "All Pods in the namespace where the NetworkPolicy is defined"
     },
-    "answer": "A",
-    "explanation": "Answer A: An empty podSelector matches all Pods in the same namespace as the NetworkPolicy. B: NetworkPolicies are namespace-scoped and cannot target other namespaces. C: Empty selector means all Pods, not unlabeled ones. D: The policy applies to its own namespace regardless of name.",
+    "answer": "D",
+    "explanation": "Answer D: An empty podSelector matches all Pods in the same namespace as the NetworkPolicy. B: NetworkPolicies are namespace-scoped and cannot target other namespaces. C: Empty selector means all Pods, not unlabeled ones. A: The policy applies to its own namespace regardless of name.",
     "doc_link": "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
     "llm_validated": 0
   },
@@ -3766,12 +3766,12 @@
     "question": "What does \"shift left\" mean in the context of cloud-native security?",
     "options": {
       "A": "Moving security ownership from developers to a dedicated security operations team",
-      "B": "Integrating security testing and controls earlier in the software development lifecycle",
-      "C": "Relocating security tooling from worker nodes to the control plane",
+      "B": "Relocating security tooling from worker nodes to the control plane",
+      "C": "Integrating security testing and controls earlier in the software development lifecycle",
       "D": "Shifting enforcement from application-layer to network-layer controls"
     },
-    "answer": "B",
-    "explanation": "Answer B: Shift left means addressing security earlier in the pipeline - during development and CI rather than post-deployment. A: It does the opposite, giving developers more security responsibility. C and D: These describe infrastructure changes unrelated to the lifecycle concept.",
+    "answer": "C",
+    "explanation": "Answer C: Shift left means addressing security earlier in the pipeline, specifically during development and CI rather than post-deployment. A: It does the opposite, giving developers more security responsibility. C and D: These describe infrastructure changes unrelated to the lifecycle concept.",
     "doc_link": "https://kubernetes.io/docs/concepts/security/overview/",
     "llm_validated": 0
   },
@@ -3830,13 +3830,973 @@
     "question": "Which Kubernetes resource sets aggregate limits on total CPU, memory, and object count that can be consumed within a namespace?",
     "options": {
       "A": "LimitRange",
-      "B": "ResourceQuota",
+      "B": "PriorityClass",
       "C": "PodDisruptionBudget",
-      "D": "PriorityClass"
+      "D": "ResourceQuota"
+    },
+    "answer": "D",
+    "explanation": "Answer D: ResourceQuota enforces total consumption limits across all workloads in a namespace. A: LimitRange sets default and maximum requests/limits per individual container or Pod. C: PodDisruptionBudget controls voluntary disruptions, not resource consumption. B: PriorityClass assigns scheduling priority to Pods.",
+    "doc_link": "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-241",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "easy",
+    "question": "What is the primary purpose of an init container in a Pod?",
+    "options": {
+      "A": "To run alongside the main container and provide logging functionality",
+      "B": "To expose metrics from the main container",
+      "C": "To restart the main container if it fails",
+      "D": "To perform initialization tasks that must complete before app containers start"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Init containers run and complete before any app containers start, making them ideal for setup tasks such as populating shared volumes, waiting for dependencies, or registering with external services. A: That describes a sidecar container, not an init container. C: Init containers do not restart failed main containers; that is handled by restartPolicy. B: Exposing metrics is a role for an adapter or sidecar, not an init container.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/init-containers/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-242",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "easy",
+    "question": "In a kubeconfig file, what does a context bind together?",
+    "options": {
+      "A": "A namespace and a set of labels",
+      "B": "A cluster, a user, and optionally a namespace",
+      "C": "A cluster and a set of RBAC roles",
+      "D": "A user and a set of resource quotas"
     },
     "answer": "B",
-    "explanation": "Answer B: ResourceQuota enforces total consumption limits across all workloads in a namespace. A: LimitRange sets default and maximum requests/limits per individual container or Pod. C: PodDisruptionBudget controls voluntary disruptions, not resource consumption. D: PriorityClass assigns scheduling priority to Pods.",
-    "doc_link": "https://kubernetes.io/docs/concepts/policy/resource-quotas/",
+    "explanation": "Answer B: A kubeconfig context is a named tuple that references a cluster entry, a user entry, and an optional namespace, allowing kubectl to know where to connect and as whom. A: Labels are not part of a context. C: RBAC roles are not stored in kubeconfig. D: Resource quotas are cluster-side objects, not kubeconfig entries.",
+    "doc_link": "https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-243",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "easy",
+    "question": "Which kubectl command switches the active context in your kubeconfig?",
+    "options": {
+      "A": "kubectl config set-context",
+      "B": "kubectl config get-contexts",
+      "C": "kubectl config use-context",
+      "D": "kubectl context switch"
+    },
+    "answer": "C",
+    "explanation": "Answer C: kubectl config use-context <name> updates the current-context field in the kubeconfig file so subsequent commands target the named context. A: set-context creates or modifies a context definition but does not make it active. B: get-contexts lists available contexts without changing the active one. D: This is not a valid kubectl subcommand.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/generated/kubectl_config/kubectl_config_use-context/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-244",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "easy",
+    "question": "A Pod has no resource requests or limits set on any of its containers. Which QoS class is assigned to it?",
+    "options": {
+      "A": "Guaranteed",
+      "B": "Burstable",
+      "C": "BestEffort",
+      "D": "Default"
+    },
+    "answer": "C",
+    "explanation": "Answer C: When none of the containers in a Pod specify CPU or memory requests or limits, Kubernetes assigns the BestEffort QoS class, making it the first candidate for eviction under resource pressure. A: Guaranteed requires every container to have equal requests and limits for both CPU and memory. B: Burstable requires at least one container to have a request or limit but not the full Guaranteed criteria. D: Default is not a Kubernetes QoS class.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-245",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "easy",
+    "question": "What is the role of the ambassador multi-container pattern?",
+    "options": {
+      "A": "Transform or reformat the main container output before it is consumed",
+      "B": "Collect logs from the main container and forward them to a central store",
+      "C": "Proxy network traffic between the main container and external services",
+      "D": "Provide shared storage initialization before the main container starts"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The ambassador pattern places a proxy container in the Pod that intercepts and manages outbound or inbound network calls on behalf of the main container, abstracting external service endpoints. A: Reformatting output describes the adapter pattern. B: Log forwarding is a sidecar responsibility. D: Storage initialization before startup describes an init container.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/#workload-resources-for-managing-pods",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-246",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Init containers are listed under spec.initContainers. In what order does Kubernetes run them?",
+    "options": {
+      "A": "All init containers run in parallel before any app containers start, allowing faster initialization of shared dependencies",
+      "B": "They run sequentially in the order listed; each must complete successfully before the next begins",
+      "C": "They run in reverse order of declaration so that foundational dependencies are resolved before higher-level containers begin",
+      "D": "The scheduler picks the order based on resource availability"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Kubernetes runs init containers one at a time in the exact order they appear in spec.initContainers. Each init container must exit with code 0 before the next one starts. A: Parallel execution does not apply to init containers. C: Reverse ordering is not how Kubernetes handles init containers. D: The scheduler assigns a node but does not control init container ordering.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-247",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "A Pod has a container with cpu request=500m, cpu limit=500m, memory request=256Mi, memory limit=256Mi. What QoS class is assigned?",
+    "options": {
+      "A": "BestEffort",
+      "B": "Burstable",
+      "C": "Guaranteed",
+      "D": "Critical"
+    },
+    "answer": "C",
+    "explanation": "Answer C: Guaranteed QoS is assigned when every container in the Pod has CPU and memory requests set equal to their respective limits. The described container satisfies this condition. A: BestEffort requires no requests or limits at all. B: Burstable applies when requests exist but are not equal to limits, or only some containers have requests set. D: Critical is not a Kubernetes QoS class.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#guaranteed",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-248",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "Which node condition indicates that the node is running low on available process IDs?",
+    "options": {
+      "A": "MemoryPressure",
+      "B": "DiskPressure",
+      "C": "PIDPressure",
+      "D": "NetworkUnavailable"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The PIDPressure condition is set to True when the node detects that the number of available process IDs is approaching the configured limit, which can prevent new processes from being created. A: MemoryPressure reflects low available memory. B: DiskPressure reflects low available disk space or inodes. D: NetworkUnavailable indicates the network is not correctly configured for the node.",
+    "doc_link": "https://kubernetes.io/docs/concepts/architecture/nodes/#condition",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-249",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "How does an EndpointSlice differ from a classic Endpoints object?",
+    "options": {
+      "A": "EndpointSlices store TLS certificates for each endpoint and rotate them automatically when the serving certificate approaches expiry",
+      "B": "EndpointSlices split endpoint data across multiple objects, improving scalability for large Services",
+      "C": "EndpointSlices replace Ingress objects for HTTP routing by mapping hostnames and paths directly to backend pod IP addresses",
+      "D": "EndpointSlices are only used with headless Services and have no effect on ClusterIP or LoadBalancer Service types in standard clusters"
+    },
+    "answer": "B",
+    "explanation": "Answer B: EndpointSlices shard endpoint information into smaller objects (default max 100 endpoints each), reducing the size of updates sent to watchers and improving control-plane scalability compared to a single Endpoints object. A: TLS certificates are not stored in EndpointSlices. C: EndpointSlices have nothing to do with Ingress or HTTP routing. D: EndpointSlices are used for all Service types, not only headless ones.",
+    "doc_link": "https://kubernetes.io/docs/concepts/services-networking/endpoint-slices/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-250",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "In the admission control pipeline, which webhook type runs first: Mutating or Validating?",
+    "options": {
+      "A": "Validating webhooks run first, then Mutating webhooks apply changes",
+      "B": "Both types run simultaneously in parallel",
+      "C": "Mutating webhooks run first, then Validating webhooks inspect the final object",
+      "D": "The order depends on the webhook failurePolicy setting"
+    },
+    "answer": "C",
+    "explanation": "Answer C: Kubernetes always runs MutatingAdmissionWebhook before ValidatingAdmissionWebhook. This ensures that validating webhooks see the fully mutated object rather than an intermediate state. A: This is incorrect; validation comes after mutation. B: The two phases are sequential, not parallel. D: failurePolicy controls what happens when a webhook fails to respond, not the execution order.",
+    "doc_link": "https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#what-are-admission-webhooks",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-251",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "medium",
+    "question": "What does the kubectl diff command do?",
+    "options": {
+      "A": "Shows differences between two Kubernetes cluster versions to help operators plan safe and compatible upgrade paths",
+      "B": "Displays the git diff of manifest files tracked in the current directory against the last committed revision",
+      "C": "Compares local manifest files against the live state in the cluster without applying changes",
+      "D": "Lists API resources that differ between namespaces"
+    },
+    "answer": "C",
+    "explanation": "Answer C: kubectl diff sends the supplied manifests to the server-side dry-run endpoint and displays a unified diff showing what would change if the manifests were applied, allowing operators to preview changes safely. A: Cluster version comparison is done with other tools, not kubectl diff. B: kubectl has no git integration. D: Comparing resources across namespaces is not what kubectl diff does.",
+    "doc_link": "https://kubernetes.io/docs/reference/kubectl/generated/kubectl_diff/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-252",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "hard",
+    "question": "A PriorityClass is created with preemptionPolicy: Never. What does this mean for Pods that use it?",
+    "options": {
+      "A": "Pods with this class are never scheduled on nodes that already have running Pods",
+      "B": "Pods with this class have higher scheduling priority but will not evict lower-priority Pods to free resources",
+      "C": "Pods with this class are immediately terminated and evicted when a higher-priority Pod needs resources on their node",
+      "D": "Pods with this class bypass all resource quotas and namespace limits and are always scheduled regardless of capacity"
+    },
+    "answer": "B",
+    "explanation": "Answer B: preemptionPolicy: Never means the Pod benefits from a higher priority value for scheduling queue ordering, but the scheduler will not preempt (evict) lower-priority Pods to make room; instead the Pod waits in the queue until natural capacity becomes available. A: PriorityClass does not restrict which nodes Pods can use. C: That behavior describes a Pod being preempted, the opposite of Never. D: PriorityClass has no effect on ResourceQuota enforcement.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#non-preempting-priority-class",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-253",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "hard",
+    "question": "Pod overhead is defined in a RuntimeClass. How does it affect Pod scheduling and resource accounting?",
+    "options": {
+      "A": "Overhead is subtracted from node allocatable capacity to make more room for Pods, reducing the number of Pods that can be scheduled on a given node at any one time",
+      "B": "Overhead values are added to the sum of container resource requests when computing the Pod's total resource footprint for scheduling and quota purposes",
+      "C": "Overhead only affects cgroup limits, not scheduler decisions",
+      "D": "Overhead is applied only when the Pod exceeds its resource limits"
+    },
+    "answer": "B",
+    "explanation": "Answer B: When a RuntimeClass specifies overhead, the kubelet adds those CPU and memory values to the sum of all container requests and limits. The scheduler uses this inflated total to determine node fit, and ResourceQuota counts it toward namespace consumption, accurately accounting for the sandbox cost of virtualization runtimes like Kata Containers. A: Overhead is added to Pod cost, not subtracted from node capacity directly. C: The scheduler absolutely factors overhead into its feasibility checks. D: Overhead is always applied regardless of whether limits are exceeded.",
+    "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/pod-overhead/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-254",
+    "domain": "Kubernetes Fundamentals",
+    "difficulty": "hard",
+    "question": "According to the Kubernetes API deprecation policy, how long must a deprecated API version remain available after it is deprecated?",
+    "options": {
+      "A": "It can be removed in the very next release, with no obligation to maintain backward compatibility for any prior consumers of that API version whatsoever",
+      "B": "It must remain available for at least 1 release for alpha, 3 releases for beta, and 12 months or 3 releases (whichever is longer) for GA APIs",
+      "C": "All deprecated APIs must remain for exactly 2 releases regardless of stability level",
+      "D": "Deprecated APIs are never removed; they are only hidden from documentation"
+    },
+    "answer": "B",
+    "explanation": "Answer B: The Kubernetes API deprecation policy differentiates by stability level. Alpha API versions may be removed after one release. Beta API versions must remain available for at least 3 releases. GA (stable) API versions must remain for at least 12 months or 3 releases, whichever is longer. A: Immediate removal applies only to alpha versions, and even then only after one release, not the very next. C: A single flat 2-release rule does not match the policy. D: Kubernetes does remove deprecated APIs on schedule.",
+    "doc_link": "https://kubernetes.io/docs/reference/using-api/deprecation-policy/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-255",
+    "domain": "Container Orchestration",
+    "difficulty": "easy",
+    "question": "What is the primary role of the Container Network Interface (CNI) in Kubernetes?",
+    "options": {
+      "A": "To manage container image pulls from registries",
+      "B": "To provide a standard plugin interface for configuring network connectivity for containers",
+      "C": "To encrypt all traffic between the API server and kubelets using mutual TLS certificates managed by the control plane",
+      "D": "To assign persistent IP addresses to nodes in the cluster, ensuring stable addressing across reboots and scaling events"
+    },
+    "answer": "B",
+    "explanation": "Answer B: CNI defines a standard interface between container runtimes and network plugins, allowing plugins to set up and tear down network interfaces for containers. A: Image pulls are handled by the container runtime, not CNI. C: API server-to-kubelet encryption uses TLS certificates, not CNI. D: Node IP assignment is handled by the cloud provider or static configuration, not CNI.",
+    "doc_link": "https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-256",
+    "domain": "Container Orchestration",
+    "difficulty": "medium",
+    "question": "A namespace has the label pod-security.kubernetes.io/enforce: restricted applied. Which Pod configuration would be REJECTED by the Pod Security Admission controller?",
+    "options": {
+      "A": "A Pod with securityContext.runAsNonRoot: true and no privileged containers",
+      "B": "A Pod that drops all capabilities and sets allowPrivilegeEscalation: false",
+      "C": "A Pod with a container running as root (runAsUser: 0) and no securityContext restrictions",
+      "D": "A Pod with a read-only root filesystem and seccompProfile type RuntimeDefault"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The restricted Pod Security Standard requires Pods to run as non-root, drop all capabilities, disallow privilege escalation, and use a seccomp profile. A Pod running as root violates the restricted policy and will be rejected. A: Running as non-root with no privileged containers satisfies restricted requirements. B: Dropping all capabilities and disabling privilege escalation meets restricted policy requirements. D: A read-only root filesystem with a RuntimeDefault seccomp profile complies with the restricted standard.",
+    "doc_link": "https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-257",
+    "domain": "Container Orchestration",
+    "difficulty": "medium",
+    "question": "A Pod cannot reach a Service by its DNS name inside the cluster. Which sequence of checks is the most appropriate initial troubleshooting approach?",
+    "options": {
+      "A": "Restart the kube-proxy DaemonSet, then recreate the Service",
+      "B": "Delete and recreate the Pod, then inspect kubelet logs on the node, and finally review recent changes to the cluster DNS configuration and kube-proxy iptables rules",
+      "C": "Verify the CoreDNS pods are running, confirm the Service selector matches the Pod labels, then check for NetworkPolicies that may block traffic",
+      "D": "Check the container image tag, then review the node firewall rules"
+    },
+    "answer": "C",
+    "explanation": "Answer C: DNS resolution failures require checking CoreDNS health first; if DNS resolves but traffic fails, the Service selector must match target Pod labels; NetworkPolicies can silently block traffic even when DNS and selectors are correct. This order covers the three most common root causes systematically. A: Restarting kube-proxy without diagnosis is disruptive and skips DNS and selector checks. B: Recreating the Pod does not address DNS or network configuration issues. D: The container image tag and node firewall rules are unlikely causes for intra-cluster Service DNS failures.",
+    "doc_link": "https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-258",
+    "domain": "Container Orchestration",
+    "difficulty": "hard",
+    "question": "After deploying a vendor's CSI driver, which Kubernetes objects must be created so that a Pod can consume a volume from that storage system?",
+    "options": {
+      "A": "A ConfigMap referencing the storage endpoint, and a VolumeMount in the Pod spec pointing to a path where the CSI driver reads its configuration at runtime",
+      "B": "A StorageClass that references the CSI driver's provisioner name, a PersistentVolumeClaim bound to that StorageClass, and a Pod spec that references the PVC",
+      "C": "A CSINode object created manually by the administrator to register the driver, and a HostPath volume in the Pod spec that maps to the storage mount point on the node",
+      "D": "A DaemonSet running the storage client binary on every node to handle mount operations, and a PersistentVolume with hostPath type that points to the local mount directory"
+    },
+    "answer": "B",
+    "explanation": "Answer B: CSI enables pluggable storage by having the vendor supply a driver deployed as Pods in the cluster. A StorageClass is created with the CSI driver's provisioner identifier; a PVC referencing that StorageClass triggers dynamic provisioning via the CSI driver; the Pod references the PVC to consume the volume. A: A ConfigMap alone cannot provision or attach storage. C: CSINode objects are created automatically by the CSI node driver, not manually. D: The CSI driver itself runs as a DaemonSet deployed by the vendor; a HostPath PersistentVolume bypasses CSI entirely.",
+    "doc_link": "https://kubernetes.io/docs/concepts/storage/volumes/#csi",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-259",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "easy",
+    "question": "What is a Helm Chart?",
+    "options": {
+      "A": "A running instance of a Helm package deployed to a cluster",
+      "B": "A collection of files that describe a related set of Kubernetes resources",
+      "C": "A versioned snapshot of a chart stored in a Helm repository index file",
+      "D": "A Kubernetes CRD that Helm uses to track and manage release deployments on the cluster"
+    },
+    "answer": "B",
+    "explanation": "Answer B: A Helm Chart is a collection of files that describe a related set of Kubernetes resources. It packages templates, default values, and metadata together so applications can be deployed consistently. A: That describes a Helm release, not a chart. C: That describes a repository index entry. D: Helm does not use a CRD to track deployments; it uses Secrets or ConfigMaps for release state.",
+    "doc_link": "https://helm.sh/docs/topics/charts/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-260",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "easy",
+    "question": "Which file in a Helm Chart contains the chart's name, version, and description metadata?",
+    "options": {
+      "A": "values.yaml (default configuration values for chart templates)",
+      "B": "templates/NOTES.txt (optional post-install instructions shown to the user)",
+      "C": "Chart.yaml (required metadata file with name, version, and description)",
+      "D": "requirements.yaml (Helm 2 dependency file, replaced by Chart.yaml in Helm 3)"
+    },
+    "answer": "C",
+    "explanation": "Answer C: Chart.yaml is the mandatory metadata file in a Helm Chart that contains fields such as name, version, appVersion, and description. A: values.yaml holds default configuration values for templates, not chart metadata. B: NOTES.txt is an optional file that displays post-install instructions. D: requirements.yaml was used in Helm 2 for dependencies; Helm 3 uses the dependencies field inside Chart.yaml.",
+    "doc_link": "https://helm.sh/docs/topics/charts/#the-chartyaml-file",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-261",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "easy",
+    "question": "What does the helm rollback command do?",
+    "options": {
+      "A": "Deletes the current release and reinstalls the previous chart version from the repository",
+      "B": "Undoes any manual kubectl edits made to resources managed by Helm",
+      "C": "Restores the values.yaml file to its default state",
+      "D": "Reverts a release to a previously deployed revision stored in release history"
+    },
+    "answer": "D",
+    "explanation": "Answer D: helm rollback <release> <revision> reverts a named release to a specific previous revision stored in Helm's release history, redeploying the manifests from that revision. A: Helm does not delete and reinstall; it applies the stored revision in-place. C: values.yaml on disk is not modified by rollback. B: Helm tracks its own release history, not out-of-band kubectl changes.",
+    "doc_link": "https://helm.sh/docs/helm/helm_rollback/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-262",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "easy",
+    "question": "In GitOps, what is the single source of truth for the desired state of a system?",
+    "options": {
+      "A": "The live state of resources running in the Kubernetes cluster",
+      "B": "The container image registry",
+      "C": "A Git repository containing declarative configuration",
+      "D": "The CI pipeline artifact store"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The core GitOps principle is that a Git repository holds the declarative desired state of the system. The GitOps operator continuously reconciles the cluster toward that state. A: The live cluster state is what GitOps reconciles toward the Git state, not the source of truth. B: Image registries store artifacts, but cluster configuration lives in Git. D: CI artifact stores are part of the build pipeline, not the desired-state definition.",
+    "doc_link": "https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-263",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "A Helm release is at revision 5. After a successful upgrade to revision 6, the team runs helm rollback myapp 4. What revision number will the release be at after the rollback?",
+    "options": {
+      "A": "4",
+      "B": "5",
+      "C": "6",
+      "D": "7"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Helm rollback does not go back in history; it creates a new revision. Rolling back to revision 4 applies revision 4's manifests but stores the result as revision 7. This preserves a complete, linear audit trail. A: Revision 4 is the target content, not the resulting revision number. B: Revision 5 is an earlier revision in history. C: Revision 6 is the failed upgrade that was rolled back from.",
+    "doc_link": "https://helm.sh/docs/helm/helm_rollback/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-264",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "A Helm hook is annotated with helm.sh/hook: pre-install. When does this hook execute?",
+    "options": {
+      "A": "After all resources in the chart are created but before the release is marked successful",
+      "B": "Before any resources in the chart are rendered and applied to the cluster",
+      "C": "After the chart is rendered but before any chart resources are installed",
+      "D": "During every subsequent helm upgrade before new resources are applied"
+    },
+    "answer": "C",
+    "explanation": "Answer C: A pre-install hook runs after Helm renders the chart templates but before any of the chart's main resources are created in the cluster. This is useful for tasks like database migrations or secret creation that must complete before the application starts. A: That describes a post-install hook. B: Hooks are rendered from templates, so rendering always happens first. D: pre-install runs only on initial install, not on upgrades; pre-upgrade would apply on upgrades.",
+    "doc_link": "https://helm.sh/docs/topics/charts_hooks/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-265",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "Which CI/CD pipeline stage is responsible for publishing a built container image to a registry so later stages can reference it?",
+    "options": {
+      "A": "Build",
+      "B": "Test",
+      "C": "Push",
+      "D": "Deploy"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The Push stage uploads the built and tagged container image to a container registry so that subsequent deploy stages can pull and run it. A: The Build stage compiles code and creates the image locally, but does not publish it. B: The Test stage runs unit, integration, or security tests against the built artifact. D: The Deploy stage retrieves the already-pushed image from the registry and applies it to an environment.",
+    "doc_link": "https://kubernetes.io/docs/concepts/containers/images/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-266",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "In ArgoCD, what is the difference between a Sync operation and a Refresh operation?",
+    "options": {
+      "A": "Refresh fetches the latest Git state and updates the diff; Sync applies the Git state to the cluster",
+      "B": "Sync fetches the latest Git state and computes the diff against the live cluster; Refresh applies the computed diff to the cluster",
+      "C": "Refresh restarts all pods in the application to pick up new image tags; Sync reconciles only CustomResourceDefinition objects in the cluster",
+      "D": "They are effectively aliases for the same reconciliation operation in ArgoCD and can be used interchangeably with identical results"
+    },
+    "answer": "A",
+    "explanation": "Answer A: In ArgoCD, Refresh re-fetches the desired state from Git and recomputes the diff between desired and live state, but does not modify the cluster. Sync then applies the desired state to the cluster, creating, updating, or deleting resources as needed. B: This reverses the correct definitions. C: Refresh does not restart pods. D: They are distinct operations with different effects.",
+    "doc_link": "https://argo-cd.readthedocs.io/en/stable/core_concepts/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-267",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "What does enabling selfHeal: true in an ArgoCD Application spec cause ArgoCD to do?",
+    "options": {
+      "A": "Automatically restart pods that fail their liveness probe",
+      "B": "Automatically create a Git commit reverting manual changes",
+      "C": "Automatically sync the cluster back to the Git desired state when live resources drift",
+      "D": "Automatically upgrade the ArgoCD controller when a new version is available"
+    },
+    "answer": "C",
+    "explanation": "Answer C: When selfHeal is enabled, ArgoCD detects drift between the live cluster state and the desired state in Git and automatically triggers a sync to reconcile the difference, without requiring a human to initiate it. A: Pod restarts due to liveness probes are handled by the kubelet, not ArgoCD. B: ArgoCD modifies the cluster to match Git; it does not push changes back to Git. D: ArgoCD version upgrades are unrelated to the selfHeal setting.",
+    "doc_link": "https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-268",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "In Flux, what does a GitRepository source object define?",
+    "options": {
+      "A": "A Kubernetes Deployment resource that automatically clones and continuously runs application code pulled directly from a Git repository",
+      "B": "An ArgoCD Application CRD converted to Flux format",
+      "C": "A reference to a Git repository, branch, and polling interval that Flux uses to fetch manifests",
+      "D": "A Kubernetes Secret resource containing encrypted Git credentials and repository configuration for kubectl to use when applying manifests"
+    },
+    "answer": "C",
+    "explanation": "Answer C: A Flux GitRepository source CRD specifies the Git repository URL, branch or tag reference, and the interval at which Flux should poll for changes. Other Flux objects such as Kustomization or HelmRelease reference this source to obtain their configuration. A: Flux does not run code directly from Git; it applies Kubernetes manifests. B: GitRepository is a Flux-native concept, not a converted ArgoCD object. D: Git credentials are stored in a separate Secret referenced by the GitRepository, not defined within it.",
+    "doc_link": "https://fluxcd.io/flux/components/source/gitrepositories/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-269",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "Which image promotion pattern involves updating the production GitOps repository with the image tag that passed staging tests?",
+    "options": {
+      "A": "Blue-green promotion",
+      "B": "Canary gating",
+      "C": "Environment-branch promotion",
+      "D": "Tag-based GitOps promotion"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Tag-based GitOps promotion involves a CI/CD pipeline updating the production environment's Git repository with the exact image tag that successfully completed staging validation. The GitOps operator then reconciles production to use that tag. A: Blue-green is a traffic-switching deployment strategy, not a promotion pattern. B: Canary gating is a progressive traffic-shifting technique. C: Environment-branch promotion uses separate Git branches per environment but does not specifically describe image-tag updating.",
+    "doc_link": "https://fluxcd.io/flux/guides/image-update/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-270",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "In a blue-green deployment, what triggers the actual traffic switch from the old (blue) version to the new (green) version?",
+    "options": {
+      "A": "The green Deployment's Pod count reaching the desired replica count",
+      "B": "The green Pods passing their liveness probe at least once",
+      "C": "Termination of all blue Pods by the cluster autoscaler",
+      "D": "A Kubernetes Service selector update that points to the green Pods"
+    },
+    "answer": "D",
+    "explanation": "Answer D: In a blue-green deployment, both environments run simultaneously. The traffic switch is performed by updating the Kubernetes Service's label selector to target the green Pods instead of the blue Pods, instantly redirecting all incoming traffic. A: Reaching the desired replica count is a prerequisite but does not itself switch traffic. C: Blue Pods are usually kept running until after the switch to allow instant rollback. B: Liveness probes keep pods running but do not redirect Service traffic.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#canary-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-271",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "In a canary deployment, what determines the traffic percentage routed to the canary in a standard Kubernetes-only approach (without a service mesh)?",
+    "options": {
+      "A": "The weight field in the Kubernetes Ingress resource spec, which splits traffic by percentage between named backend services",
+      "B": "The canary annotation on the Deployment resource that signals the rollout controller to shift a fraction of traffic gradually",
+      "C": "A TrafficSplit CRD applied to the cluster",
+      "D": "The ratio of canary Pod replicas to total Pod replicas across both versions"
+    },
+    "answer": "D",
+    "explanation": "Answer D: Without a service mesh or advanced ingress controller, Kubernetes distributes traffic roughly proportionally to the number of healthy Pod endpoints behind a Service. Running 1 canary Pod alongside 9 stable Pods approximates 10% canary traffic. A: Standard Kubernetes Ingress does not support traffic weight splitting natively. C: TrafficSplit is a Service Mesh Interface (SMI) CRD and requires a service mesh. B: There is no native Kubernetes Deployment annotation for canary traffic splitting.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#canary-deployment",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-272",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "medium",
+    "question": "What is the primary reason to use a multi-stage Docker build in a CI/CD pipeline?",
+    "options": {
+      "A": "To allow multiple teams to build the same image simultaneously",
+      "B": "To reduce the final image size by excluding build tools and intermediate artifacts",
+      "C": "To enable caching of base images across different registries",
+      "D": "To enforce that unit tests run before the image is tagged"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Multi-stage builds use one stage to build the application and a subsequent minimal stage that copies only the compiled binary. Build tools, source code, and intermediate files are discarded, significantly reducing the final image size and attack surface. A: Multi-stage builds are a single-Dockerfile concept and do not address concurrent team builds. C: Image caching is a separate concern handled by build cache mechanisms. D: Although tests can be included as a stage, the primary purpose is image size reduction.",
+    "doc_link": "https://docs.docker.com/build/building/multi-stage/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-273",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "hard",
+    "question": "Why is tagging a container image with latest considered risky in a continuous delivery pipeline?",
+    "options": {
+      "A": "The latest tag is rejected by most container registries in production namespaces because it bypasses image signing and digest verification policies",
+      "B": "Kubernetes does not support pulling images tagged latest in production clusters because the tag conflicts with the image pull policy defaulting to Never",
+      "C": "The latest tag is mutable and can be overwritten, making it impossible to guarantee which image version is actually deployed",
+      "D": "Using latest disables Kubernetes image pull caching entirely, causing significantly slower pod startup times and increased registry bandwidth usage"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The latest tag is a mutable pointer that any push can overwrite. In a CD pipeline this means different environments or rollbacks may inadvertently run different image versions while appearing to reference the same tag, destroying reproducibility and auditability. Immutable tags such as a git SHA or semantic version are preferred. A: Registries do not block the latest tag universally. B: Kubernetes can pull latest-tagged images; it is not blocked. D: Kubernetes imagePullPolicy controls caching behavior regardless of the tag name.",
+    "doc_link": "https://kubernetes.io/docs/concepts/containers/images/#image-names",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-274",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "hard",
+    "question": "A Flux HelmRelease has interval: 5m set. What does this interval control?",
+    "options": {
+      "A": "How often Flux checks for new Helm chart versions in the chart repository",
+      "B": "How often the Flux helm-controller reconciles the HelmRelease against its desired state",
+      "C": "The maximum time allowed for a Helm upgrade to complete before it is rolled back",
+      "D": "How often Flux purges old Helm release history revisions"
+    },
+    "answer": "B",
+    "explanation": "Answer B: The interval field on a Flux HelmRelease tells the helm-controller how frequently to reconcile the release, comparing the live Helm release state to the desired state defined in the HelmRelease spec and applying corrections if they differ. A: Chart repository polling is controlled by the HelmRepository source object's interval. C: Upgrade timeout is controlled by a separate timeout field. D: History pruning is not controlled by the reconciliation interval.",
+    "doc_link": "https://fluxcd.io/flux/components/helm/helmreleases/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-275",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "hard",
+    "question": "What does the OCI Image Specification define?",
+    "options": {
+      "A": "A standard API specification for container orchestration that abstracts runtime details across different deployment environments",
+      "B": "The network interface contract and communication protocol between a container runtime plugin and the Kubernetes kubelet agent",
+      "C": "A security scanning protocol that registries must implement to certify images",
+      "D": "The format of a container image manifest, layers, and configuration so images are portable across runtimes"
+    },
+    "answer": "D",
+    "explanation": "Answer D: The OCI Image Specification defines the on-disk format of a container image, including the image manifest, the image index for multi-platform images, individual layer tarballs, and the image configuration JSON. This ensures images built by one tool can be run by any OCI-compliant runtime. A: Container orchestration APIs are outside OCI scope. C: Security scanning is not part of the OCI Image Specification. B: The CRI defines the kubelet-to-runtime contract, not OCI.",
+    "doc_link": "https://kubernetes.io/docs/concepts/containers/#container-images",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-276",
+    "domain": "Cloud Native Application Delivery",
+    "difficulty": "hard",
+    "question": "A team uses Kustomize and needs to change a single field deep in a shared resource without duplicating the entire resource. Which patch type is best suited when the change targets a specific path using a JSON Pointer?",
+    "options": {
+      "A": "Strategic merge patch",
+      "B": "commonLabels overlay",
+      "C": "configMapGenerator",
+      "D": "JSON 6902 patch"
+    },
+    "answer": "D",
+    "explanation": "Answer D: A JSON 6902 patch (RFC 6902) uses explicit operations with JSON Pointer paths to precisely target a single field in a resource without reproducing the surrounding structure. This is ideal for pinpoint changes in shared base resources. A: A strategic merge patch requires reproducing the resource's identifying fields and the section containing the change, which is more verbose for single-field edits. C: configMapGenerator creates ConfigMap resources and is unrelated to patching existing resources. B: commonLabels adds labels to all resources globally and cannot target a specific field at a specific path.",
+    "doc_link": "https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-277",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "Which Prometheus metric type always increases monotonically and is reset to zero only when the process restarts?",
+    "options": {
+      "A": "Gauge",
+      "B": "Summary",
+      "C": "Histogram",
+      "D": "Counter"
+    },
+    "answer": "D",
+    "explanation": "Answer D: A Counter is a cumulative metric that only ever increases or resets to zero on process restart. It is used for things like total HTTP requests or errors. A: A Gauge can go up or down, representing a current value like memory usage. C: A Histogram samples observations and counts them in configurable buckets. B: A Summary also samples observations but calculates configurable quantiles over a sliding time window.",
+    "doc_link": "https://prometheus.io/docs/concepts/metric_types/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-278",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "Prometheus uses a pull-based model to collect metrics. What does this mean in practice?",
+    "options": {
+      "A": "Prometheus agents push metrics to a central server over gRPC",
+      "B": "Metrics are written directly to Prometheus storage by a sidecar agent",
+      "C": "Applications call the Prometheus API to register their metric streams",
+      "D": "Prometheus scrapes HTTP endpoints exposed by targets at a configured scrape_interval"
+    },
+    "answer": "D",
+    "explanation": "Answer D: In the pull model, Prometheus periodically sends HTTP GET requests to /metrics endpoints on configured targets according to scrape_interval. This design keeps the collection logic centralised and simplifies firewall rules in many environments. A: That describes a push model such as Pushgateway or remote-write. C: Prometheus has no such registration API. B: While sidecars exist, Prometheus itself initiates the scrape.",
+    "doc_link": "https://prometheus.io/docs/introduction/overview/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-279",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "In PromQL, what does rate(http_requests_total[5m]) compute?",
+    "options": {
+      "A": "The total number of HTTP requests in the last 5 minutes",
+      "B": "The per-second average rate of increase of the counter over the last 5 minutes",
+      "C": "The maximum value of the counter observed during the last 5 minutes",
+      "D": "The difference between the latest and earliest counter values in the range"
+    },
+    "answer": "B",
+    "explanation": "Answer B: rate() calculates the per-second average rate of increase of a counter over the specified range window, automatically accounting for counter resets. A: increase() returns the total increase over the window; rate() normalises this to a per-second figure. C: max_over_time() would return the maximum. D: That describes a partial behaviour of increase() but without the reset handling that rate() applies.",
+    "doc_link": "https://prometheus.io/docs/prometheus/latest/querying/functions/#rate",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-280",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "hard",
+    "question": "Which Alertmanager feature prevents a flood of redundant notifications when a parent alert is already firing?",
+    "options": {
+      "A": "Silences",
+      "B": "Grouping",
+      "C": "Inhibition",
+      "D": "Routing trees"
+    },
+    "answer": "C",
+    "explanation": "Answer C: Inhibition allows Alertmanager to suppress notifications for a set of alerts when another specified alert is already firing. For example, a cluster-down alert can inhibit all node-level alerts from that cluster. A: Silences mute all alerts matching a set of matchers for a time window, typically used for planned maintenance. B: Grouping batches related alerts into a single notification to reduce noise. D: Routing trees determine which receiver handles which alert but do not themselves suppress redundant alerts.",
+    "doc_link": "https://prometheus.io/docs/alerting/latest/alertmanager/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-281",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "In distributed tracing, what is the relationship between a trace and a span?",
+    "options": {
+      "A": "A span is the complete end-to-end request journey across all services involved; a trace is one single timed operation within that journey",
+      "B": "A span aggregates multiple related traces to produce a latency histogram and percentile breakdown for a given service endpoint",
+      "C": "A trace and a span are fully synonymous terms used interchangeably throughout the OpenTelemetry specification and SDK implementations",
+      "D": "A trace is the complete end-to-end request journey composed of one or more spans, each representing a single timed operation"
+    },
+    "answer": "D",
+    "explanation": "Answer D: A trace represents the full lifecycle of a request as it travels through a distributed system. It is composed of spans, where each span represents a single named, timed operation such as an HTTP call or a database query. Spans carry a trace ID to link them together and may have parent-child relationships. A: This reverses the correct definitions. C: They are distinct concepts with different purposes. B: Spans do not aggregate traces; it is the other way around.",
+    "doc_link": "https://opentelemetry.io/docs/concepts/signals/traces/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-282",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "What does OTLP stand for and what signals does it carry?",
+    "options": {
+      "A": "OpenTelemetry Transport Layer Protocol; carries only traces",
+      "B": "OpenTelemetry Line Protocol; carries metrics and logs but not traces",
+      "C": "OpenTelemetry Protocol; carries traces, metrics, and logs over gRPC or HTTP/JSON",
+      "D": "Open Tracing and Logging Protocol; carries traces and logs over UDP"
+    },
+    "answer": "C",
+    "explanation": "Answer C: OTLP (OpenTelemetry Protocol) is the vendor-neutral data format and transport protocol defined by OpenTelemetry. It carries all three observability signals: traces, metrics, and logs, and is transported over gRPC or HTTP with JSON or Protobuf encoding. A: OTLP carries all three signals, not only traces. B: The name is wrong and the signal coverage is incorrect. D: OTLP uses gRPC or HTTP, not UDP.",
+    "doc_link": "https://opentelemetry.io/docs/specs/otlp/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-283",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "How does Grafana Loki differ from Prometheus in its approach to storing observability data?",
+    "options": {
+      "A": "Loki stores structured numeric metric time series with a TSDB engine; Prometheus stores raw unstructured log lines in an object store",
+      "B": "Loki indexes only log metadata (labels) and stores log lines compressed; Prometheus stores numeric metric samples",
+      "C": "Loki and Prometheus both ingest and store metrics data, but Loki additionally applies machine-learning-based anomaly detection on ingested streams",
+      "D": "Loki requires a running Kafka broker to buffer and ingest log streams; Prometheus similarly requires Kafka to receive metrics from exporters"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Loki is a log aggregation system inspired by Prometheus. Unlike traditional log systems that index full log content, Loki indexes only the label metadata and stores the log lines in compressed chunks. Prometheus stores time-series numeric metric samples, not logs. A: This reverses the roles of the two systems. C: Loki handles logs, not metrics, and anomaly detection is not a core feature. D: Neither system requires Kafka.",
+    "doc_link": "https://grafana.com/docs/loki/latest/get-started/overview/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-284",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "What are the three pillars of observability in cloud-native systems?",
+    "options": {
+      "A": "Metrics, Alerts, and Dashboards",
+      "B": "Logs, Traces, and Profiles",
+      "C": "Metrics, Logs, and Traces",
+      "D": "Spans, Events, and Counters"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The three pillars of observability are Metrics (numeric measurements over time), Logs (timestamped records of discrete events), and Traces (records of request flows through distributed systems). Together they provide the data needed to understand system behaviour and diagnose issues. A: Alerts and dashboards are tooling built on top of metrics, not separate pillars. B: Profiles are sometimes considered a fourth pillar but are not one of the canonical three. D: Spans, events, and counters are components within individual pillars.",
+    "doc_link": "https://opentelemetry.io/docs/concepts/observability-primer/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-285",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "What criteria must a CNCF Sandbox project demonstrate to graduate to the Incubating stage?",
+    "options": {
+      "A": "It must have at least 1,000 GitHub stars and a paid support contract",
+      "B": "It must be used in production by at least three independent end users, have a healthy contributor base, and follow CNCF due diligence guidelines",
+      "C": "It must merge with another CNCF Sandbox project, pass an independent security audit, and demonstrate production adoption from at least five unaffiliated organisations",
+      "D": "It must achieve 100% test coverage and pass CNCF conformance tests"
+    },
+    "answer": "B",
+    "explanation": "Answer B: To move from Sandbox to Incubating, a project must document production usage by at least three independent end users, demonstrate a healthy number of committers from multiple organisations, show a substantial ongoing flow of commits and merged contributions, and complete the CNCF due diligence review. A: GitHub stars are not an official criterion and a paid contract is not required. C: Merging with another project is not a requirement. D: Test coverage thresholds and conformance tests are not Incubating criteria.",
+    "doc_link": "https://cncf.io/projects/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-286",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "Which of the following is a correct statement about the Container Runtime Interface (CRI) in Kubernetes?",
+    "options": {
+      "A": "CRI is a REST API that the API server uses to schedule pods onto nodes",
+      "B": "CRI is a gRPC API that allows the kubelet to work with any compliant runtime such as containerd or CRI-O without code changes",
+      "C": "CRI replaces the need for a container runtime entirely by running containers in the Linux kernel via eBPF hooks, bypassing containerd or CRI-O",
+      "D": "CRI is a CNI plugin that manages pod networking on each node, configuring virtual interfaces, IP routes and iptables rules per the network spec"
+    },
+    "answer": "B",
+    "explanation": "Answer B: CRI defines a gRPC interface that the kubelet calls to manage container and image lifecycles. Any runtime that implements CRI such as containerd or CRI-O can be used without modifying the kubelet source code. A: CRI is used by the kubelet on the node, not by the API server for scheduling. C: CRI is an interface, not a kernel mechanism; a container runtime is still required. D: CNI handles networking; CRI handles container execution.",
+    "doc_link": "https://kubernetes.io/docs/concepts/architecture/cri/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-287",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "hard",
+    "question": "A service mesh like Istio provides mTLS between services without requiring application code changes. Which component is responsible for enforcing this encryption?",
+    "options": {
+      "A": "The Kubernetes API server, which terminates TLS for all pod-to-pod traffic",
+      "B": "The data-plane proxy (e.g., Envoy) injected as a sidecar into each pod",
+      "C": "The CNI plugin, which encrypts packets at the network layer",
+      "D": "The CoreDNS server, which issues certificates to each service"
+    },
+    "answer": "B",
+    "explanation": "Answer B: In a service mesh, the data-plane proxy (typically Envoy) is injected as a sidecar into every pod. The proxy intercepts all inbound and outbound traffic and enforces mTLS using certificates provisioned by the control plane (e.g., Istio's istiod). The application itself is unaware of the encryption. A: The API server handles control-plane traffic, not pod-to-pod data-plane traffic. C: CNI plugins manage pod networking at layer 3/4; mTLS enforcement is a layer 7 concern. D: CoreDNS provides DNS resolution; certificate issuance is the role of the mesh control plane.",
+    "doc_link": "https://istio.io/latest/docs/concepts/security/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-288",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "What is the primary purpose of the Kubernetes Operator pattern?",
+    "options": {
+      "A": "To replace the kube-scheduler with a custom scheduling algorithm",
+      "B": "To extend Kubernetes with domain-specific operational knowledge by combining a CRD with a custom controller that reconciles desired state",
+      "C": "To provide a GUI for managing Kubernetes clusters without using kubectl",
+      "D": "To package Helm charts with pre-built RBAC rules for multi-tenant clusters, enabling operators to install complex applications from the Artifact Hub registry"
+    },
+    "answer": "B",
+    "explanation": "Answer B: An Operator encodes human operational knowledge into software. It pairs a CRD, which defines a new API type, with a custom controller that watches instances of that resource and reconciles the actual cluster state toward the desired state declared by the user. A: Operators do not replace the scheduler. C: Operators are controller processes, not GUIs. D: While Operators may use Helm internally, their defining characteristic is the CRD plus controller reconciliation loop.",
+    "doc_link": "https://kubernetes.io/docs/concepts/extend-kubernetes/operator/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-289",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "According to the 12-factor app methodology, how should an application handle its configuration (factor III)?",
+    "options": {
+      "A": "Store configuration in constants defined in the source code for reproducibility",
+      "B": "Store configuration in environment variables so it can vary between deploys without code changes",
+      "C": "Store configuration in a YAML file committed to the same repository as the code",
+      "D": "Store configuration in a database table that the application queries at startup"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Factor III of the 12-factor methodology states that configuration must be stored in environment variables. This strict separation of config from code ensures the same codebase can be deployed to any environment without modification. A: Hardcoding configuration violates the factor because it requires code changes. C: Committing config files to the repo risks secrets exposure. D: A database is not the recommended mechanism; environment variables are preferred.",
+    "doc_link": "https://12factor.net/config",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-290",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "How does the CNCF define cloud native in its official definition?",
+    "options": {
+      "A": "Applications that run exclusively on public cloud providers such as AWS, GCP, or Azure",
+      "B": "Techniques using containers, service meshes, microservices, immutable infrastructure, and declarative APIs to build loosely coupled, resilient, and observable systems",
+      "C": "Any application written in a cloud-native language such as Go or Rust",
+      "D": "Workloads that rely on serverless functions and avoid the use of containers entirely, typically deployed through FaaS platforms such as AWS Lambda or Google Cloud Functions"
+    },
+    "answer": "B",
+    "explanation": "Answer B: The CNCF definition states that cloud-native technologies empower organisations to build and run scalable applications using containers, service meshes, microservices, immutable infrastructure, and declarative APIs. These systems are loosely coupled, resilient, manageable, and observable. A: Cloud-native does not require public cloud; it can run on-premises. C: Language choice is not part of the cloud-native definition. D: Serverless is one cloud-native pattern but avoiding containers contradicts the CNCF definition.",
+    "doc_link": "https://github.com/cncf/toc/blob/main/DEFINITION.md",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-291",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "What is the immutable infrastructure principle and why is it preferred in cloud-native deployments?",
+    "options": {
+      "A": "Servers are patched in place using configuration management tools to apply updates without downtime",
+      "B": "Infrastructure is defined in version-controlled templates that are immutable once deployed, preventing unauthorised in-place changes and ensuring reproducible environments across clusters",
+      "C": "Container images and server instances are never modified after deployment; updates replace them with new versions to ensure consistency and eliminate drift",
+      "D": "Only the cluster control plane is immutable; worker nodes can be modified freely"
+    },
+    "answer": "C",
+    "explanation": "Answer C: Immutable infrastructure means that once a component (container image, VM) is deployed it is never modified. When a change is needed, a new image is built and the old instance is replaced. This eliminates configuration drift and makes rollbacks and audits straightforward. A: In-place patching is the mutable infrastructure model that immutable infrastructure replaces. B: Immutability refers to deployed artefacts, not documentation. D: The principle applies to all infrastructure components.",
+    "doc_link": "https://glossary.cncf.io/immutable-infrastructure/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-292",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "hard",
+    "question": "How does the sidecar pattern differ from the Operator pattern in Kubernetes?",
+    "options": {
+      "A": "A sidecar runs as a separate container in the same Pod to provide auxiliary capabilities; an Operator is a controller that manages complex application lifecycles using CRDs",
+      "B": "A sidecar manages cluster-wide resources using a CRD and a reconciliation loop, while an Operator injects itself as a sidecar container inside individual application Pods at admission time",
+      "C": "A sidecar and an Operator are functionally identical but differ only in their deployment method",
+      "D": "A sidecar replaces the main container during upgrades; an Operator handles pod scheduling"
+    },
+    "answer": "A",
+    "explanation": "Answer A: The sidecar pattern places a helper container in the same pod as the primary application container. The two share the pod's network namespace and volumes, enabling concerns like logging, proxying, or metrics export to be handled separately. An Operator is a Kubernetes controller process that watches Custom Resources and reconciles the state of entire application stacks at the cluster level. B: This reverses the two patterns. C: They serve fundamentally different purposes at different scopes. D: Neither description is accurate for either pattern.",
+    "doc_link": "https://kubernetes.io/docs/concepts/workloads/pods/#using-pods",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-293",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "hard",
+    "question": "What is the key capability KEDA adds that the built-in HorizontalPodAutoscaler (HPA) cannot provide on its own?",
+    "options": {
+      "A": "KEDA replaces the HPA and uses node CPU thresholds to scale pods faster than the default HPA by bypassing the metrics-server aggregation pipeline",
+      "B": "KEDA allows pods to be scaled based on external event sources such as queue depth in Kafka or RabbitMQ, and can scale deployments to zero replicas",
+      "C": "KEDA provides vertical pod autoscaling by adjusting CPU and memory resource requests automatically based on historical usage patterns collected from the metrics API",
+      "D": "KEDA monitors Prometheus metrics and alerts Alertmanager when scaling thresholds are breached, triggering runbooks that operators must execute to scale workloads"
+    },
+    "answer": "B",
+    "explanation": "Answer B: KEDA is a CNCF project that sits alongside the HPA and feeds it external metric data through the Kubernetes Metrics API. It supports dozens of scalers (Kafka, RabbitMQ, AWS SQS, Azure Service Bus, etc.) and crucially allows scaling a Deployment to zero replicas when there is no work, then scaling back up when events arrive. A: KEDA complements, not replaces, the HPA. C: Vertical scaling of resource requests is the role of the Vertical Pod Autoscaler (VPA), not KEDA. D: KEDA drives scaling actions directly; it does not route alerts through Alertmanager.",
+    "doc_link": "https://keda.sh/docs/latest/concepts/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-294",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "What is a Kubernetes Special Interest Group (SIG) and what is its purpose?",
+    "options": {
+      "A": "A SIG is a team within a cloud provider responsible for the managed Kubernetes offering, such as Amazon EKS, Google GKE, or Azure AKS, with dedicated engineering support",
+      "B": "A SIG is a self-governing group of contributors who own and maintain a specific area of the Kubernetes project, such as networking, storage, or scheduling",
+      "C": "A SIG is a paid membership tier that gives organisations priority in the Kubernetes release process",
+      "D": "A SIG is a temporary task force created to respond to security vulnerabilities"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Kubernetes Special Interest Groups (SIGs) are the primary organisational units of the Kubernetes open-source project. Each SIG owns a specific area (e.g., SIG Network, SIG Storage, SIG Auth) and is responsible for its design, implementation, and documentation. SIGs operate transparently with public meetings, mailing lists, and Slack channels. A: SIGs are community bodies, not cloud provider teams. C: SIG membership is open to any contributor; there is no paid tier. D: Security response is handled by the Kubernetes Security Response Committee.",
+    "doc_link": "https://github.com/kubernetes/community/blob/master/governance.md#sigs",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-295",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "What is the role of the CNCF Technical Oversight Committee (TOC)?",
+    "options": {
+      "A": "The TOC writes the Kubernetes source code, reviews and merges pull requests, and coordinates release cycles across all CNCF-hosted open-source projects and working groups",
+      "B": "The TOC manages CNCF finances and approves vendor sponsorships",
+      "C": "The TOC approves the acceptance and graduation of projects within the CNCF, sets technical vision, and maintains the project maturity process",
+      "D": "The TOC schedules KubeCon events and selects keynote speakers"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The CNCF TOC is responsible for defining the technical vision for the CNCF, approving new projects at Sandbox level, and reviewing projects for promotion to Incubating and Graduated status. It also creates and manages Technical Advisory Groups (TAGs). A: The TOC does not write code for projects; that is done by project maintainers. B: Financial governance is the role of the CNCF Governing Board. D: Event logistics are handled by CNCF staff, not the TOC.",
+    "doc_link": "https://github.com/cncf/toc",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-296",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "easy",
+    "question": "How frequently does the Kubernetes project release new minor versions?",
+    "options": {
+      "A": "Every month, producing twelve releases per year",
+      "B": "Every six months, producing two releases per year",
+      "C": "Approximately every four months, producing three releases per year",
+      "D": "Once per year, with patch releases issued more frequently"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The Kubernetes project follows a roughly four-month release cadence, producing approximately three minor releases per year. Each minor release is supported with patch releases for about fourteen months. A: Monthly releases would be unsustainable for a project of this complexity. B: Six-month cadence would yield only two releases per year. D: Annual releases would not keep pace with the ecosystem rate of change.",
+    "doc_link": "https://kubernetes.io/releases/release/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-297",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "What is a Kubernetes Enhancement Proposal (KEP) and when is one required?",
+    "options": {
+      "A": "A KEP is a GitHub issue used to report bugs in the Kubernetes core components, requiring a reviewer from the relevant SIG to triage and assign priority",
+      "B": "A KEP is a design document required for any significant change to Kubernetes, providing design rationale, graduation criteria, and a testing plan",
+      "C": "A KEP is a pull request template that must be filled in for all code contributions regardless of size, ensuring consistent review across SIGs and working groups",
+      "D": "A KEP is a security advisory published when a CVE is discovered in Kubernetes, detailing affected versions, mitigations, and recommended upgrade timelines"
+    },
+    "answer": "B",
+    "explanation": "Answer B: A Kubernetes Enhancement Proposal (KEP) is a structured design document required for any change that is large, user-facing, or affects API stability. A KEP must include motivation, design details, graduation criteria (Alpha to Beta to GA), and a testing plan. It is reviewed and approved by the relevant SIG before implementation begins. A: Bug reports use GitHub issues; KEPs are for enhancements. C: Small fixes and refactors do not require KEPs. D: Security advisories are published separately through the Kubernetes Security Response process.",
+    "doc_link": "https://github.com/kubernetes/enhancements/tree/master/keps",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-298",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "hard",
+    "question": "What is the minimum support guarantee for Kubernetes beta REST API versions after they are deprecated?",
+    "options": {
+      "A": "Beta APIs are removed in the very next minor release after their initial deprecation announcement, with no grace period allowed",
+      "B": "Beta APIs are supported indefinitely and are never removed",
+      "C": "Beta APIs must be supported for at least 9 months or 3 minor releases (whichever is longer) after deprecation",
+      "D": "Beta APIs are removed after exactly 30 days from deprecation regardless of the Kubernetes release cadence or cluster version"
+    },
+    "answer": "C",
+    "explanation": "Answer C: The Kubernetes API deprecation policy states that beta API versions must be supported for a minimum of 9 months or 3 minor releases after the deprecation announcement, whichever is longer. This gives users and tooling authors time to migrate to stable GA API versions. A: Immediate removal would break users without warning and violates the policy. B: Beta APIs are intentionally transient; they move to GA or are removed. D: Calendar-based removal is not how Kubernetes API policy works.",
+    "doc_link": "https://kubernetes.io/docs/reference/using-api/deprecation-policy/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-299",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "hard",
+    "question": "What distinguishes a Prometheus instant query from a range query in the HTTP API?",
+    "options": {
+      "A": "An instant query uses PromQL; a range query uses SQL syntax",
+      "B": "An instant query operates only on Gauges; a range query operates only on Counters",
+      "C": "An instant query runs against the most recent scrape; a range query is always pre-computed by recording rules, cached in the TSDB block store, and served without re-evaluation overhead",
+      "D": "An instant query evaluates an expression at a single point in time returning one value per series; a range query evaluates at multiple points across a time range returning a matrix"
+    },
+    "answer": "D",
+    "explanation": "Answer D: The Prometheus HTTP API exposes /api/v1/query for instant queries (evaluated at a single timestamp, returning a vector) and /api/v1/query_range for range queries (evaluated at every step within a time window, returning a matrix). Both accept any PromQL expression. B: Both metric types can be used in both query types. C: Neither is necessarily pre-computed; both execute against the TSDB at query time. A: Both use PromQL; Prometheus does not have a SQL interface.",
+    "doc_link": "https://prometheus.io/docs/prometheus/latest/querying/api/",
+    "llm_validated": 0
+  },
+  {
+    "id": "kcna-300",
+    "domain": "Cloud Native Architecture",
+    "difficulty": "medium",
+    "question": "According to the 12-factor app methodology, how should application logs be treated (factor XI)?",
+    "options": {
+      "A": "The application should write logs to a rotating file in /var/log, manage its own retention policy, and expose a sidecar to ship them",
+      "B": "The application should treat logs as event streams, writing them to stdout, and let the execution environment route and store them",
+      "C": "The application should buffer logs in memory and batch-send them to a logging API endpoint",
+      "D": "The application should use a structured logging framework that writes directly to a relational database table for queryable audit records"
+    },
+    "answer": "B",
+    "explanation": "Answer B: Factor XI (Logs) states that a twelve-factor app never concerns itself with routing or storage of its output stream. It simply writes log events to stdout as an unbuffered stream. The execution environment captures the stream and routes it to the appropriate destination (Loki, Elasticsearch, Splunk, etc.). A: Managing rotating files couples the app to a filesystem layout. C: Buffering and batching to an API violates the factor's principle of treating logs as a stream. D: Writing directly to a database introduces coupling and is not a scalable or portable approach.",
+    "doc_link": "https://12factor.net/logs",
     "llm_validated": 0
   }
 ]
