@@ -22,9 +22,9 @@
     "question": "What is the primary purpose of a Kubernetes Service of type LoadBalancer?",
     "options": {
       "A": "Expose a Service externally using a cloud provider's load balancer",
-      "B": "Provide an internal DNS name for Pods so that other workloads in the same namespace can resolve them by a predictable hostname",
-      "C": "Persist data across Pod restarts by dynamically provisioning a PersistentVolume and binding it to the requesting Pod automatically",
-      "D": "Run a single replica of a Pod and automatically reschedule it onto a healthy node if the original node becomes unavailable"
+      "B": "Provide an internal DNS name so Pods can be resolved within the same namespace",
+      "C": "Dynamically provision and bind a PersistentVolume when a Pod requests storage",
+      "D": "Run a single Pod replica and reschedule it onto a healthy node"
     },
     "answer": "A",
     "explanation": "Answer A: LoadBalancer creates an external load balancer that routes traffic to the Service. B: Internal DNS is provided by ClusterIP Services. C: Persistence is handled by PersistentVolumes, not Services. D: Running a single replica is managed by Deployments, not Service types.",
@@ -821,9 +821,9 @@
     "difficulty": "medium",
     "question": "What does the 'kubectl cp' command do?",
     "options": {
-      "A": "Exports a ConfigMap to a local YAML file using the kubectl get command with output flag",
-      "B": "Creates a snapshot of a PersistentVolume and stores it as a VolumeSnapshot object",
-      "C": "Copies an existing pod definition to another namespace by recreating the pod spec",
+      "A": "Exports a ConfigMap to YAML using the kubectl output flag",
+      "B": "Snapshots a PersistentVolume and stores it as a VolumeSnapshot object",
+      "C": "Copies a pod definition to another namespace by recreating the pod spec",
       "D": "Copies files between a local machine and a container in a pod"
     },
     "answer": "D",
@@ -1173,10 +1173,10 @@
     "difficulty": "medium",
     "question": "In a Service definition, what does the 'externalTrafficPolicy: Local' setting achieve?",
     "options": {
-      "A": "Routes external traffic to any available node in the cluster, then performs a second hop to reach the correct backend Pod",
+      "A": "Routes external traffic to any available node, then hops to the correct backend Pod",
       "B": "Preserves the client source IP by routing only to nodes with endpoints for the Service",
-      "C": "Disables all external traffic to the Service and restricts access to internal cluster clients via ClusterIP only",
-      "D": "Enables TLS termination on the Service by injecting a sidecar proxy that handles certificate rotation automatically"
+      "C": "Disables external traffic to the Service and limits access to internal cluster clients only",
+      "D": "Enables TLS termination on the Service by injecting a sidecar that handles certificate rotation"
     },
     "answer": "B",
     "explanation": "Answer B: 'Local' routes traffic only to nodes that have endpoint pods, preserving the original client IP. A: That describes the default 'Cluster' policy. C: Service remains reachable; policy does not disable it. D: TLS termination is a feature of Ingress or Service with specific annotations, not this field.",
@@ -1573,10 +1573,10 @@
     "difficulty": "medium",
     "question": "What does setting 'spec.type: LoadBalancer' on a Service do in a cloud-native environment?",
     "options": {
-      "A": "Creates a NodePort on each node and also registers a DNS CNAME entry pointing to the node addresses in the cluster DNS",
+      "A": "Creates a NodePort on each node and also registers a DNS CNAME in the cluster DNS",
       "B": "Allocates an external IP via the cloud provider's load-balancer service",
-      "C": "Exposes the Service only within the cluster by assigning a stable virtual ClusterIP that is reachable solely from inside the cluster",
-      "D": "Disables all ingress and egress traffic to the Service by setting an empty selector and removing all endpoint slice entries"
+      "C": "Assigns a stable ClusterIP and keeps the Service cluster-internal only",
+      "D": "Disables all traffic to the Service by clearing all its endpoint slice entries"
     },
     "answer": "B",
     "explanation": "Answer B: LoadBalancer triggers cloud provider provisioning of an external LB. A: NodePort is a different type. C: ClusterIP would keep it internal. D: LoadBalancer exposes, not disables.",
@@ -2613,10 +2613,10 @@
     "difficulty": "medium",
     "question": "When would you use a `DaemonSet`?",
     "options": {
-      "A": "To run a single replica of an application and restart it automatically whenever the container exits unexpectedly",
+      "A": "To run a single Pod replica and restart it on container exit",
       "B": "To ensure a copy of a Pod runs on every node (or selected nodes)",
-      "C": "To expose an external load balancer endpoint that distributes traffic across all nodes in the cluster uniformly",
-      "D": "To store environment-specific configuration data as key-value pairs accessible by pods in the same namespace"
+      "C": "To expose a load balancer that distributes external traffic across all cluster nodes",
+      "D": "To store key-value configuration data accessible to Pods in the same namespace"
     },
     "answer": "B",
     "explanation": "DaemonSets guarantee that a Pod runs on each node (or a subset) for node-level services.",
@@ -2661,9 +2661,9 @@
     "difficulty": "medium",
     "question": "Which field in a Service spec defines the ports that the Service forwards to Pods?",
     "options": {
-      "A": "targetPort (the port on the Pod that the Service forwards traffic to)",
-      "B": "protocol (the transport protocol such as TCP or UDP for the service port)",
-      "C": "nodePort (the static port exposed on each node for NodePort Services)",
+      "A": "targetPort (the Pod port the Service forwards traffic to)",
+      "B": "protocol (the transport protocol, such as TCP or UDP)",
+      "C": "nodePort (the static port on each node for a NodePort-type Service)",
       "D": "port (the port that clients use to reach the Service)"
     },
     "answer": "D",
@@ -2965,10 +2965,10 @@
     "difficulty": "medium",
     "question": "What is the role of a `ReplicaSet`?",
     "options": {
-      "A": "Manages rolling updates for Deployments by gradually scaling up the new ReplicaSet while scaling down the old one concurrently",
+      "A": "Manages rolling updates by replacing old ReplicaSets with new ones",
       "B": "Ensures a specified number of Pod replicas are running at any time",
-      "C": "Provides network routing for Pods by watching Service objects and programming iptables or IPVS rules on every cluster node",
-      "D": "Manages persistent storage lifecycle by provisioning and attaching PersistentVolumes to Pods that request them via PVCs"
+      "C": "Programs iptables rules on each node to route Pod traffic to Service backends",
+      "D": "Provisions and binds PersistentVolumes to Pods that request storage via PVCs"
     },
     "answer": "B",
     "explanation": "A ReplicaSet maintains the desired number of Pod copies by creating or deleting Pods as needed.",
@@ -3973,10 +3973,10 @@
     "difficulty": "medium",
     "question": "How does an EndpointSlice differ from a classic Endpoints object?",
     "options": {
-      "A": "EndpointSlices store TLS certificates for each endpoint and rotate them automatically when the serving certificate approaches expiry",
+      "A": "EndpointSlices store and rotate TLS certificates for each backend endpoint automatically before expiry",
       "B": "EndpointSlices split endpoint data across multiple objects, improving scalability for large Services",
-      "C": "EndpointSlices replace Ingress objects for HTTP routing by mapping hostnames and paths directly to backend pod IP addresses",
-      "D": "EndpointSlices are only used with headless Services and have no effect on ClusterIP or LoadBalancer Service types in standard clusters"
+      "C": "EndpointSlices replace Ingress objects for HTTP routing by mapping hostname and path rules to Pod IPs",
+      "D": "EndpointSlices apply only to headless Services and do not affect ClusterIP or LoadBalancer types"
     },
     "answer": "B",
     "explanation": "Answer B: EndpointSlices shard endpoint information into smaller objects (default max 100 endpoints each), reducing the size of updates sent to watchers and improving control-plane scalability compared to a single Endpoints object. A: TLS certificates are not stored in EndpointSlices. C: EndpointSlices have nothing to do with Ingress or HTTP routing. D: EndpointSlices are used for all Service types, not only headless ones.",
@@ -4246,9 +4246,9 @@
     "question": "In ArgoCD, what is the difference between a Sync operation and a Refresh operation?",
     "options": {
       "A": "Refresh fetches the latest Git state and updates the diff; Sync applies the Git state to the cluster",
-      "B": "Sync fetches the latest Git state and computes the diff against the live cluster; Refresh applies the computed diff to the cluster",
-      "C": "Refresh restarts all pods in the application to pick up new image tags; Sync reconciles only CustomResourceDefinition objects in the cluster",
-      "D": "They are effectively aliases for the same reconciliation operation in ArgoCD and can be used interchangeably with identical results"
+      "B": "Sync fetches the latest Git state and computes the diff; Refresh applies the diff to the cluster",
+      "C": "Refresh restarts all pods to pick up new image tags; Sync reconciles only CRD objects in the cluster",
+      "D": "Refresh and Sync are aliases in ArgoCD for the same reconciliation loop and produce identical results"
     },
     "answer": "A",
     "explanation": "Answer A: In ArgoCD, Refresh re-fetches the desired state from Git and recomputes the diff between desired and live state, but does not modify the cluster. Sync then applies the desired state to the cluster, creating, updating, or deleting resources as needed. B: This reverses the correct definitions. C: Refresh does not restart pods. D: They are distinct operations with different effects.",
@@ -4357,10 +4357,10 @@
     "difficulty": "hard",
     "question": "Why is tagging a container image with latest considered risky in a continuous delivery pipeline?",
     "options": {
-      "A": "The latest tag is rejected by most container registries in production namespaces because it bypasses image signing and digest verification policies",
-      "B": "Kubernetes does not support pulling images tagged latest in production clusters because the tag conflicts with the image pull policy defaulting to Never",
+      "A": "The latest tag is rejected by most registries in production because it bypasses image signing and digest verification policies",
+      "B": "Kubernetes does not support latest in production clusters because the tag conflicts with the default Never image pull policy",
       "C": "The latest tag is mutable and can be overwritten, making it impossible to guarantee which image version is actually deployed",
-      "D": "Using latest disables Kubernetes image pull caching entirely, causing significantly slower pod startup times and increased registry bandwidth usage"
+      "D": "Using latest disables image caching entirely, causing significantly slower Pod startup times and increased registry bandwidth"
     },
     "answer": "C",
     "explanation": "Answer C: The latest tag is a mutable pointer that any push can overwrite. In a CD pipeline this means different environments or rollbacks may inadvertently run different image versions while appearing to reference the same tag, destroying reproducibility and auditability. Immutable tags such as a git SHA or semantic version are preferred. A: Registries do not block the latest tag universally. B: Kubernetes can pull latest-tagged images; it is not blocked. D: Kubernetes imagePullPolicy controls caching behavior regardless of the tag name.",
@@ -4517,10 +4517,10 @@
     "difficulty": "easy",
     "question": "How does Grafana Loki differ from Prometheus in its approach to storing observability data?",
     "options": {
-      "A": "Loki stores structured numeric metric time series with a TSDB engine; Prometheus stores raw unstructured log lines in an object store",
+      "A": "Loki stores structured numeric time-series metrics in TSDB; Prometheus stores raw log lines in an object store",
       "B": "Loki indexes only log metadata (labels) and stores log lines compressed; Prometheus stores numeric metric samples",
-      "C": "Loki and Prometheus both ingest and store metrics data, but Loki additionally applies machine-learning-based anomaly detection on ingested streams",
-      "D": "Loki requires a running Kafka broker to buffer and ingest log streams; Prometheus similarly requires Kafka to receive metrics from exporters"
+      "C": "Loki and Prometheus both store metrics, but Loki applies machine-learning anomaly detection on ingested log streams",
+      "D": "Loki requires a running Kafka broker to buffer and ingest log streams; Prometheus also requires Kafka for metrics"
     },
     "answer": "B",
     "explanation": "Answer B: Loki is a log aggregation system inspired by Prometheus. Unlike traditional log systems that index full log content, Loki indexes only the label metadata and stores the log lines in compressed chunks. Prometheus stores time-series numeric metric samples, not logs. A: This reverses the roles of the two systems. C: Loki handles logs, not metrics, and anomaly detection is not a core feature. D: Neither system requires Kafka.",
