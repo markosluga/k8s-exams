@@ -80,12 +80,24 @@ def header(subtitle: str = ""):
 
 def domain_color(domain: str) -> str:
     colors = {
+        # KCSA domains
         "Overview of Cloud Native Security": "bright_blue",
         "Kubernetes Cluster Component Security": "bright_yellow",
         "Kubernetes Security Fundamentals": "bright_green",
         "Kubernetes Threat Model": "bright_red",
         "Platform Security": "bright_magenta",
         "Compliance and Security Frameworks": "bright_cyan",
+        # KCNA domains
+        "Kubernetes Fundamentals": "bright_blue",
+        "Container Orchestration": "bright_yellow",
+        "Cloud Native Architecture": "bright_green",
+        "Cloud Native Application Delivery": "bright_magenta",
+        "Workloads": "bright_blue",
+        "Networking": "bright_cyan",
+        "Storage": "bright_yellow",
+        "Configuration": "bright_green",
+        "Security": "bright_red",
+        "Observability": "bright_magenta",
     }
     return colors.get(domain, "white")
 
@@ -126,7 +138,7 @@ def main_menu():
             console.print(f"  [{i}] {exam['emoji']} {exam['name']} — {exam['full_name']}{avail}")
 
         console.print()
-        console.print("  [dim][P] Progress Report   [T] Study Tips   [Q] Quit[/]")
+        console.print("  [dim][P] Progress Report   [Q] Quit[/]")
         console.print()
 
         choice = Prompt.ask("  Select", default="1").strip().lower()
@@ -136,8 +148,6 @@ def main_menu():
             break
         elif choice == "p":
             show_progress_report(progress)
-        elif choice == "t":
-            show_study_tips()
         else:
             try:
                 idx = int(choice) - 1
@@ -164,6 +174,7 @@ def exam_menu(exam_key: str):
         console.print("  [1] 📝  Exam Practice — Multiple Choice Questions")
         console.print("  [2] 🔧  Lab Challenges — Hands-on Minikube Scenarios")
         console.print("  [3] 📊  Domain Breakdown")
+        console.print("  [4] 📚  Study Tips")
         console.print("  [B] ← Back\n")
 
         choice = Prompt.ask("  Select", default="1").strip().lower()
@@ -176,6 +187,8 @@ def exam_menu(exam_key: str):
             lab_menu(exam_key)
         elif choice == "3":
             show_domain_breakdown(exam_key)
+        elif choice == "4":
+            show_study_tips(exam_key)
 
 
 def exam_practice_menu(exam_key: str):
@@ -299,20 +312,21 @@ def run_exam_session(exam_key: str, questions: list, domain_label: str):
     progress["total_correct"] = progress.get("total_correct", 0) + score
     save_progress(progress)
 
-    show_session_results(score, len(questions), wrong)
+    show_session_results(exam_key, score, len(questions), wrong)
 
 
-def show_session_results(score: int, total: int, wrong: list):
+def show_session_results(exam_key: str, score: int, total: int, wrong: list):
     clear()
     header("📊 Session Results")
 
     pct = int(score / total * 100)
     color = "green" if pct >= 75 else "yellow" if pct >= 60 else "red"
     grade = "PASS ✓" if pct >= 75 else "BORDERLINE" if pct >= 60 else "NEEDS WORK"
+    exam_name = EXAMS[exam_key]["name"]
 
     console.print(Panel(
         f"\n  Score: [{color}]{score}/{total}  ({pct}%)[/]\n\n"
-        f"  [{color}]{grade}[/]  [dim](KCSA passing score: ~75%)[/]\n",
+        f"  [{color}]{grade}[/]  [dim]({exam_name} passing score: ~75%)[/]\n",
         border_style=color, padding=(0, 2)
     ))
 
@@ -572,11 +586,8 @@ def show_progress_report(progress: dict):
     Prompt.ask("  Press Enter to continue")
 
 
-def show_study_tips():
-    clear()
-    header("📚 KCSA Study Tips")
-
-    tips = """
+STUDY_TIPS = {
+    "kcsa": """
 ## KCSA Exam Strategy
 
 **Format**: 60 questions, 90 minutes, multiple choice
@@ -615,8 +626,54 @@ def show_study_tips():
 - For "most effective" questions, think about depth and scope
 - RBAC questions: pay attention to namespace scope
 - If unsure: eliminate clearly wrong answers, then guess
-"""
+""",
+    "kcna": """
+## KCNA Exam Strategy
 
+**Format**: 60 questions, 90 minutes, multiple choice
+**Passing score**: ~75% (45/60)
+**Domains by weight**:
+- Kubernetes Fundamentals: 46%
+- Container Orchestration: 22%
+- Cloud Native Architecture: 16%
+- Cloud Native Application Delivery: 8%
+- Observability: 8%
+
+## High-Yield Topics
+
+1. **Pods, Deployments, Services** — the core workload primitives
+2. **kubectl basics** — get, describe, apply, delete, logs, exec
+3. **Namespaces** — resource isolation and multi-tenancy
+4. **ConfigMaps & Secrets** — externalizing configuration
+5. **Persistent Volumes** — PV, PVC, StorageClass lifecycle
+6. **Ingress** — host/path routing, Ingress controllers
+7. **RBAC** — Roles, ClusterRoles, ServiceAccounts
+8. **Cloud Native principles** — 12-factor, microservices, immutability
+9. **CI/CD & GitOps** — Argo CD, Flux, Helm basics
+10. **Observability** — metrics, logs, traces; Prometheus & Grafana
+
+## Minikube Lab Tips
+
+- Start minikube: `minikube start`
+- Enable Ingress: `minikube addons enable ingress`
+- Enable metrics-server: `minikube addons enable metrics-server`
+- Reset everything: `minikube delete && minikube start`
+
+## Exam-Day Tips
+
+- Read every word in the question — "which is NOT" changes everything
+- For "most effective" questions, think conceptually (cloud native principles)
+- Kubernetes Fundamentals is nearly half the exam — know it cold
+- If unsure: eliminate clearly wrong answers, then guess
+""",
+}
+
+
+def show_study_tips(exam_key: str):
+    exam = EXAMS[exam_key]
+    clear()
+    header(f"📚 {exam['name']} Study Tips")
+    tips = STUDY_TIPS.get(exam_key, f"No study tips available for {exam['name']} yet.")
     console.print(Markdown(tips))
     console.print()
     Prompt.ask("  Press Enter to continue")

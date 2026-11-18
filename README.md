@@ -1,6 +1,6 @@
 # ⎈ Kubestronaut Exam Prep
 
-A terminal-based study tool for the five Kubestronaut certification exams. Currently includes full content for **KCSA** (Kubernetes and Cloud Native Security Associate).
+A terminal-based study tool for the five Kubestronaut certification exams. Currently includes full content for **KCSA** (Kubernetes and Cloud Native Security Associate) and **KCNA** (Kubernetes and Cloud Native Associate).
 
 ## Quick Start
 
@@ -20,7 +20,12 @@ run.bat
 ## What's Inside
 
 **KCSA — Kubernetes and Cloud Native Security Associate**
-- (NEW!💥) 240 exam-style multiple choice questions with detailed explanations and documentation links
+- 240 exam-style multiple choice questions with detailed explanations and documentation links
+- 10 hands-on minikube lab challenges
+- Progress tracking across sessions
+
+**KCNA — Kubernetes and Cloud Native Associate**
+- 300 exam-style multiple choice questions with detailed explanations and documentation links
 - 10 hands-on minikube lab challenges
 - Progress tracking across sessions
 
@@ -42,13 +47,25 @@ Hands-on scenarios you build on a local minikube cluster. Each lab includes:
 
 | Domain | Questions | Labs |
 |--------|-----------|------|
-| Overview of Cloud Native Security | 23 | — |
-| Kubernetes Cluster Component Security | 34 | 2 |
-| Kubernetes Security Fundamentals | 29 | 4 |
-| Kubernetes Threat Model | 29 | — |
-| Platform Security | 28 | 4 |
-| Compliance and Security Frameworks | 17 | 1 |
-| **Total** | **160** | **11** |
+| Overview of Cloud Native Security | 25 | — |
+| Kubernetes Cluster Component Security | 48 | 1 |
+| Kubernetes Security Fundamentals | 61 | 4 |
+| Kubernetes Threat Model | 35 | — |
+| Platform Security | 47 | 4 |
+| Compliance and Security Frameworks | 24 | 1 |
+| **Total** | **240** | **10** |
+
+## KCNA Domains Covered
+
+| Domain | Questions |
+|--------|-----------|
+| Kubernetes Fundamentals | 132 |
+| Container Orchestration | 84 |
+| Cloud Native Application Delivery | 48 |
+| Cloud Native Architecture | 36 |
+| **Total** | **300** |
+
+**KCNA Labs** cover 10 hands-on scenarios across: Workloads, Networking, Security, Configuration, Storage, and Observability.
 
 ## Prerequisites
 
@@ -69,6 +86,7 @@ Then run:
 ```bash
 pip install anthropic python-dotenv
 python tests/llm_assess_questions.py --exam kcsa
+python tests/llm_assess_questions.py --exam kcna
 ```
 
 Each question carries an `llm_validated` tag:
@@ -83,7 +101,8 @@ The assessor only processes questions tagged `0`. Where it finds issues it also 
 
 ## Roadmap
 
-- [ ] KCNA — Kubernetes and Cloud Native Associate
+- [x] KCSA — Kubernetes and Cloud Native Security Associate
+- [x] KCNA — Kubernetes and Cloud Native Associate
 - [ ] CKA — Certified Kubernetes Administrator
 - [ ] CKAD — Certified Kubernetes Application Developer
 - [ ] CKS — Certified Kubernetes Security Specialist
