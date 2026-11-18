@@ -10,9 +10,12 @@ k8s-exams/
 ├── requirements.txt       # Python dependencies
 ├── .env                   # API keys — gitignored, not committed
 ├── data/
-│   └── kcsa/
-│       ├── questions.json # Exam questions (array of question objects)
-│       └── labs.json      # Lab challenges (array of lab objects)
+│   ├── kcsa/
+│   │   ├── questions.json # KCSA exam questions (240 questions)
+│   │   └── labs.json      # KCSA lab challenges (10 labs)
+│   └── kcna/
+│       ├── questions.json # KCNA exam questions (300 questions)
+│       └── labs.json      # KCNA lab challenges (10 labs)
 ├── tests/
 │   ├── validate_questions.py    # Structural validator
 │   └── llm_assess_questions.py  # LLM cognitive assessor
@@ -94,6 +97,16 @@ Progress is stored in `.progress.json` (auto-created, gitignored):
   "total_answered": 10
 }
 ```
+
+## Available Exams
+
+| Exam | Status | Questions | Labs |
+|------|--------|-----------|------|
+| KCSA | Available | 240 | 10 |
+| KCNA | Available | 300 | 10 |
+| CKA  | Coming soon | — | — |
+| CKAD | Coming soon | — | — |
+| CKS  | Coming soon | — | — |
 
 ## Adding a New Exam
 
