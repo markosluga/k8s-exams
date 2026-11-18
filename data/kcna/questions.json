@@ -11,7 +11,7 @@
       "D": "StatefulSet"
     },
     "answer": "C",
-    "explanation": "Answer C: PodAffinity allows scheduling pods on the same node based on label selectors. A: DaemonSet ensures a copy runs on every node, not for grouping pods together. B: ReplicaSet manages replica counts but does not influence node placement. D: StatefulSet provides stable identities, not node co-location guarantees.",
+    "explanation": "Answer C: PodAffinity allows scheduling pods on the same node based on label selectors. A: DaemonSet ensures a copy runs on every node, not for grouping pods together. B: ReplicaSet manages replica counts but does not influence node placement. D: StatefulSet provides stable identities, not node co\u00c3\u0192\u00c2\u00a2\u00c3\u00a2\u00e2\u20ac\u0161\u00c2\u00ac\u00c3\u00a2\u00e2\u201a\u00ac\u00cb\u0153location guarantees.",
     "doc_link": "https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/",
     "llm_validated": 0
   },
