@@ -76,7 +76,7 @@ Re-set to `0` on any question to trigger re-assessment. Dated reports in `report
 
 ## Progress Tracking
 
-Progress is stored in `.progress.json` (auto-created, gitignored):
+Progress is stored in `.progress.json` (auto-created, gitignored). Set `K8S_EXAM_PROGRESS_FILE` to store it elsewhere; the Docker image sets it to `/progress/.progress.json` so progress lives on a volume:
 
 ```json
 {

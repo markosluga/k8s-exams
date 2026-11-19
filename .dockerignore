@@ -1,0 +1,8 @@
+.git
+.env
+.progress.json
+__pycache__
+*.pyc
+reports
+tests
+docs
