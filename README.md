@@ -17,6 +17,15 @@ pip install rich
 run.bat
 ```
 
+Docker
+
+```bash
+docker build -t k8s-exam-prep .
+docker run -it --rm -v k8s-exam-progress:/progress k8s-exam-prep
+```
+
+The `-it` flags are required for the interactive menus. Progress is kept in the `k8s-exam-progress` volume, so it carries over between runs.
+
 ## What's Inside
 
 **KCSA — Kubernetes and Cloud Native Security Associate**

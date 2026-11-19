@@ -5,6 +5,13 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
+## [0.2.3] — 2026-11-19
+### Added
+- Docker support: `Dockerfile` and `.dockerignore` to run the exam prep tool in a container (`python:3.15-slim`, non-root user)
+- `K8S_EXAM_PROGRESS_FILE` env var to change where `.progress.json` is saved; the Docker image uses it to keep progress on a `/progress` volume
+
+---
+
 ## [0.2.2] — 2026-05-28
 ### Added
 - +60 questions
@@ -27,9 +34,6 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
-<<<<<<< HEAD
----
-
 ## [0.2.0] — 2026-05-28
 ### Added
 - KCNA (Kubernetes and Cloud Native Associate) exam questions — 230 questions covering Kubernetes Fundamentals
@@ -37,8 +41,6 @@ Format: [MAJOR.MINOR.PATCH] — YYYY-MM-DD
 
 ---
 
-=======
->>>>>>> 40f3fcc7bfc10d020c20312b64ac287a33011ec0
 ## [0.1.7] — 2026-05-25 
 ### Fixed
 - Woorked to fix teaching in responses where terminology that we are testing for is being explained. Fixed a

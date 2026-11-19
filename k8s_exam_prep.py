@@ -32,7 +32,7 @@ console = Console(force_terminal=True, highlight=False)
 
 SCRIPT_DIR = Path(__file__).parent
 DATA_DIR = SCRIPT_DIR / "data"
-PROGRESS_FILE = SCRIPT_DIR / ".progress.json"
+PROGRESS_FILE = Path(os.environ.get("K8S_EXAM_PROGRESS_FILE", SCRIPT_DIR / ".progress.json"))
 
 EXAMS = {
     "kcsa": {
